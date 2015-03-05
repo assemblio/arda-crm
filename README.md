@@ -1,4 +1,4 @@
-kdi-elections-monitoring-api
+Costumer Relation Managment
 ============================
 
-Elections Monitoring data collected by KDI (Kosova Democratic Institute)
+Costumer Relation Managment
