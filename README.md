@@ -1,2 +1,4 @@
-# arda-crm
-Costumer Relation Managment
+kdi-elections-monitoring-api
+============================
+
+Elections Monitoring data collected by KDI (Kosova Democratic Institute)

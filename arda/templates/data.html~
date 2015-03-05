@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+ <head>
+ <title>Hello from Flask&Endriti</title>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+</head> 
+<body> 
+       <h4> Polling Station </h4>
+     {% for result in results %}
+	<div id="holder-{{ result._id }}" style="width:auto; height:auto;">
+	<div id='data-for-id-{{ result._id }}' style="align:center">
+	<p>Komuna:{{ result.pollingStation.commune }}</p>
+	<p>Emri Qendres: {{ result.pollingStation.name }}</p>
+	<p>Numri i QV: {{ result.pollingStation.number }}</p>
+	<p>Kontrolli UV: {{ result.votingProcess.voters.ultraVioletControl }}</p>
+	<p>Sperkatja e gishtave: {{ result.votingProcess.voters.fingerSprayed }}</p>
+	<p>Vota te Vulosura: {{ result.votingProcess.voters.sealedBallot }}</p>
+	<p>KVV member: {{ result.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.total }}</p>
+	<p>Femra: {{ result.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.female }}</p>
+	</div>
+	    <div id="form-{{ result._id }}" style="width: 400px; height: 400px;float:right"></div>
+
+	
+    <script type="text/javascript">
+
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['title', 'Hour'],
+          ['Male', {{ result.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.total }}  - {{ result.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.female }}],
+          ['Female', {{ result.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.female }}]
+        ]);
+
+        var options = {
+          title: 'QARTI'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('form-{{ result._id }}'));
+        chart.draw(data, options);
+      }
+    </script>
+
+
+
+ {% endfor %}
+</body> 
+</html>

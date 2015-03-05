@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+ <head>
+ <title>Hello from Flask&Endrit</title> 
+</head> 
+<body> 
+
+  <ul> 
+{% for result in results %}
+
+<li>
+
+<a href="/result/{{result.pollingStation.name}}" >{{result.pollingStation.name}}</a>
+</li>
+{% endfor %}
+</ul>
+</body> 
+</html>
