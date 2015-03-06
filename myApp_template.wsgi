@@ -5,4 +5,4 @@ logging.basicConfig(stream=sys.stderr)
 sys.path.insert(0, "/var/www/")
 
 from runserver import app as application
-application.secret_key = 
+application.secret_key = ""

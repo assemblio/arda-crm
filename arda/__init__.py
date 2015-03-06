@@ -42,9 +42,11 @@ def load_config(app):
     config_filepath = app_dir + '/config.cfg'
     config.read(config_filepath)
 
+    app.config['USERNAME'] = config.get('Application', 'USERNAME')
+    app.config['PASSWORD'] = config.get('Application', 'PASSWORD')
     app.config['SERVER_PORT'] = config.get('Application', 'SERVER_PORT')
     app.config['BASE_PATH'] = config.get('Application', 'BASE_PATH')
-    #app.config['MONGO_DBNAME'] = config.get('Mongo', 'DB_NAME')
+    app.config['MONGO_DBNAME'] = config.get('Mongo', 'DB_NAME')
 
     # Logging path might be relative or starts from the root.
     # If it's relative then be sure to prepend the path with the application's root directory path.
@@ -83,6 +85,8 @@ def configure_logging(app):
 
 #Import Forms
 from views.index import Index
+from views.login import Login
+from views.logout import Logout
 
 
 def register_url_rules(app):
@@ -91,5 +95,6 @@ def register_url_rules(app):
     :param app: The Flask application instance.
     '''
 
-    #Index url rule
     app.add_url_rule('/', view_func=Index.as_view('index'))
+    app.add_url_rule('/login', view_func=Login.as_view('login'))
+    app.add_url_rule('/logout', view_func=Logout.as_view('logout'))
