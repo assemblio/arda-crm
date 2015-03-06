@@ -3,54 +3,126 @@
     <!-- Header -->
     <header>
         <div class="container">
-            <div class="intro-text" style="padding-top: 500px">
-                <div class="intro-lead-in pull-left">Be part of our story!</div>
-                <br></br><div class="intro-lead-in pull-left">be part of ARDA success!</div>
+            <div class="intro-text">
+                <div class="intro-lead-in">
+
+                </div>
+                <div class="intro-heading">
+                    ARDA CRM
+                </div>
+
+                <!--
+                <a href="#services" class="page-scroll btn btn-xl">Get Started</a>
+                -->
             </div>
         </div>
     </header>
 
-    <!-- Services Section -->
-    <section id="services">
+    <!-- Portfolio Grid Section -->
+    <section id="portfolio" class="bg-light-gray">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Services</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h2 class="section-heading">Regions</h2>
+                    <h3 class="section-subheading text-muted"></h3>
                 </div>
             </div>
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">E-Commerce</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+            <div class="row">
+                <div class="col-md-4 col-sm-6 portfolio-item">
+                    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content">
+                                <i class="fa fa-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="{{ url_for('static', filename='startbootstrap/img/portfolio/rda-west.png') }}" class="img-responsive" alt="">
+                    </a>
+                    <div class="portfolio-caption">
+                        <h4>West</h4>
+                        <p class="text-muted"></p>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-laptop fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">Responsive Design</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                <div class="col-md-4 col-sm-6 portfolio-item">
+                    <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content">
+                                <i class="fa fa-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="{{ url_for('static', filename='startbootstrap/img/portfolio/rda-south.jpg') }}" class="img-responsive" alt="">
+                    </a>
+                    <div class="portfolio-caption">
+                        <h4>South</h4>
+                        <p class="text-muted"></p>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading">Web Security</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                <div class="col-md-4 col-sm-6 portfolio-item">
+                    <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content">
+                                <i class="fa fa-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="{{ url_for('static', filename='startbootstrap/img/portfolio/rda-north.png') }}" class="img-responsive" alt="">
+                    </a>
+                    <div class="portfolio-caption">
+                        <h4>North</h4>
+                        <p class="text-muted"></p>
+                    </div>
                 </div>
+                <div class="col-md-4 col-sm-6 portfolio-item">
+                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content">
+                                <i class="fa fa-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="{{ url_for('static', filename='startbootstrap/img/portfolio/rda-east.jpg') }}" class="img-responsive" alt="">
+                    </a>
+                    <div class="portfolio-caption">
+                        <h4>East</h4>
+                        <p class="text-muted"></p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 portfolio-item">
+                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content">
+                                <i class="fa fa-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="{{ url_for('static', filename='startbootstrap/img/portfolio/rda-center.jpg') }}" class="img-responsive" alt="">
+                    </a>
+                    <div class="portfolio-caption">
+                        <h4>Center</h4>
+                        <p class="text-muted"></p>
+                    </div>
+                </div>
+                <!--
+                <div class="col-md-4 col-sm-6 portfolio-item">
+                    <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content">
+                                <i class="fa fa-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="{{ url_for('static', filename='startbootstrap/img/portfolio/arda.jpg') }}" class="img-responsive" alt="">
+                    </a>
+                    <div class="portfolio-caption">
+                        <h4>ARDA</h4>
+                        <p class="text-muted"></p>
+                    </div>
+                </div>
+                -->
             </div>
         </div>
     </section>
 
-    
-    <!-- Log In Modal -->
-    <div class="portfolio-modal modal fade" id="LogInModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Portfolio Modals -->
+    <!-- Use the modals below to showcase details about your portfolio projects! -->
+
+    <!-- Portfolio Modal 1 -->
+    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
                 <div class="lr">
@@ -60,13 +132,148 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <form method="post" class="login" action="{{ url_for('login') }}">
-                        <input type="text" id="usrname" name="username" placeholder="Username">
-                        <input type="password" id="password" name="password" placeholder="Password">
-                        <button type="submit">Login</button>
-                    </form>
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <!-- Project Details Go Here -->
+                            <h2>RDA West</h2>
+                            <p class="item-intro text-muted"></p>
+                            <img class="img-responsive" src="{{ url_for('static', filename='startbootstrap/img/portfolio/rda-west.png') }}" alt="">
+                            <p>West Economic Region covers six municipalities, Istog/Istok, Klinë/Klina, Peja/Peć, Junik, Deçan/Dečani, and Gjakova/Ðakovica. The region is the western gateway to Kosovo bordering Albania and Montenegro (Deçan/Dečani and Peja/Peć Municipalities) and Serbia (Istog/Istok Municipality).</p>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Portfolio Modal 2 -->
+    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>RDA South</h2>
+                            <p class="item-intro text-muted"></p>
+                            <img class="img-responsive img-centered" src="{{ url_for('static', filename='startbootstrap/img/portfolio/rda-south.jpg') }}" alt="">
+                            <p>Regional Development Agency South (RDA South) operates in the South-Western part of Kosovo. The region has a total area of 2031 km2 (18.66% of the territory of Kosovo and consists of 6 municipalities: Prizren, Dragash/Dragaš, Suhareka/Suvareka, Dragash/Dragaš, Mamusha/Mamuša and Rahovec/Orahovac.</p>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Modal 3 -->
+    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <!-- Project Details Go Here -->
+                            <h2>RDA North</h2>
+                            <p class="item-intro text-muted"></p>
+                            <img class="img-responsive img-centered" src="{{ url_for('static', filename='startbootstrap/img/portfolio/rda-north.png') }}" alt="">
+                            <p>Regional Development Agency North (RDA) provides its services to the seven municipalities of Northern Region of Kosovo. Working towards strengthening the Regional Economic Development, RDA North contributes to the vision of the region on achieving high standards of economic and social development while improving its competitiveness, environment and cultural heritage.</p>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Modal 4 -->
+    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <!-- Project Details Go Here -->
+                            <h2>RDA East</h2>
+                            <p class="item-intro text-muted"></p>
+                            <img class="img-responsive img-centered" src="{{ url_for('static', filename='startbootstrap/img/portfolio/rda-east.jpg') }}" alt="">
+                            <p>Regional Development Agency East (RDA East) comprises of eleven municipalities: Ferizaj/Uroševac, Gjilan/Gnjilane, Viti/Vitina, Novobërdë/Novo Brdo, Kamenicë/Kamenica, Hani Elezit/Elez Han, Kaçanik/Kačanik, Shtëpce/Štrpce, Ranillug/Ranilug, Kllokot/Klokot and Partesh/Parteš.</p>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Modal 5 -->
+    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <!-- Project Details Go Here -->
+                            <h2>RDA Center</h2>
+                            <p class="item-intro text-muted"></p>
+                            <img class="img-responsive img-centered" src="{{ url_for('static', filename='startbootstrap/img/portfolio/rda-center.jpg') }}" alt="">
+                            <p>Regional Development Agency – Centre (RDA Centre) is an inter municipal entity founded on December 2008 by the partner municipalities of: Prishtinë/Priština, Drenas/Glogovac, Fushë Kosovë/Kosovo Polje, Obilliq/Obilic, Podujevë/Podujevo and Shtime/Štimlje, Graçanicë/Gracanica and Lipjan/Lipljan.</p>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Portfolio Modal 6
+    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Project Name</h2>
+                            <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                            <img class="img-responsive img-centered" src="{{ url_for('static', filename='startbootstrap/img/portfolio/dreams-preview.png') }}" alt="">
+                            <p>Dreams is a free PSD web template built by <a href="https://www.behance.net/MathavanJaya">Mathavan Jaya</a>. Dreams is a modern one page web template designed for almost any purpose. It’s a beautiful template that’s designed with the Bootstrap framework in mind.</p>
+                            <p>You can download the PSD template in this portfolio sample item at <a href="http://freebiesxpress.com/gallery/dreams-free-one-page-web-template/">FreebiesXpress.com</a>.</p>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close Project</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     -->
 {% endblock %}

@@ -1,25 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <!-- jQuery -->
-    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap/js/jquery.js')}}"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap/js/bootstrap.min.js')}}"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap/js/classie.js')}}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap/js/cbpAnimatedHeader.js')}}"></script>
-    <!-- Form Validator -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='formvalidation/dist/css/formValidation.css')}}"/>
-    <script type="text/javascript" src="{{ url_for('static', filename='formvalidation/dist/js/formValidation.js')}}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='formvalidation/dist/js/framework/bootstrap.js')}}"></script>
-
-
-    <!-- Custom Theme JavaScript -->
-    <script type="text/javascript" src="{{ url_for('static', filename='startbootstrap/js/agency.js')}}"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,13 +11,13 @@
     <title>ARDA CRM</title>
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='startbootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='startbootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='startbootstrap/css/agency.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='startbootstrap/css/agency.css') }}" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='startbootstrap/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='startbootstrap/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
@@ -53,7 +35,7 @@
 <body id="page-top" class="index">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-success navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -73,11 +55,20 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#services">Services</a>
+                        <form>
+                            <input type="text" name="username" id="username"/>
+                            <input type="password" name="password" id="password"/>
+                            <a href="" class="page-scroll btn btn-xs">login</a>
+                        </form>
+                    </li>
+                    <!--
+                    <li>
+                        <a class="page-scroll" href="#services"></a>
                     </li>
                     <li>
-                        <a href="#LogInModal" class="portfolio-link" data-toggle="modal">Log in</a>
+                        <a class="page-scroll" href="#portfolio"></a>
                     </li>
+                    -->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -87,20 +78,19 @@
 {% block body %}
 
 {% endblock %}
-</body>
-<footer>
+    <footer>
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <span class="copyright">Copyright &copy; Your Website 2014</span>
+                    <span class="copyright">Copyright &copy; ARDA 2015</span>
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline social-buttons">
-                        <li><a href="#"><i class="fa fa-twitter"></i></a>
+                        <li><a href="http://arda-kosovo.org/"><i class="fa fa-globe"></i></a>
                         </li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a>
+                        <li><a href="https://www.facebook.com/ArdaAssociationOfRegionalDevelopmentAgencies"><i class="fa fa-facebook"></i></a>
                         </li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
+                        <li><a href="https://www.linkedin.com/profile/view?id=392934693"><i class="fa fa-linkedin"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -115,5 +105,25 @@
             </div>
         </div>
     </footer>
+
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='startbootstrap/js/jquery.js') }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url_for('static', filename='startbootstrap/js/bootstrap.min.js') }}"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="{{ url_for('static', filename='startbootstrap/js/classie.js') }}"></script>
+    <script src="{{ url_for('static', filename='startbootstrap/js/cbpAnimatedHeader.js') }}"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="{{ url_for('static', filename='startbootstrap/js/jqBootstrapValidation.js') }}"></script>
+    <script src="{{ url_for('static', filename='startbootstrap/js/contact_me.js') }}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ url_for('static', filename='startbootstrap/js/agency.js') }}"></script>
+
+</body>
 
 </html>
