@@ -29,13 +29,25 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<style type="text/css">
+ .dropdown-menu{
+    padding: 10px;
+    margin: 0 auto;
 
+    /* Styles */
+    background-color: #808080;
+}
+.contacts{
+    /* Styles */
+    background-color: #808080;
+}
+</style>
 </head>
 
 <body id="page-top" class="index">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -45,7 +57,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">ARDA CRM</a>
+                {% if not session.logged_in %}
+                    <a class="navbar-brand" href="#page-top">ARDA CRM</a>
+                {% else %}
+                    <a class="navbar-brand" href="/contacts-page">ARDA CRM</a>
+                {% endif %}
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -54,13 +70,37 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
-                    <li>
-                        <form>
-                            <input type="text" name="username" id="username"/>
-                            <input type="password" name="password" id="password"/>
-                            <a href="" class="page-scroll btn btn-xs">login</a>
-                        </form>
-                    </li>
+                    {% if not session.logged_in %}
+                        <li>
+                            <form method="post" role="login" id="login" action="/auth/login">
+                                <input type="text" name="username" id="username"/>
+                                <input type="password" name="password" id="password"/>
+                                <button type="submit">login</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle contacts" data-toggle="dropdown">Contacts<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="/contacts-page">Directory
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/contacts-page/new">Add New
+                                    </a>
+                                </li>   
+                            </ul>
+                        </li>
+                        <li>
+                            <div class='col-xs-6'>
+                                <form method="post" role="login" id="login" action="/auth/logout">
+                                    <button class="btn btn-sm btn-default" type="submit">Logout</button>
+                                </form>
+                                </div>
+                            </div>
+                        </li>
+                    {% endif %}
                     <!--
                     <li>
                         <a class="page-scroll" href="#services"></a>
@@ -117,9 +157,9 @@
     <script src="{{ url_for('static', filename='startbootstrap/js/classie.js') }}"></script>
     <script src="{{ url_for('static', filename='startbootstrap/js/cbpAnimatedHeader.js') }}"></script>
 
-    <!-- Contact Form JavaScript -->
+    <!-- Contact Form JavaScript 
     <script src="{{ url_for('static', filename='startbootstrap/js/jqBootstrapValidation.js') }}"></script>
-    <script src="{{ url_for('static', filename='startbootstrap/js/contact_me.js') }}"></script>
+    <script src="{{ url_for('static', filename='startbootstrap/js/contact_me.js') }}"></script> -->
 
     <!-- Custom Theme JavaScript -->
     <script src="{{ url_for('static', filename='startbootstrap/js/agency.js') }}"></script>

@@ -1,11 +1,11 @@
 from flask import Flask
 import os
 import ConfigParser
-#from pymongo import PyMongo
+from flask.ext.pymongo import PyMongo
 from logging.handlers import RotatingFileHandler
 
 # Create MongoDB database object.
-#mongo = PyMongo()
+mongo = PyMongo()
 
 
 def create_app():
@@ -19,11 +19,19 @@ def create_app():
     #Configure logging
     configure_logging(app)
 
-    #Register URL rules
-    register_url_rules(app)
+    #Import blueprint modules
+    from arda.mod_auth.views import mod_auth
+    from arda.mod_home_page.views import mod_home_page
+    from arda.mod_contacts.views import mod_contacts_directory
+    from arda.mod_provided_services.views import mod_provided_services
+
+    app.register_blueprint(mod_auth)
+    app.register_blueprint(mod_home_page)
+    app.register_blueprint(mod_contacts_directory)
+    app.register_blueprint(mod_provided_services)
 
     #Initialize the app to work with MongoDB
-    #mongo.init_app(app, config_prefix='MONGO')
+    mongo.init_app(app, config_prefix='MONGO')
 
     return app
 
@@ -82,19 +90,3 @@ def configure_logging(app):
 
     # First log informs where we are logging to. Bit silly but serves  as a confirmation that logging works.
     app.logger.info('Logging to: %s', log_path)
-
-#Import Forms
-from views.index import Index
-from views.login import Login
-from views.logout import Logout
-
-
-def register_url_rules(app):
-    ''' Register the URL rules.
-        Use pluggable class-based views,
-    :param app: The Flask application instance.
-    '''
-
-    app.add_url_rule('/', view_func=Index.as_view('index'))
-    app.add_url_rule('/login', view_func=Login.as_view('login'))
-    app.add_url_rule('/logout', view_func=Logout.as_view('logout'))

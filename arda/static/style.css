@@ -28,3 +28,13 @@ body {
     right: -15px;
 }
 
+.patient-view-table .property-name-col{
+  text-align: right;
+  width: 400px;
+}
+
+.patient-view-table .property-value-col{
+  padding-left:25px;
+  font-weight: bold;
+  width: 400px;
+}

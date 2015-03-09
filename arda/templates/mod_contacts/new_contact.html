@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block body %}
+<section>
+<div class="container ">
+	<form class="form-horizontal col-xs-offset-2" action="/contacts-page/new" method="post">
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.company_name.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.company_name(class="form-control")}}</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.full_name.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.full_name(class="form-control")}}</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.job_title.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.job_title(class="form-control")}}</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.main_phone.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.main_phone(class="form-control")}}</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.work_phone.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.work_phone(class="form-control")}}</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.mobile.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.mobile(class="form-control")}}</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.fax.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.fax(class="form-control")}}</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.email.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.email(class="form-control")}}</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.website.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.website(class="form-control")}}</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.bill_address.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.bill_address(class="form-control", rows="5")}}</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.ship_address.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.ship_address(class="form-control")}}</div>
+	</div>
+	<div class="form-group form-group-sm">
+		<div class="col-xs-4">{{form.costumer_type.label(class="pull-right")}}</div>
+		<div class="col-xs-4">{{form.costumer_type(class="form-control")}}</div>
+	</div><br>
+	<button class="col-xs-offset-4 btn btn-sm btn-warning" type="submit">Save Contact</button>
+	</form>
+</div>
+</section>
+{% endblock %}
+
+
+

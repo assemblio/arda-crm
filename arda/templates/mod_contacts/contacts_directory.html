@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<head>
+    	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["table"]});
+      google.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+
+        data.addColumn('string', 'Company Name');
+    	data.addColumn('string', 'Full Name');
+        data.addColumn('string', 'Job Title');
+        data.addColumn('string', 'Main Phone');
+        data.addColumn('string', 'Work Phone');
+        data.addColumn('string', 'Mobile');
+        data.addColumn('string', 'Fax');
+        data.addColumn('string', 'Email');
+        data.addColumn('string', 'Website');
+        data.addColumn('string', 'Bill to');
+        data.addColumn('string', 'Ship to');
+        data.addColumn('string', 'Costumer Type');
+        {% for contact in result['results']%}
+        data.addRows([
+          ["{{contact['company_name']}}",
+          "{{contact['full_name']}}",
+          "{{contact['job_title']}}",
+          "{{contact['main_phone']}}",
+          "{{contact['work_phone']}}",
+          "{{contact['mobile']}}",
+          "{{contact['fax']}}",
+          "{{contact['email']}}",
+          "{{contact['website']}}",
+          "{{contact['bill_address']}}",
+          "{{contact['ship_address']}}",
+          "{{contact['costumer_type']}}" ],
+        ]);
+        {% endfor %}
+
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+
+        table.draw(data, {showRowNumber: true});
+      }
+    </script>
+    </head>
+<section>
+<div class="container">
+    <div id="table_div"></div>
+</div>
+</section>
+{% endblock %}
