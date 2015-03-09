@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<head>
-    	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
       google.load("visualization", "1", {packages:["table"]});
       google.setOnLoadCallback(drawTable);
@@ -10,41 +8,51 @@
       function drawTable() {
         var data = new google.visualization.DataTable();
 
+        data.addColumn('string', 'contact_id');
         data.addColumn('string', 'Company Name');
-    	data.addColumn('string', 'Full Name');
+    	  data.addColumn('string', 'First Name');
+        data.addColumn('string', 'Last Name');
         data.addColumn('string', 'Job Title');
         data.addColumn('string', 'Main Phone');
         data.addColumn('string', 'Work Phone');
         data.addColumn('string', 'Mobile');
         data.addColumn('string', 'Fax');
         data.addColumn('string', 'Email');
-        data.addColumn('string', 'Website');
-        data.addColumn('string', 'Bill to');
-        data.addColumn('string', 'Ship to');
-        data.addColumn('string', 'Costumer Type');
+        
         {% for contact in result['results']%}
         data.addRows([
-          ["{{contact['company_name']}}",
-          "{{contact['full_name']}}",
+          [
+          "{{contact['_id']}}",
+          "{{contact['company_name']}}",
+          "{{contact['first_name']}}",
+          "{{contact['last_name']}}",
           "{{contact['job_title']}}",
-          "{{contact['main_phone']}}",
-          "{{contact['work_phone']}}",
-          "{{contact['mobile']}}",
-          "{{contact['fax']}}",
-          "{{contact['email']}}",
-          "{{contact['website']}}",
-          "{{contact['bill_address']}}",
-          "{{contact['ship_address']}}",
-          "{{contact['costumer_type']}}" ],
+          "{{contact['phone']['main_phone']}}",
+          "{{contact['phone']['work_phone']}}",
+          "{{contact['phone']['mobile']}}",
+          "{{contact['phone']['fax']}}",
+          "{{contact['email']}}"
+          ],
         ]);
         {% endfor %}
 
+        var dataView = new google.visualization.DataView(data);
+        dataView.hideColumns([0]);
         var table = new google.visualization.Table(document.getElementById('table_div'));
 
-        table.draw(data, {showRowNumber: true});
+        table.draw(dataView, {showRowNumber: true});
+
+        function showDetails() {
+            var selection = table.getSelection();
+            var rowId = selection[0].row;
+            var customerID = data.getValue(rowId, 0);
+            if(customerID.length > 0){
+              document.location.href = '/provided-services/' + customerID;
+            }
+        }
+        google.visualization.events.addListener(table, 'select', showDetails);
       }
     </script>
-    </head>
 <section>
 <div class="container">
     <div id="table_div"></div>

@@ -2,56 +2,110 @@
 {% block body %}
 <section>
 <div class="container ">
-	<form class="form-horizontal col-xs-offset-2" action="/contacts-page/new" method="post">
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.company_name.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.company_name(class="form-control")}}</div>
-	</div>
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.full_name.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.full_name(class="form-control")}}</div>
-	</div>
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.job_title.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.job_title(class="form-control")}}</div>
-	</div>
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.main_phone.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.main_phone(class="form-control")}}</div>
-	</div>
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.work_phone.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.work_phone(class="form-control")}}</div>
-	</div>
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.mobile.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.mobile(class="form-control")}}</div>
-	</div>
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.fax.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.fax(class="form-control")}}</div>
-	</div>
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.email.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.email(class="form-control")}}</div>
-	</div>
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.website.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.website(class="form-control")}}</div>
-	</div>
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.bill_address.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.bill_address(class="form-control", rows="5")}}</div>
-	</div>
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.ship_address.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.ship_address(class="form-control")}}</div>
-	</div>
-	<div class="form-group form-group-sm">
-		<div class="col-xs-4">{{form.costumer_type.label(class="pull-right")}}</div>
-		<div class="col-xs-4">{{form.costumer_type(class="form-control")}}</div>
-	</div><br>
-	<button class="col-xs-offset-4 btn btn-sm btn-warning" type="submit">Save Contact</button>
+	<h4 class="col-xs-offset-3">Create a new Costumer by filling the fields below</h4>
+	<br>
+	</br>
+	<form class="form-horizontal" action="/contacts-page/new" method="post">
+		<div class="form-group col-xs-6">
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.company_name.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.company_name(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.first_name.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.first_name(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.last_name.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.last_name(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.costumer_type.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.costumer_type(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.job_title.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.job_title(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.main_phone.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.main_phone(class="form-control")}}</div>
+			</div>
+		</div>
+		<div class="form-group col-xs-6">
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.work_phone.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.work_phone(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.mobile.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.mobile(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.fax.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.fax(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.email.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.email(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.website.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.website(class="form-control")}}</div>
+			</div>
+		</div>
+		<br></br>
+		<div class="form-group form-group-lg">
+			<label class="control-label col-xs-offset-4 col-xs-3" style="font-size: 18px;">Address Details</label>
+			<hr>
+		</div><br>
+		<div class="form-group col-xs-6">
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.bill_add1.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.bill_add1(class="form-control", placeholder="Address1")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-offset-6 col-xs-6">{{form.bill_add2(class="form-control", placeholder="Address2")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-offset-6 col-xs-6">{{form.bill_city(class="form-control", placeholder="City")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-offset-6 col-xs-6">{{form.bill_state(class="form-control", placeholder="State")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-offset-6 col-xs-6">{{form.bill_postal_code(class="form-control", placeholder="Postal Code")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-offset-6 col-xs-6">{{form.bill_country(class="form-control", placeholder="Country")}}</div>
+			</div>
+		</div>
+		<div class="form-group col-xs-6">
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.ship_add1.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.ship_add1(class="form-control", placeholder="Address1")}}</div>
+
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-offset-6 col-xs-6">{{form.ship_add2(class="form-control", placeholder="Address2")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-offset-6 col-xs-6">{{form.ship_city(class="form-control", placeholder="City")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-offset-6 col-xs-6">{{form.ship_state(class="form-control", placeholder="State")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-offset-6 col-xs-6">{{form.ship_postal_code(class="form-control", placeholder="Postal Code")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-offset-6 col-xs-6">{{form.ship_country(class="form-control", placeholder="Country")}}</div>
+			</div>
+		</div>
+		<br></br>
+		<div class="form-group">
+			<button class="col-xs-offset-6 btn btn-warning" type="submit">Create Contact</button>
+		</div>
 	</form>
 </div>
 </section>
