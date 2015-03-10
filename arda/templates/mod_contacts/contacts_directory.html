@@ -47,7 +47,8 @@
             var rowId = selection[0].row;
             var customerID = data.getValue(rowId, 0);
             if(customerID.length > 0){
-              document.location.href = '/provided-services/' + customerID;
+              var url = "{{ url_for('provided_services.provided_services', contact_id='') }}" + customerID;
+              document.location.href = url;
             }
         }
         google.visualization.events.addListener(table, 'select', showDetails);
@@ -55,6 +56,7 @@
     </script>
 <section>
 <div class="container">
+    <h4>Click on a customer row to add or view provided services.</h4>
     <div id="table_div"></div>
 </div>
 </section>
