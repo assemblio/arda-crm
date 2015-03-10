@@ -31,4 +31,5 @@ def new_services():
             }
         }
     )
-    return redirect('/contacts-page')
+    build_url_rule = '/provided-services/' + costumer_id
+    return redirect(build_url_rule)

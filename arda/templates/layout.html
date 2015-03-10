@@ -46,6 +46,9 @@
         $('#submitLink').click(function(){
             $('#logmeout').submit();
         });
+        $('#linkLogin').click(function(){
+            $('#login').submit();
+        });
     });
 </script>
 
@@ -91,7 +94,7 @@
                             <form method="post" role="login" id="login" action="/auth/login">
                                 <input type="text" name="username" id="username"/>
                                 <input type="password" name="password" id="password"/>
-                                <button type="submit">login</button>
+                                <a id="linkLogin" href="#">Login</a>
                             </form>
                         </li>
                     {% else %}
