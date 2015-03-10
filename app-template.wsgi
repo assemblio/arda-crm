@@ -2,7 +2,7 @@
 import sys
 import logging
 logging.basicConfig(stream=sys.stderr)
-sys.path.insert(0, "/var/www/endriti/myApp/")
+sys.path.insert(0, "/var/www/")
 
 from runserver import app as application
-application.secret_key = 'endriti123'
+application.secret_key = ""
