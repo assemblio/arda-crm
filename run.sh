@@ -1,2 +1,2 @@
 source ./venv/bin/activate
-python runserver.py
+python run.py
