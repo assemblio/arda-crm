@@ -8,12 +8,13 @@
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Provided Service');
         data.addColumn('string', 'Date');
+        data.addColumn('number', 'Service Fee');
         data.addColumn('string', 'Description');
 
         {% for contact in result['provided_services'] %}
         data.addRows([
           [
-          "{{contact['provided_service']}}",  "{{contact['service_date']}}",  "{{contact['description']}}",
+          "{{contact['provided_service']}}",  "{{contact['service_date']}}", {{contact['service_fee']}}, "{{contact['description']}}",
           
           ],
         ]);
@@ -23,7 +24,16 @@
         table.draw(data, {showRowNumber: true});
       };
       
-      
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $('.service-date-picker').datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                format: 'dd/mm/yyyy',
+            });
+      });
     </script>
 <section>
 	<div class="container" style="padding-top: 30px ">
@@ -47,7 +57,7 @@
                 <div class="modal-body">                            
                     <h4>Add new service by filling the fields below</h4>
                     <br></br>
-                    <form class="form-horizontal" method="post" action="/provided-services/new">
+                    <form class="form-horizontal" method="post" action="{{url_for('provided_services.new_services')}}">
                     	<input type="hidden" id="costumer_id" name="costumer_id" value="{{result['_id']}}">
                     	<div class="form-group col-xs-offset-3 col-xs-9">
                     		<div class="col-xs-6">
@@ -66,8 +76,16 @@
                         		<label for="date" class="control-label pull-right">Date:</label>
                         	</div>
                         	<div class="col-xs-6">
-                        		<input id="date" name="date" class="form-control" type="text">
+                        		<input id="date" name="date" class="form-control service-date-picker" type="text">
                         	</div>
+                        </div>
+                        <div class="form-group col-xs-offset-3 col-xs-9">
+                            <div class="col-xs-6">
+                                <label for="fee" class="control-label pull-right">Service Fee:</label>
+                            </div>
+                            <div class="col-xs-6">
+                                <input id="fee" name="fee" class="form-control" type="integer">
+                            </div>
                         </div>
                     	<div class="form-group col-xs-offset-3 col-xs-9">
                     		<div class="col-xs-6">
@@ -80,7 +98,7 @@
                     	<br>
                     	</br>
                         <div class="form-group col-xs-12" >
-        				    <button id="btn_SaveService" type="submit" class="col-xs-offset-1 btn btn-primary">Save Service</button>
+        				    <button type="submit" class="col-xs-offset-1 btn btn-primary">Save Service</button>
                         </div>
                     </form>
                 </div>

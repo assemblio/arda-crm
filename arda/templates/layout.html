@@ -12,6 +12,10 @@
 
       <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
+    <!-- Bootstrap date-picker plug-in -->
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap-datepicker/css/datepicker.css') }}">
+
     <!-- Bootstrap Core CSS -->
     <link href="{{ url_for('static', filename='startbootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
@@ -79,7 +83,7 @@
                 {% if not session.logged_in %}
                     <a class="navbar-brand" href="#page-top">ARDA CRM</a>
                 {% else %}
-                    <a class="navbar-brand" href="/contacts-page">ARDA CRM</a>
+                    <a class="navbar-brand" href="{{url_for('contacts_directory.contacts')}}">ARDA CRM</a>
                 {% endif %}
             </div>
 
@@ -91,7 +95,7 @@
                     </li>
                     {% if not session.logged_in %}
                         <li>
-                            <form method="post" role="login" id="login" action="/auth/login">
+                            <form method="post" role="login" id="login" action="{{url_for('auth.login')}}">
                                 <input type="text" name="username" id="username"/>
                                 <input type="password" name="password" id="password"/>
                                 <a id="linkLogin" href="#">Login</a>
@@ -101,20 +105,20 @@
                         <li>
                         <div class="form-group">
                             <div class="col-xs-7">
-                                <a href="#" class="dropdown-toggle contacts" data-toggle="dropdown">Contacts<span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle contacts" data-toggle="dropdown">Costumer<span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="/contacts-page">Directory
+                                        <a href="{{url_for('contacts_directory.contacts')}}">Directory
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/contacts-page/new">Add New
+                                        <a href="{{url_for('contacts_directory.new_contact')}}">Add New
                                         </a>
                                     </li>   
                                 </ul>
                             </div>
                             <div class="col-xs-5">
-                                <form role="logout" id="logmeout" action="/auth/logout" method="post">
+                                <form role="logout" id="logmeout" action="{{url_for('auth.logout')}}" method="post">
                                     <a id="submitLink" href="#">Logout</a>
                                 </form>
                             </div>

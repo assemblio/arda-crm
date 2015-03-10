@@ -30,7 +30,7 @@ def login():
         session['username'] = username
         current_app.logger.info("User '%s' logged in." % username)
 
-        return redirect('/contacts-page')
+        return redirect(url_for('contacts_directory.contacts'))
 
     return render_template('index.html', error=error)
 
@@ -46,4 +46,4 @@ def logout():
 
     current_app.logger.info("User '%s' logged out." % username)
 
-    return redirect('/')
+    return redirect(url_for('home_page.home_page'))

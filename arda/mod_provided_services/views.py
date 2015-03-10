@@ -18,10 +18,12 @@ def new_services():
     provided_service = request.form['providedService']
     date = request.form['date']
     description = request.form['description']
+    service_fee = request.form['fee']
     json_obj = {
         'provided_service': provided_service,
         'service_date': date,
-        'description': description
+        'description': description,
+        'service_fee': service_fee
     }
     mongo.db.contacts.update(
         {'_id': costumer_id},
@@ -31,5 +33,4 @@ def new_services():
             }
         }
     )
-    build_url_rule = '/provided-services/' + costumer_id
-    return redirect(build_url_rule)
+    return redirect(url_for('provided_services.provided_services', contact_id=costumer_id))

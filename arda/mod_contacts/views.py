@@ -27,7 +27,7 @@ def new_contact():
         costumer_id = utils.get_doc_id()
         #call the function which builds than stores the json document
         buld_save_costumer_document(costumer_id)
-        return redirect('/contacts-page')
+        return redirect(url_for('contacts_directory.contacts'))
 
     return render_template('mod_contacts/new_contact.html', form=form)
 
