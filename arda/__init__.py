@@ -57,7 +57,6 @@ def load_config(app):
     config.read(config_filepath)
 
     app.config['SERVER_PORT'] = config.get('Application', 'SERVER_PORT')
-    app.config['BASE_PATH'] = config.get('Application', 'BASE_PATH')
     app.config['MONGO_DBNAME'] = config.get('Mongo', 'DB_NAME')
 
     # Logging path might be relative or starts from the root.
