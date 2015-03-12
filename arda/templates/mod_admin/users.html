@@ -20,9 +20,9 @@
           <th>Operations</th>
         </tr>
       </thead>
-		{% if result and result > 0 %}
+		{% if results and results > 0 %}
 		  <tbody id="users-list">
-		   {% for result in result %}
+		   {% for result in results %}
 		    <tr>
 		      <td>{{result.first_name}}</td>
 		      <td>{{result.last_name}}</td>
