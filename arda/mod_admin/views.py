@@ -5,6 +5,7 @@ import json
 from arda.mod_admin.forms.user_form import UserForm
 from arda.mod_admin.forms.settings_form import SettingsForm
 
+from bson import ObjectId
 from arda import mongo, utils
 
 mod_admin = Blueprint('admin', __name__, url_prefix='/admin')
@@ -25,29 +26,30 @@ def edit_user():
     '''
     Create user
     '''
-    action = request.form['action']
-
-    if request.method == 'GET':
-        user_form = UserForm()
-
-        if action == "edit":
-            doc_id = request.form['docId']
-
-            user_doc = mongo.db.users.find_one({'_id': doc_id})
+    user_form = UserForm()
+    if request.method == "POST":
+        action = request.form['action']
+        doc_id = request.form['docId']
+        if action == "create" and doc_id == "":
+            return render_template('mod_admin/edit_user.html', form=user_form)
+        elif action == "create" and doc_id == "1":
+            user_form = UserForm(request.form)
+            user_data = user_form.data
+            mongo.db.users.insert(user_data)
+            return redirect(url_for('admin.users'))
+        elif action == "edit":
+            user_doc = mongo.db.users.find_one({'_id': ObjectId(doc_id)})
+            print user_doc
             user_form.first_name.data = user_doc['first_name']
             user_form.last_name.data = user_doc['last_name']
             user_form.email.data = user_doc['email']
             user_form.role.data = user_doc['role']
 
-        return render_template('mod_admin/edit_user.html', form=user_form)
-
-    elif request.method == 'POST':
-            user_form = UserForm(request.form)
-            user_data = user_form.data
-            mongo.db.users.update({'_id': docId}, {'$set': user_data}, True)
-
-            redirect(url_for('admin.users'))
-
+            return render_template('mod_admin/edit_user.html', form=user_form)
+        else:
+            mongo.db.users.remove({'_id': ObjectId(doc_id)})
+            return redirect(url_for('admin.users'))
+    return render_template('mod_admin/edit_user.html', form=user_form)
 
 @mod_admin.route('/users/delete/<user_id>', methods=['POST'])
 def delete_user(user_id):

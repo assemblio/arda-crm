@@ -2,19 +2,18 @@
 {% block body %}
 <script>
 $(".roles").children().each(function() {
-
-            var attr = $(this).children().first().attr('checked');
-            if (typeof attr !== typeof undefined && attr !== false) {
-                $(this).addClass("active");
-            }
-        });
+    var attr = $(this).children().first().attr('checked');
+    if (typeof attr !== typeof undefined && attr !== false) {
+        $(this).addClass("active");
+    }
+});
 </script>
 <section>
 	<div class="container">
 	<h4>User managment</h4>
 		<form method="post" action="{{url_for('admin.edit_user')}}" class="form-horizontal">
 			<input type="hidden" name="action" id="action" value="create" />
-			<input type="hidden" name="docId" id="docId" value="" />
+			<input type="hidden" name="docId" id="docId" value="1" />
 			<div class="form-group">
 	            {{ form.first_name.label(class_="control-label col-xs-4") }}
 	            <div class="col-xs-3">

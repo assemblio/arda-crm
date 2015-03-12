@@ -4,10 +4,10 @@
 <div class="container" align="center">
   <div class="panel panel-warning">
     <!-- Default panel contents -->
-    <form method="get" action="{{ url_for('admin.edit_user') }}">
-    	<button type="input">Create User</button>
+    <form method="post" action="{{ url_for('admin.edit_user') }}">
     	<input type="hidden" name="action" id="action" value="create" />
     	<input type="hidden" name="docId" id="docId" value="" />
+    	<button type="input">Create User</button>
     </form>
     <div class="panel-body">
     <!-- Table -->
@@ -21,34 +21,42 @@
           <th>Operations</th>
         </tr>
       </thead>
-      <tbody id="patient-list">
-       {% for result in result %}
-        <tr>
-          <td>{{result.first_name}}</td>
-          <td>{{result.last_name}}</td>
-          <td>{{result.email}}</td>
-          <td>{{result.role}}</td>
-          <td>
-            <table>
-              <tr>
-                <td>
-					<form action="{{ url_for('admin.edit_user') }}" method="post">
-						<input type="hidden" name="docId" id="docId" value="{{ result._id }}" />
-						<input type="hidden" name="action" id="action" value="edit" />
-						<button type="submit" class="btn btn-default btn-sm">
-							<span class="glyphicon glyphicon-edit"></span>
-						</button>
-					</form>
-				</td>
-                <td>
-                  <span class="glyphicon glyphicon-remove"></span>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-       {% endfor %}
-      </tbody>
+		{% if result and result > 0 %}
+		  <tbody id="users-list">
+		   {% for result in result %}
+		    <tr>
+		      <td>{{result.first_name}}</td>
+		      <td>{{result.last_name}}</td>
+		      <td>{{result.email}}</td>
+		      <td>{{result.role}}</td>
+		      <td>
+		        <table>
+		          <tr>
+		            <td>
+						<form action="{{ url_for('admin.edit_user') }}" method="post">
+							<input type="hidden" name="docId" id="docId" value="{{ result._id }}" />
+							<input type="hidden" name="action" id="action" value="edit" />
+							<button type="submit" class="btn btn-default btn-sm">
+								<span class="glyphicon glyphicon-edit"></span>
+							</button>
+						</form>
+					</td>
+					<td>
+						<form action="{{ url_for('admin.edit_user') }}" method="post">
+							<input type="hidden" name="docId" id="docId" value="{{ result._id }}" />
+							<input type="hidden" name="action" id="action" value="delete" />
+							<button type="submit" class="btn btn-default btn-sm">
+								<span class="glyphicon glyphicon-remove"></span>
+							</button>
+						</form>
+					</td>
+		          </tr>
+		        </table>
+		      </td>
+		    </tr>
+		   {% endfor %}
+		  </tbody>
+     	{% endif %}
     </table>
     </div>
     <div class="panel-footer">
