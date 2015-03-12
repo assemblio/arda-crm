@@ -4,7 +4,6 @@ from flask.views import View
 import json
 from arda.mod_admin.forms.user_form import UserForm
 from arda.mod_admin.forms.settings_form import SettingsForm
-from arda.mod_admin.forms.theme_form import ThemeForm
 
 from arda import mongo, utils
 
@@ -65,30 +64,24 @@ def settings():
     '''
     A page to configure CRM settings (e.g. remove/add types of services)
     '''
-    # if GET request, do nothing.
-    # if POST request, get form values and update document
 
-    #TODO Populate form.
-    settings_form = SettingsForm()
+    if request.method == 'GET':
+        settings_doc = mongo.db.settings.find_one({'_id': 0})
+
+        settings_form = SettingsForm()
+        settings_form.site_title.data = settings_doc['site_title']
+        settings_form.site_tagline.data = settings_doc['site_tagline']
+        settings_form.landingpage_banner_image_url.data = settings_doc['landingpage_banner_image_url']
+     
+    if request.method == 'POST':
+        settings_form = SettingsForm(request.form)
+        settings_data = settings_form.data
+
+        mongo.db.settings.update({'_id': 0}, {'$set': settings_data}, True)
 
     return render_template('mod_admin/settings.html', form=settings_form)
 
 
-
-@mod_admin.route('/theme', methods=['GET', 'POST'])
-def theme():
-    '''
-    A page to configure CRM theme (e.g. website title, images, etc)
-    '''
-
-    # if GET request, do nothing.
-    # if POST request, get form values and update document
-
-    #TODO Populate form.
-    themes_form = ThemeForm()
-
-
-    return render_template('mod_admin/theme.html', form=themes_form)
 
 
 def build_contacts_cursor(cursor):
