@@ -2,7 +2,7 @@ from flask_wtf import Form
 from wtforms import SelectField, TextField
 
 
-class ContactsForm(Form):
+class CustomerForm(Form):
 
     company_name = TextField("Company Name")
     first_name = TextField("Costumer First Name")

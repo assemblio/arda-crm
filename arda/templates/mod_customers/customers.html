@@ -55,9 +55,15 @@
       }
     </script>
 <section>
-<div class="container">
-    <h4>Click on a customer row to add or view provided services.</h4>
-    <div id="table_div"></div>
-</div>
+  <div class="container" align="center">
+
+      <form method="get" action="{{url_for('customers.edit_customer')}}">
+        <button type="submit" class="btn btn-primary" >New Customer</button>
+      </form>
+      
+      <br>
+
+      <div id="table_div"></div>
+  </div>
 </section>
 {% endblock %}

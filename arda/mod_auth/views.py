@@ -30,7 +30,7 @@ def login():
         session['username'] = username
         current_app.logger.info("User '%s' logged in." % username)
 
-        return redirect(url_for('contacts_directory.contacts'))
+        return redirect(url_for('customers.customers'))
 
     return render_template('index.html', error=error)
 

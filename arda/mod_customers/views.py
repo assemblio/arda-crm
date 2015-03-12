@@ -3,36 +3,39 @@ from flask import Blueprint, render_template, \
 from arda import mongo
 from arda.utils.utils import Utils
 import json
-from forms.contactsForm import ContactsForm
+from forms.customer_form import CustomerForm
 
 utils = Utils()
 
 
-mod_contacts_directory = Blueprint('contacts_directory', __name__, url_prefix='/contacts-page')
+mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
 
 
-@mod_contacts_directory.route('', methods=['GET'])
-def contacts():
-    contacts_doc = mongo.db.contacts.find({})
-    response = build_contacts_cursor(contacts_doc)
+@mod_customers.route('', methods=['GET'])
+def customers():
+    customers = mongo.db.customers.find({})
+    response = build_customers_cursor(customers)
 
-    return render_template('mod_contacts/contacts_directory.html', result=response)
+    return render_template('mod_customers/customers.html', result=response)
 
 
-@mod_contacts_directory.route('/new', methods=['GET', 'POST'])
-def new_contact():
-    form = ContactsForm()
+@mod_customers.route('/edit', methods=['GET', 'POST'])
+def edit_customer():
+    form = CustomerForm()
+
+    if request.method == "GET":
+        return render_template('mod_customers/edit_customer.html', form=form)
+
     if request.method == "POST":
         #create an Id for the document we want to store
         costumer_id = utils.get_doc_id()
         #call the function which builds than stores the json document
-        buld_save_costumer_document(costumer_id)
-        return redirect(url_for('contacts_directory.contacts'))
+        buld_save_costumers_document(costumer_id)
 
-    return render_template('mod_contacts/new_contact.html', form=form)
+        return redirect(url_for('customers.customers'))
 
 
-def build_contacts_cursor(cursor):
+def build_customers_cursor(cursor):
     ''' Builds a JSON response for a given cursor
     '''
     response = json.loads('{}')
@@ -44,10 +47,10 @@ def build_contacts_cursor(cursor):
     return response
 
 
-def buld_save_costumer_document(doc_id):
+def buld_save_costumers_document(doc_id):
 
-    contacts_form = ContactsForm(request.form)
-    costumer = contacts_form.data
+    customer_form = CustomerForm(request.form)
+    costumer = customer_form.data
 
     json_obj = {}
     json_obj = {
@@ -85,7 +88,7 @@ def buld_save_costumer_document(doc_id):
         'provided_services': []
     }
 
-    mongo.db.contacts.update(
+    mongo.db.customers.update(
         {'_id': doc_id},
         {'$set': json_obj},
         True

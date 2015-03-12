@@ -83,7 +83,7 @@
                 {% if not session.logged_in %}
                     <a class="navbar-brand" href="#page-top">ARDA CRM</a>
                 {% else %}
-                    <a class="navbar-brand" href="{{url_for('contacts_directory.contacts')}}">ARDA CRM</a>
+                    <a class="navbar-brand" href="{{url_for('customers.customers')}}">ARDA CRM</a>
                 {% endif %}
             </div>
 
@@ -106,7 +106,7 @@
                 
                 {% else %}
                 <ul class="nav navbar-nav">
-                    <li><a href="{{url_for('contacts_directory.contacts')}}">Customers</a></li>
+                    <li><a href="{{url_for('customers.customers')}}">Customers</a></li>
                     <li><a href="#">Services</a></li>
                 </ul>
 
