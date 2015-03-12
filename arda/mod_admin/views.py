@@ -21,43 +21,61 @@ def users():
     return render_template('mod_admin/users.html', result=json_obj['results'])
 
 
-@mod_admin.route('/users/edit', methods=['GET', 'POST'])
-def edit_user():
+@mod_admin.route('/users/create', methods=['GET', 'POST'])
+def create_user():
     '''
     Create user
     '''
     user_form = UserForm()
-    if request.method == "POST":
-        action = request.form['action']
-        doc_id = request.form['docId']
-        if action == "create" and doc_id == "":
-            return render_template('mod_admin/edit_user.html', form=user_form)
-        elif action == "create" and doc_id == "1":
-            user_form = UserForm(request.form)
-            user_data = user_form.data
-            mongo.db.users.insert(user_data)
-            return redirect(url_for('admin.users'))
-        elif action == "edit":
-            user_doc = mongo.db.users.find_one({'_id': ObjectId(doc_id)})
-            print user_doc
-            user_form.first_name.data = user_doc['first_name']
-            user_form.last_name.data = user_doc['last_name']
-            user_form.email.data = user_doc['email']
-            user_form.role.data = user_doc['role']
 
-            return render_template('mod_admin/edit_user.html', form=user_form)
-        else:
-            mongo.db.users.remove({'_id': ObjectId(doc_id)})
-            return redirect(url_for('admin.users'))
+    # If we do a get request, we are just requesting the page.
+    if request.method == "GET":
+        return render_template('mod_admin/edit_user.html', form=user_form, action=url_for('admin.create_user'))
+
+
+    elif request.method == "POST":
+        user_form = UserForm(request.form)
+        user_data = user_form.data
+        mongo.db.users.insert(user_data)
+
+        return redirect(url_for('admin.users'))
+
     return render_template('mod_admin/edit_user.html', form=user_form)
+
+
+@mod_admin.route('/users/edit/<user_id>', methods=['GET', 'POST'])
+def edit_user(user_id):
+    '''
+    Edit user
+    '''
+    if request.method == "GET":
+        user_doc = mongo.db.users.find_one({'_id': ObjectId(user_id)})
+
+        # Populate the user form of the user we are editing.
+        user_form = UserForm()
+        user_form.first_name.data = user_doc['first_name']
+        user_form.last_name.data = user_doc['last_name']
+        user_form.email.data = user_doc['email']
+        user_form.role.data = user_doc['role']
+
+        return render_template('mod_admin/edit_user.html', form=user_form, action=url_for('admin.create_user'))
+
+    elif request.method == "POST":
+        user_form = UserForm(request.form)
+        user_data = user_form.data
+
+        mongo.db.users.update({'_id': ObjectId(user_id)}, {'$set': user_data})  
+    
+
+    return render_template('mod_admin/users.html', result=users)
+
 
 @mod_admin.route('/users/delete/<user_id>', methods=['POST'])
 def delete_user(user_id):
     '''
     Delete user
     '''
-    users = mongo.db.users.find({})
-
+    users = mongo.db.remove({'_id': ObjectId(user_id)})
     return render_template('mod_admin/users.html', result=users)
 
 
