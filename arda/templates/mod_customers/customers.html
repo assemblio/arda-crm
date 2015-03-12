@@ -28,8 +28,8 @@
               </tr>
             </thead>
             <tbody id="customers-list">
+              {% for customer in result['results']%}
               <tr>
-                {% for customer in result['results']%}
                 <td>{{customer['first_name']}}</td>
                 <td>{{customer['last_name']}}</td>
                 <td>{{customer['job_title']}}</td>
@@ -65,8 +65,8 @@
                     </tr>
                   </table>
                 </td>
-                {% endfor %}
               </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
