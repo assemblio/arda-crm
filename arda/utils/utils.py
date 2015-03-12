@@ -19,4 +19,8 @@ class Utils(object):
             'site_tagline': 'Just another CRM',
             'site_navbar_title': 'CRM',
             'landingpage_banner_image_url': 'http://assemblio.com/arda/static/startbootstrap/img/header-bg.jpg',
+            'web_url': '',
+            'fb_url': '',
+            'tw_url': '',
+            'li_url': '',
         }
