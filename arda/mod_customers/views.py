@@ -54,7 +54,7 @@ def buld_save_costumers_document(doc_id):
 
     json_obj = {}
     json_obj = {
-        'company_name': costumer['company_name'],
+        'company_name': 'assemblio', #costumer['company_name'],
         'first_name': costumer['first_name'],
         'last_name': costumer['last_name'],
         'costumer_type': costumer['costumer_type'],

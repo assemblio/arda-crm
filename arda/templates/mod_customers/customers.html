@@ -45,9 +45,14 @@
         function showDetails() {
             var selection = table.getSelection();
             var rowId = selection[0].row;
-            var customerID = data.getValue(rowId, 0);
-            if(customerID.length > 0){
-              var url = "{{ url_for('provided_services.provided_services', contact_id='') }}" + customerID;
+
+            
+            var customerId = data.getValue(rowId, 0);
+            var companyName = data.getValue(rowId, 1);
+
+            if(customerId.length > 0 && companyName.length > 0){
+              var url = "{{ url_for('services.customer_services', company_name='assemblio', customer_id='') }}" + customerId;
+
               document.location.href = url;
             }
         }
