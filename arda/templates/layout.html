@@ -93,47 +93,31 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
-                    {% if not session.logged_in %}
-                        <li>
-                            <form method="post" role="login" id="login" action="{{url_for('auth.login')}}">
-                                <input type="text" name="username" id="username"/>
-                                <input type="password" name="password" id="password"/>
-                                <a id="linkLogin" href="#">Login</a>
-                            </form>
-                        </li>
-                    {% else %}
-                        <li>
-                        <div class="form-group">
-                            <div class="col-xs-7">
-                                <a href="#" class="dropdown-toggle contacts" data-toggle="dropdown">Costumer<span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{url_for('contacts_directory.contacts')}}">Directory
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{url_for('contacts_directory.new_contact')}}">Add New
-                                        </a>
-                                    </li>   
-                                </ul>
-                            </div>
-                            <div class="col-xs-5">
-                                <form role="logout" id="logmeout" action="{{url_for('auth.logout')}}" method="post">
-                                    <a id="submitLink" href="#">Logout</a>
-                                </form>
-                            </div>
-                        </div>
-                        </li>
-                    {% endif %}
-                    <!--
-                    <li>
-                        <a class="page-scroll" href="#services"></a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#portfolio"></a>
-                    </li>
-                    -->
                 </ul>
+
+                {% if not session.logged_in %}
+                <form class="navbar-form navbar-right" method="post" role="login" action="{{url_for('auth.login')}}">
+                    <div class="form-group">
+                        <input type="text" name="username" id="username"/>
+                        <input type="password" name="password" id="password"/>
+                    </div class="form-group">
+                    <button type="submit" class="btn btn-default btn-sm" >login</button>
+                </form>
+                
+                {% else %}
+                <ul class="nav navbar-nav">
+                    <li><a href="{{url_for('contacts_directory.contacts')}}">Customers</a></li>
+                    <li><a href="#">Services</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Users</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Theme</a></li>
+                    <li><a href="{{url_for('auth.logout')}}">Logout</a></li>
+                </ul>
+                {% endif %}
+
             </div>
             <!-- /.navbar-collapse -->
         </div>

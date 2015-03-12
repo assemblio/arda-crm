@@ -35,7 +35,7 @@ def login():
     return render_template('index.html', error=error)
 
 
-@mod_auth.route('/logout', methods=['POST'])
+@mod_auth.route('/logout', methods=['GET'])
 def logout():
     ''' Logout request.
     '''
