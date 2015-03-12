@@ -58,25 +58,30 @@ def edit_user(user_id):
         user_form.email.data = user_doc['email']
         user_form.role.data = user_doc['role']
 
-        return render_template('mod_admin/edit_user.html', form=user_form, action=url_for('admin.create_user'))
+        return render_template(
+            'mod_admin/edit_user.html',
+            form=user_form,
+            action=url_for('admin.edit_user',
+            user_id=user_doc['_id'])
+        )
 
     elif request.method == "POST":
         user_form = UserForm(request.form)
         user_data = user_form.data
 
-        mongo.db.users.update({'_id': ObjectId(user_id)}, {'$set': user_data})  
-    
+        mongo.db.users.update({'_id': ObjectId(user_id)}, {'$set': user_data})
+
 
     return render_template('mod_admin/users.html', result=users)
 
 
-@mod_admin.route('/users/delete/<user_id>', methods=['POST'])
+@mod_admin.route('/users/delete/<user_id>', methods=['GET'])
 def delete_user(user_id):
     '''
     Delete user
     '''
-    users = mongo.db.remove({'_id': ObjectId(user_id)})
-    return render_template('mod_admin/users.html', result=users)
+    users = mongo.db.users.remove({'_id': ObjectId(user_id)})
+    return redirect(url_for('admin.users'))
 
 
 @mod_admin.route('/settings', methods=['GET', 'POST'])
@@ -88,7 +93,7 @@ def settings():
     if request.method == 'GET':
         settings_doc = mongo.db.settings.find_one({'_id': 0})
 
-        if settings_doc == None:
+        if settings_doc is None:
             settings_doc = utils.get_default_settings()
 
         settings_form = SettingsForm()
@@ -96,7 +101,7 @@ def settings():
         settings_form.site_tagline.data = settings_doc['site_tagline']
         settings_form.site_navbar_title.data = settings_doc['site_navbar_title']
         settings_form.landingpage_banner_image_url.data = settings_doc['landingpage_banner_image_url']
-     
+
     if request.method == 'POST':
         settings_form = SettingsForm(request.form)
         settings_data = settings_form.data
@@ -107,7 +112,6 @@ def settings():
         session['settings'] = settings_form.data
 
     return render_template('mod_admin/settings.html', form=settings_form)
-
 
 
 def build_contacts_cursor(cursor):
