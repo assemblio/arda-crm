@@ -70,9 +70,13 @@ def settings():
     if request.method == 'GET':
         settings_doc = mongo.db.settings.find_one({'_id': 0})
 
+        if settings_doc == None:
+            settings_doc = utils.get_default_settings()
+
         settings_form = SettingsForm()
         settings_form.site_title.data = settings_doc['site_title']
         settings_form.site_tagline.data = settings_doc['site_tagline']
+        settings_form.site_navbar_title.data = settings_doc['site_navbar_title']
         settings_form.landingpage_banner_image_url.data = settings_doc['landingpage_banner_image_url']
      
     if request.method == 'POST':
@@ -81,8 +85,10 @@ def settings():
 
         mongo.db.settings.update({'_id': 0}, {'$set': settings_data}, True)
 
-    return render_template('mod_admin/settings.html', form=settings_form)
+        # Update session with new settings data.
+        session['settings'] = settings_form.data
 
+    return render_template('mod_admin/settings.html', form=settings_form)
 
 
 

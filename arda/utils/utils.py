@@ -12,3 +12,11 @@ class Utils(object):
         doc_id = str(ObjectId())
 
         return doc_id
+
+    def get_default_settings(self):
+        return {
+            'site_title': 'CRM',
+            'site_tagline': 'Just another CRM',
+            'site_navbar_title': 'CRM',
+            'landingpage_banner_image_url': 'http://assemblio.com/arda/static/startbootstrap/img/header-bg.jpg',
+        }

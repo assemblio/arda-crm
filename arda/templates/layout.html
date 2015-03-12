@@ -81,9 +81,9 @@
                     <span class="icon-bar"></span>
                 </button>
                 {% if not session.logged_in %}
-                    <a class="navbar-brand" href="#page-top">ARDA CRM</a>
+                    <a class="navbar-brand" href="#">{{ session.settings.site_navbar_title }}</a>
                 {% else %}
-                    <a class="navbar-brand" href="{{url_for('customers.customers')}}">ARDA CRM</a>
+                    <a class="navbar-brand" href="{{url_for('customers.customers')}}">{{ session.settings.site_navbar_title }}</a>
                 {% endif %}
             </div>
 
