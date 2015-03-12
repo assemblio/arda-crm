@@ -17,8 +17,8 @@ def users():
     '''
     users = mongo.db.users.find({})
     json_obj = build_contacts_cursor(users)
-    print json_obj['results']
-    return render_template('mod_admin/users.html', result=json_obj['results'])
+
+    return render_template('mod_admin/users.html', results=json_obj['results'])
 
 
 @mod_admin.route('/users/create', methods=['GET', 'POST'])
@@ -71,8 +71,7 @@ def edit_user(user_id):
 
         mongo.db.users.update({'_id': ObjectId(user_id)}, {'$set': user_data})
 
-
-    return render_template('mod_admin/users.html', result=users)
+        return redirect(url_for('admin.users'))
 
 
 @mod_admin.route('/users/delete/<user_id>', methods=['GET'])
