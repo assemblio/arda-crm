@@ -4,6 +4,9 @@ from flask.views import View
 import json
 from arda.mod_admin.forms.user_form import UserForm
 from arda.mod_admin.forms.settings_form import SettingsForm
+from arda.mod_admin.forms.portfolio_form import PortfolioForm
+
+
 
 from bson import ObjectId
 from arda import mongo, utils
@@ -100,12 +103,17 @@ def settings():
     '''
     A page to configure CRM settings (e.g. remove/add types of services)
     '''
+    portfolio = None
 
     if request.method == 'GET':
         settings_doc = mongo.db.settings.find_one({'_id': 0})
+        portfolio = []
 
         if settings_doc is None:
             settings_doc = utils.get_default_settings()
+
+        elif 'portfolio' in settings_doc:
+            portfolio = settings_doc['portfolio']
 
         settings_form = SettingsForm()
         settings_form.site_title.data = settings_doc['site_title']
@@ -117,6 +125,7 @@ def settings():
         settings_form.tw_url.data = settings_doc['tw_url']
         settings_form.li_url.data = settings_doc['li_url']
 
+
     if request.method == 'POST':
         settings_form = SettingsForm(request.form)
         settings_data = settings_form.data
@@ -126,7 +135,42 @@ def settings():
         # Update session with new settings data.
         session['settings'] = settings_form.data
 
-    return render_template('mod_admin/settings.html', form=settings_form)
+    portfolio_form = PortfolioForm()
+    return render_template('mod_admin/settings.html', form=settings_form, pf_form=portfolio_form, portfolio=portfolio)
+
+@mod_admin.route('/settings/portfolio/update', methods=['POST'])
+def settings_portfolio_update():
+    portfolio_form = PortfolioForm(request.form)
+    portfolio_data = portfolio_form.data
+    portfolio_data['id'] = utils.get_doc_id()
+
+    mongo.db.settings.update({'_id': 0},  { '$push': { 'portfolio':  portfolio_data} })
+
+    session['settings']['portfolio'] = portfolio_data
+
+    return redirect(url_for('admin.settings'))
+
+
+@mod_admin.route('/settings/portfolio/delete/<item_id>', methods=['GET'])
+def settings_portfolio_delete(item_id):
+
+    settings = mongo.db.settings.find_one({'_id': 0})
+    porfolio = []
+
+    for item in settings['portfolio']:
+        if item['id'] != item_id:
+            porfolio.append(item)
+
+    mongo.db.settings.update(
+        {'_id': 0},  
+        {'$set': { 
+            'portfolio':  porfolio 
+            } 
+        })
+
+    session['settings']['portfolio'] = porfolio
+
+    return redirect(url_for('admin.settings'))
 
 
 def build_contacts_cursor(cursor):
