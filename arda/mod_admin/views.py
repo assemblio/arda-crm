@@ -27,7 +27,7 @@ def create_user():
     Create user
     '''
     user_form = UserForm()
-
+    from arda import bcrypt
     # If we do a get request, we are just requesting the page.
     if request.method == "GET":
         return render_template(
@@ -40,7 +40,14 @@ def create_user():
     elif request.method == "POST":
         user_form = UserForm(request.form)
         user_data = user_form.data
-        mongo.db.users.insert(user_data)
+        user_doc = {
+            "last_name": user_data['last_name'],
+            "first_name": user_data['first_name'],
+            "role": user_data['role'],
+            "email": user_data['email'],
+            "password": bcrypt.generate_password_hash(user_data['password'], rounds=12),
+        }
+        mongo.db.users.insert(user_doc)
 
         return redirect(url_for('admin.users'))
 

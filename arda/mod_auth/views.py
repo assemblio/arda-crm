@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, \
                   session, redirect, url_for, current_app, request
-from flask.views import View
+from arda import mongo, bcrypt
 
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -12,23 +12,23 @@ def login():
     '''
     error = None
 
-    username = request.form['username']
+    email = request.form['email']
     password = request.form['password']
-    print username
 
+    user_doc = mongo.db.users.find_one({'email': email})
     # If invalid username
-    if username != current_app.config['USERNAME']:
+    if not user_doc:
         error = 'Invalid username'
 
     # If invalid password
-    elif password != current_app.config['PASSWORD']:
+    elif not bcrypt.check_password_hash(user_doc["password"], password):
         error = 'Invalid password'
 
     # Login success, return to index page
     else:
         session['logged_in'] = True
-        session['username'] = username
-        current_app.logger.info("User '%s' logged in." % username)
+        session['email'] = email
+        current_app.logger.info("User '%s' logged in." % email)
 
         return redirect(url_for('customers.customers'))
 
@@ -39,11 +39,11 @@ def login():
 def logout():
     ''' Logout request.
     '''
-    username = session['username']
+    email = session['email']
 
-    session.pop('username', None)
+    session.pop('email', None)
     session.pop('logged_in', None)
 
-    current_app.logger.info("User '%s' logged out." % username)
+    current_app.logger.info("User '%s' logged out." % email)
 
     return redirect(url_for('home_page.home_page'))
