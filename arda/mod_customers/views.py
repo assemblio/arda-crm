@@ -34,6 +34,12 @@ def edit_customer():
 
         return redirect(url_for('customers.customers'))
 
+@mod_customers.route('/delete/<customer_id>', methods=['GET'])
+def delete_customer(customer_id):
+    mongo.db.customers.remove({'_id': customer_id })
+
+    return redirect(url_for('customers.customers'))
+
 
 def build_customers_cursor(cursor):
     ''' Builds a JSON response for a given cursor

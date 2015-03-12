@@ -1,74 +1,77 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <script type="text/javascript">
-      google.load("visualization", "1", {packages:["table"]});
-      google.setOnLoadCallback(drawTable);
-
-      function drawTable() {
-        var data = new google.visualization.DataTable();
-
-        data.addColumn('string', 'contact_id');
-        data.addColumn('string', 'Company Name');
-    	  data.addColumn('string', 'First Name');
-        data.addColumn('string', 'Last Name');
-        data.addColumn('string', 'Job Title');
-        data.addColumn('string', 'Main Phone');
-        data.addColumn('string', 'Work Phone');
-        data.addColumn('string', 'Mobile');
-        data.addColumn('string', 'Fax');
-        data.addColumn('string', 'Email');
-        
-        {% for contact in result['results']%}
-        data.addRows([
-          [
-          "{{contact['_id']}}",
-          "{{contact['company_name']}}",
-          "{{contact['first_name']}}",
-          "{{contact['last_name']}}",
-          "{{contact['job_title']}}",
-          "{{contact['phone']['main_phone']}}",
-          "{{contact['phone']['work_phone']}}",
-          "{{contact['phone']['mobile']}}",
-          "{{contact['phone']['fax']}}",
-          "{{contact['email']}}"
-          ],
-        ]);
-        {% endfor %}
-
-        var dataView = new google.visualization.DataView(data);
-        dataView.hideColumns([0]);
-        var table = new google.visualization.Table(document.getElementById('table_div'));
-
-        table.draw(dataView, {showRowNumber: true});
-
-        function showDetails() {
-            var selection = table.getSelection();
-            var rowId = selection[0].row;
-
-            
-            var customerId = data.getValue(rowId, 0);
-            var companyName = data.getValue(rowId, 1);
-
-            if(customerId.length > 0 && companyName.length > 0){
-              var url = "{{ url_for('services.customer_services', company_name='assemblio', customer_id='') }}" + customerId;
-
-              document.location.href = url;
-            }
-        }
-        google.visualization.events.addListener(table, 'select', showDetails);
-      }
-    </script>
 <section>
   <div class="container" align="center">
 
       <form method="get" action="{{url_for('customers.edit_customer')}}">
         <button type="submit" class="btn btn-primary" >New Customer</button>
       </form>
-      
-      <br>
 
-      <div id="table_div"></div>
+      {% if result['results']|length > 0 %}
+      <div class="panel panel-warning">
+        <!-- Default panel contents -->
+        <div class="panel-body">
+          <!-- Table -->
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Job Title</th>
+                <th>Company</th>
+                <th>Main Phone</th>
+                <th>Work Phone</th>
+                <th>Mobile Phone</th>
+                <th>E-mail</th>
+                <th>Operations</th>
+              </tr>
+            </thead>
+            <tbody id="customers-list">
+              <tr>
+                {% for customer in result['results']%}
+                <td>{{customer['first_name']}}</td>
+                <td>{{customer['last_name']}}</td>
+                <td>{{customer['job_title']}}</td>
+                <td>{{customer['company_name']}}</td>
+                <td>{{customer['phone']['main_phone']}}</td>
+                <td>{{customer['phone']['work_phone']}}</td>
+                <td>{{customer['phone']['mobile']}}</td>
+                <td>{{customer['email']}}</td>
+                <td>
+                  <table>
+                    <tr>
+                      <td>
+                        <form method="get">
+                          <button type="submit" class="btn btn-default btn-sm btn-default">
+                            <span class="glyphicon glyphicon-edit"></span>
+                          </button>&nbsp;
+                        </form>
+                      </td>
+                      <td>
+                        <form method="get" action="{{ url_for('services.customer_services', company_name='assemblio', customer_id='') }}{{ customer['_id'] }}">
+                          <button type="submit" class="btn btn-default btn-sm btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                          </button>&nbsp;
+                        </form>
+                      </td>
+                      <td>
+                        <form method="get" action="{{ url_for('customers.delete_customer', customer_id='') }}{{ customer['_id'] }}">
+                          <button type="submit" class="btn btn-default btn-sm btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span>
+                          </button>&nbsp;
+                        </form>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
   </div>
 </section>
 {% endblock %}
