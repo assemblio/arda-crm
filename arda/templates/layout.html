@@ -133,12 +133,37 @@
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline social-buttons">
-                        <li><a href="http://arda-kosovo.org/"><i class="fa fa-globe"></i></a>
+                        {% if session.settings.web_url %}
+                        <li>
+                            <a href="{{ session.settings.web_url }}">
+                                <i class="fa fa-globe"></i>
+                            </a>
                         </li>
-                        <li><a href="https://www.facebook.com/ArdaAssociationOfRegionalDevelopmentAgencies"><i class="fa fa-facebook"></i></a>
+                        {% endif %}
+
+                        {% if session.settings.fb_url %}
+                        <li>
+                            <a href="{{ session.settings.fb_url }}">
+                                <i class="fa fa-facebook"></i>
+                            </a>
                         </li>
-                        <li><a href="https://www.linkedin.com/profile/view?id=392934693"><i class="fa fa-linkedin"></i></a>
+                        {% endif %}
+
+                        {% if session.settings.tw_url %}
+                        <li>
+                            <a href="{{ session.settings.tw_url }}">
+                                <i class="fa fa-twitter"></i>
+                            </a>
                         </li>
+                        {% endif %}
+
+                        {% if session.settings.li_url %}
+                        <li>
+                            <a href="{{ session.settings.li_url }}">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
                 <div class="col-md-4">
