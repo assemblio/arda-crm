@@ -2,13 +2,14 @@
 {% block body %}
 <section> 
 <div class="container" align="center">
-  <div class="panel panel-warning">
-    <!-- Default panel contents -->
-    <form method="post" action="{{ url_for('admin.edit_user') }}">
+	<form method="post" action="{{ url_for('admin.edit_user') }}">
     	<input type="hidden" name="action" id="action" value="create" />
     	<input type="hidden" name="docId" id="docId" value="" />
-    	<button type="input">Create User</button>
-    </form>
+    	<button type="input" class="btn btn-primary">Create User</button>
+  	</form>
+
+  <div class="panel panel-warning">
+    <!-- Default panel contents -->
     <div class="panel-body">
     <!-- Table -->
     <table class="table table-striped">
