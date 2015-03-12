@@ -30,8 +30,12 @@ def create_user():
 
     # If we do a get request, we are just requesting the page.
     if request.method == "GET":
-        return render_template('mod_admin/edit_user.html', form=user_form, action=url_for('admin.create_user'))
-
+        return render_template(
+            'mod_admin/edit_user.html',
+            form=user_form,
+            action=url_for('admin.create_user'),
+            display_pass_field=False
+        )
 
     elif request.method == "POST":
         user_form = UserForm(request.form)
@@ -62,7 +66,8 @@ def edit_user(user_id):
             'mod_admin/edit_user.html',
             form=user_form,
             action=url_for('admin.edit_user',
-            user_id=user_doc['_id'])
+            user_id=user_doc['_id']),
+            display_pass_field=True
         )
 
     elif request.method == "POST":
@@ -100,10 +105,6 @@ def settings():
         settings_form.site_tagline.data = settings_doc['site_tagline']
         settings_form.site_navbar_title.data = settings_doc['site_navbar_title']
         settings_form.landingpage_banner_image_url.data = settings_doc['landingpage_banner_image_url']
-        settings_form.web_url.data = settings_doc['web_url']
-        settings_form.fb_url.data = settings_doc['fb_url']
-        settings_form.tw_url.data = settings_doc['tw_url']
-        settings_form.li_url.data = settings_doc['li_url']
 
     if request.method == 'POST':
         settings_form = SettingsForm(request.form)
