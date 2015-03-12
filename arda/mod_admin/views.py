@@ -6,6 +6,8 @@ from arda.mod_admin.forms.user_form import UserForm
 from arda.mod_admin.forms.settings_form import SettingsForm
 from arda.mod_admin.forms.theme_form import ThemeForm
 
+from arda import mongo
+
 mod_admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 @mod_admin.route('/users', methods=['GET'])
@@ -61,7 +63,7 @@ def theme():
     # if POST request, get form values and update document
 
     #TODO Populate form.
-    themes_form = ThemesForm()
+    themes_form = ThemeForm()
 
 
     return render_template('mod_admin/theme.html', form=themes_form)

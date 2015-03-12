@@ -24,11 +24,13 @@ def create_app():
     from arda.mod_home_page.views import mod_home_page
     from arda.mod_contacts.views import mod_contacts_directory
     from arda.mod_provided_services.views import mod_provided_services
+    from arda.mod_admin.views import mod_admin
 
     app.register_blueprint(mod_auth)
     app.register_blueprint(mod_home_page)
     app.register_blueprint(mod_contacts_directory)
     app.register_blueprint(mod_provided_services)
+    app.register_blueprint(mod_admin)
 
     #Initialize the app to work with MongoDB
     mongo.init_app(app, config_prefix='MONGO')

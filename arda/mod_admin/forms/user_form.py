@@ -10,6 +10,6 @@ class UserForm(Form):
     role = RadioField(
         "User Type",
         choices=[
-            ('Regular', 'regular')
+            ('Regular', 'regular'),
             ('Admin', 'admin')
         ], default='regular')
