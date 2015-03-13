@@ -34,8 +34,34 @@
                 todayHighlight: true,
                 format: 'dd/mm/yyyy',
             });
+            $('.passform').formValidation({
+                  framework: 'bootstrap',
+                  icon: {
+                      valid: 'glyphicon glyphicon-ok',
+                      invalid: 'glyphicon glyphicon-remove',
+                      validating: 'glyphicon glyphicon-refresh'
+                  },
+                  fields: {
+                      oldPassword: {
+                          validators: {
+                            notEmpty : {
+                                message: 'Please fill the filed!'
+                            },
+                            date: {
+                                format: 'DD/MM/YYYY',
+                                message: 'Fill the filed to the proper format, dd/mm/YYYY'
+                            }
+                        }
+                      }
+                  }
+              });
+            $('.service-date-picker').on('change.dp show.dp', function(e) {
+            $('.treatment-form').bootstrapValidator('revalidateField', 'date');
+        });
+
       });
     </script>
+
 <section>
 	<div class="container" align="center">
 

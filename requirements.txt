@@ -2,3 +2,4 @@ Flask==0.10.1
 Flask-PyMongo==0.3.0
 Flask-WTF==0.9.5
 Flask-Bcrypt==0.5.2
+python-slugify==0.0.7

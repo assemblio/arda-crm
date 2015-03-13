@@ -4,7 +4,7 @@ from arda import mongo
 from arda.utils.utils import Utils
 import json
 from forms.customer_form import CustomerForm
-
+from slugify import slugify
 utils = Utils()
 
 
@@ -34,9 +34,10 @@ def edit_customer():
 
         return redirect(url_for('customers.customers'))
 
+
 @mod_customers.route('/delete/<customer_id>', methods=['GET'])
 def delete_customer(customer_id):
-    mongo.db.customers.remove({'_id': customer_id })
+    mongo.db.customers.remove({'_id': customer_id})
 
     return redirect(url_for('customers.customers'))
 
@@ -60,7 +61,10 @@ def buld_save_costumers_document(doc_id):
 
     json_obj = {}
     json_obj = {
-        'company_name': 'assemblio', #costumer['company_name'],
+        'company': {
+            'name': costumer['company_name'],
+            'slug': slugify(costumer['company_name'])
+        },
         'first_name': costumer['first_name'],
         'last_name': costumer['last_name'],
         'costumer_type': costumer['costumer_type'],
