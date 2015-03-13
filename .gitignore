@@ -13,7 +13,6 @@ config.cfg
 env/
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 lib/

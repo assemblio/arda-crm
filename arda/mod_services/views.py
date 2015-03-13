@@ -16,10 +16,9 @@ def services():
 def company_services(company_name):
 
     query = {
-        'company_name': company_name
+        'company.slug': company_name
     }
-
-    customer = mongo.db.customers.find(query)
+    customer = mongo.db.customers.find_one(query)
 
     return render_template('mod_services/services.html', result=customer)
 
@@ -35,13 +34,17 @@ def customer_services(company_name, customer_id):
     customer = mongo.db.customers.find_one(query)
     print customer
 
-    return render_template('mod_services/services.html', result=customer)
+    return render_template(
+        'mod_services/services.html',
+        result=customer
+    )
 
 
 @mod_services.route('/edit', methods=['POST'])
 def edit_service():
 
     costumer_id = request.form['costumer_id']
+    company = request.form['company_name']
     provided_service = request.form['providedService']
     date = request.form['date']
     description = request.form['description']
@@ -57,9 +60,9 @@ def edit_service():
     mongo.db.customers.update(
         {'_id': costumer_id},
         {
-            '$addToSet': {
+            '$push': {
                 'provided_services': json_obj
             }
         }
     )
-    return redirect(url_for('services.customer_services', company_name='assemblio', customer_id=costumer_id))
+    return redirect(url_for('services.customer_services', company_name=company, customer_id=costumer_id))
