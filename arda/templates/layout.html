@@ -1,5 +1,4 @@
 <html>
-
 <head>
 
     <meta charset="utf-8">
@@ -9,13 +8,13 @@
     <meta name="author" content="">
 
     <title>{{ session.settings.site_title }}</title>
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='startbootstrap/js/jquery.js') }}"></script>
 
-      <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url_for('static', filename='startbootstrap/js/bootstrap.min.js') }}"></script>
 
-    <!-- Bootstrap date-picker plug-in -->
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap-datepicker/css/datepicker.css') }}">
-
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <!-- Bootstrap Core CSS -->
     <link href="{{ url_for('static', filename='startbootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
@@ -38,33 +37,20 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-    <!-- jQuery -->
-    <script src="{{ url_for('static', filename='startbootstrap/js/jquery.js') }}"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{{ url_for('static', filename='startbootstrap/js/bootstrap.min.js') }}"></script>
-
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#submitLink').click(function(){
-            $('#logmeout').submit();
+    <!-- Form Validator -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='formvalidation/dist/css/formValidation.css')}}"/>
+    <script type="text/javascript" src="{{ url_for('static', filename='formvalidation/dist/js/formValidation.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='formvalidation/dist/js/framework/bootstrap.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#submitLink').click(function(){
+                $('#logmeout').submit();
+            });
+            $('#linkLogin').click(function(){
+                $('#login').submit();
+            });
         });
-        $('#linkLogin').click(function(){
-            $('#login').submit();
-        });
-    });
-</script>
-
-<style type="text/css">
- .dropdown-menu{
-    padding: 10px;
-    margin: 0 auto;
-
-    /* Styles */
-    background-color: #808080;
-}
-</style>
+    </script>
 </head>
 
 <body id="page-top" class="index">

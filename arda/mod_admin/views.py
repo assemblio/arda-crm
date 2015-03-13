@@ -1,17 +1,15 @@
 from flask import Blueprint, render_template, \
-                  session, redirect, url_for, current_app, request
-from flask.views import View
+    session, redirect, url_for, request
+
 import json
 from arda.mod_admin.forms.user_form import UserForm
 from arda.mod_admin.forms.settings_form import SettingsForm
 from arda.mod_admin.forms.portfolio_form import PortfolioForm
 
-
-
-from bson import ObjectId
-from arda import mongo, utils
+from arda import mongo, utils, bcrypt
 
 mod_admin = Blueprint('admin', __name__, url_prefix='/admin')
+
 
 @mod_admin.route('/users', methods=['GET'])
 def users():
@@ -50,7 +48,8 @@ def create_user():
             "email": user_data['email'],
             "password": bcrypt.generate_password_hash(user_data['password'], rounds=12),
         }
-        mongo.db.users.insert(user_doc)
+        user_id = utils.get_doc_id()
+        mongo.db.users.update({'_id': user_id}, {"$set": user_doc}, True)
 
         return redirect(url_for('admin.users'))
 
@@ -63,7 +62,7 @@ def edit_user(user_id):
     Edit user
     '''
     if request.method == "GET":
-        user_doc = mongo.db.users.find_one({'_id': ObjectId(user_id)})
+        user_doc = mongo.db.users.find_one({'_id': user_id})
 
         # Populate the user form of the user we are editing.
         user_form = UserForm()
@@ -84,7 +83,7 @@ def edit_user(user_id):
         user_form = UserForm(request.form)
         user_data = user_form.data
 
-        mongo.db.users.update({'_id': ObjectId(user_id)}, {'$set': user_data})
+        mongo.db.users.update({'_id': user_id}, {'$set': user_data})
 
         return redirect(url_for('admin.users'))
 
@@ -94,8 +93,32 @@ def delete_user(user_id):
     '''
     Delete user
     '''
-    users = mongo.db.users.remove({'_id': ObjectId(user_id)})
+    users = mongo.db.users.remove({'_id': user_id})
     return redirect(url_for('admin.users'))
+
+
+@mod_admin.route('/change/password', methods=['POST'])
+def change_password():
+
+    user_id = session.get('user_id')
+    user = mongo.db.users.find_one({'_id': user_id})
+
+    old_password = request.form['oldPassword']
+    new_password = bcrypt.generate_password_hash(request.form['newPassword'], rounds=12)
+
+    if not bcrypt.check_password_hash(user["password"], old_password):
+        error = "Error!Password didn't change!"
+        users = mongo.db.users.find({})
+        json_obj = build_contacts_cursor(users)
+
+        return render_template('mod_admin/users.html', message=error, results=json_obj['results'])
+    else:
+        mongo.db.users.update(
+            {'_id': user_id},
+            {"$set": {'password': new_password}
+        })
+
+        return redirect(url_for('admin.users'))
 
 
 @mod_admin.route('/settings', methods=['GET', 'POST'])
@@ -125,7 +148,6 @@ def settings():
         settings_form.tw_url.data = settings_doc['tw_url']
         settings_form.li_url.data = settings_doc['li_url']
 
-
     if request.method == 'POST':
         settings_form = SettingsForm(request.form)
         settings_data = settings_form.data
@@ -138,13 +160,14 @@ def settings():
     portfolio_form = PortfolioForm()
     return render_template('mod_admin/settings.html', form=settings_form, pf_form=portfolio_form, portfolio=portfolio)
 
+
 @mod_admin.route('/settings/portfolio/update', methods=['POST'])
 def settings_portfolio_update():
     portfolio_form = PortfolioForm(request.form)
     portfolio_data = portfolio_form.data
     portfolio_data['id'] = utils.get_doc_id()
 
-    mongo.db.settings.update({'_id': 0},  { '$push': { 'portfolio':  portfolio_data} })
+    mongo.db.settings.update({'_id': 0}, {'$push': {'portfolio': portfolio_data}})
 
     session['settings']['portfolio'] = portfolio_data
 
@@ -162,11 +185,13 @@ def settings_portfolio_delete(item_id):
             porfolio.append(item)
 
     mongo.db.settings.update(
-        {'_id': 0},  
-        {'$set': { 
-            'portfolio':  porfolio 
-            } 
-        })
+        {'_id': 0},
+        {
+            '$set': {
+                'portfolio':  porfolio
+            }
+        }
+    )
 
     session['settings']['portfolio'] = porfolio
 

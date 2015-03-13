@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, \
-                  session, redirect, url_for, current_app, request
+    session, redirect, url_for, current_app, request
 from arda import mongo, bcrypt
 
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
@@ -27,6 +27,8 @@ def login():
     # Login success, return to index page
     else:
         session['logged_in'] = True
+        session['user_id'] = user_doc['_id']
+        print user_doc['_id']
         session['email'] = email
         current_app.logger.info("User '%s' logged in." % email)
 
@@ -43,6 +45,7 @@ def logout():
 
     session.pop('email', None)
     session.pop('logged_in', None)
+    session.pop('user_id', None)
 
     current_app.logger.info("User '%s' logged out." % email)
 
