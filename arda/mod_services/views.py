@@ -27,7 +27,7 @@ def company_services(company_name):
 def customer_services(company_name, customer_id):
 
     query = {
-        'company_name': company_name,
+        'company.slug': company_name,
         '_id': customer_id
     }
 
@@ -40,11 +40,9 @@ def customer_services(company_name, customer_id):
     )
 
 
-@mod_services.route('/edit', methods=['POST'])
-def edit_service():
+@mod_services.route('/edit/<string:company_name>/<string:customer_id>', methods=['POST'])
+def edit_service(company_name, customer_id):
 
-    costumer_id = request.form['costumer_id']
-    company = request.form['company_name']
     provided_service = request.form['providedService']
     date = request.form['date']
     description = request.form['description']
@@ -58,11 +56,11 @@ def edit_service():
     }
 
     mongo.db.customers.update(
-        {'_id': costumer_id},
+        {'_id': customer_id},
         {
             '$push': {
                 'provided_services': json_obj
             }
         }
     )
-    return redirect(url_for('services.customer_services', company_name=company, customer_id=costumer_id))
+    return redirect(url_for('services.customer_services', company_name=company_name, customer_id=customer_id))
