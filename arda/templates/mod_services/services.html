@@ -6,11 +6,13 @@
 
       function drawTable() {
         var data = new google.visualization.DataTable();
+        
+        {% if result is defined %}
+
         data.addColumn('string', 'Provided Service');
         data.addColumn('string', 'Date');
         data.addColumn('number', 'Service Fee');
         data.addColumn('string', 'Description');
-
 
         {% for service in result['provided_services'] %}
         data.addRows([
@@ -20,6 +22,26 @@
           ],
         ]);
         {% endfor %}
+        {% endif %}
+
+        {% if result_services is defined %}
+        data.addColumn('string', 'First Name');
+        data.addColumn('string', 'Last Name');
+        data.addColumn('string', 'Service Type');
+        data.addColumn('string', 'Service Date');
+        data.addColumn('string', 'Service Fee');
+        data.addColumn('string', 'Service Description');
+
+        {% for service in result_services %}
+        data.addRows([
+          [
+          "{{service['customer']['firstName']}}",  "{{service['customer']['lastName']}}",
+          "{{service['service']['type']}}", "{{service['service']['date']}}",
+          "{{service['service']['fee']}}", "{{service['service']['description']}}",          
+          ],
+        ]);
+        {% endfor %}
+        {% endif %}
         var table = new google.visualization.Table(document.getElementById('table_div'));
 
         table.draw(data, {showRowNumber: true});
@@ -62,13 +84,15 @@
 
 <section>
 	<div class="container" align="center">
-
+    {% if result is defined %}
 		<div>
 	      <a href="#" data-original-title="Add service" data-toggle="modal" data-target="#add-service-form-modal" data-backdrop="false" type="button" class="btn btn-sm btn-primary">Add Service</a>
 	  	</div>
-
+    {% endif %}
         <br></br>
-
+    {% if result_services is defined  %}
+      Services provided by Company: {{result_services[0]['company']['name']}}
+    {% endif %}
 		<div id="table_div"></div>
 	</div>
 </section>
@@ -86,8 +110,10 @@
                 <div class="modal-body">                            
                     <h4>Add new service by filling the fields below</h4>
                     <br></br>
-                    <form class="form-horizontal serviceForm" method="post" action="{{url_for('services.edit_service', company_name=result['company']['slug'], customer_id=result['_id'])}}">
+                    <form class="form-horizontal serviceForm" method="post" action="{{url_for('services.edit_service')}}">
                     	<div class="form-group col-xs-offset-3 col-xs-9">
+                        <input type="hidden" name="company_name" id="company_name" value="{{company_name}}"/>
+                        <input type="hidden" name="customer_id" id="customer_id" value="{{customer_id}}"/>
                     		<div class="col-xs-6">
                         		<label class="control-label pull-right" for="providedService">Provided Service:</label>
                         	</div>
