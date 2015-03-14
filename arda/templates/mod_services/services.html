@@ -90,8 +90,8 @@
 	  	</div>
     {% endif %}
         <br></br>
-    {% if result_services is defined  %}
-      Services provided by Company: {{result_services[0]['company']['name']}}
+    {% if result_services is defined and result_services|length > 0 %}
+      Services provided by Company: <strong>{{result_services[0]['company']['name']}}</strong>
     {% endif %}
 		<div id="table_div"></div>
 	</div>
