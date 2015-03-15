@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, request, url_for
 
 from arda import mongo
 mod_services = Blueprint('services', __name__, url_prefix='/services')
-
+from bson import ObjectId
 
 @mod_services.route('/', methods=['GET'])
 def services():
@@ -29,11 +29,11 @@ def customer_services(company_name, customer_id):
 
     query = {
         'company.slug': company_name,
-        '_id': customer_id
+        '_id': ObjectId(customer_id)
     }
 
     customer = mongo.db.customers.find_one(query)
-
+    print customer
     return render_template(
         'mod_services/services.html',
         company_name=company_name,
@@ -61,7 +61,7 @@ def edit_service():
     }
 
     mongo.db.customers.update(
-        {'_id': customer_id},
+        {'_id': ObjectId(customer_id)},
         {
             '$push': {
                 'provided_services': json_obj

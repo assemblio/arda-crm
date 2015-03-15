@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, \
     session, redirect, url_for, current_app, request
 from arda import mongo, bcrypt
-
+from bson import json_util, ObjectId
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 
@@ -27,7 +27,7 @@ def login():
     # Login success, return to index page
     else:
         session['logged_in'] = True
-        session['user_id'] = user_doc['_id']
+        session['user_id'] = json_util.dumps(ObjectId(user_doc['_id']))
         session['role'] = user_doc['role']
         session['email'] = email
         current_app.logger.info("User '%s' logged in." % email)

@@ -25,7 +25,7 @@
                 <th>Mobile Phone</th>
                 <th>E-mail</th>
                 <th>Operations</th>
-                <th>Services provided to</th>
+                <th>Company</th>
               </tr>
             </thead>
             <tbody id="customers-list">
@@ -68,7 +68,7 @@
                   </table>
                 </td>
                 <td>
-                  <a href="{{url_for('services.company_services', company_name=customer['company']['slug'])}}" class="col-xs-10 btn btn-sm btn-warning">{{customer['company']['name']}}</a>
+                  <a href="{{url_for('services.company_services', company_name=customer['company']['slug'])}}" class="btn btn-sm btn-warning">{{customer['company']['name']}}</a>
                 </td>
               </tr>
               {% endfor %}

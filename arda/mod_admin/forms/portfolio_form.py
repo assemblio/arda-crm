@@ -1,6 +1,7 @@
 from flask_wtf import Form
 from wtforms import TextField, TextAreaField
 
+
 class PortfolioForm(Form):
 
     title = TextField("Title")

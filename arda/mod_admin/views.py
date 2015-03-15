@@ -7,6 +7,7 @@ from arda.mod_admin.forms.settings_form import SettingsForm
 from arda.mod_admin.forms.portfolio_form import PortfolioForm
 
 from arda import mongo, utils, bcrypt
+from bson import json_util, ObjectId
 
 mod_admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -53,8 +54,8 @@ def create_user():
                 "email": user_data['email'],
                 "password": bcrypt.generate_password_hash(user_data['password'], rounds=12),
             }
-            user_id = utils.get_doc_id()
-            mongo.db.users.update({'_id': user_id}, {"$set": user_doc}, True)
+
+            mongo.db.users.insert(user_doc)
 
             return redirect(url_for('admin.users'))
         else:
@@ -69,7 +70,7 @@ def edit_user(user_id):
     '''
     if request.method == "GET":
         if not session.get('role') == "Regular":
-            user_doc = mongo.db.users.find_one({'_id': user_id})
+            user_doc = mongo.db.users.find_one({'_id': ObjectId(user_id)})
 
             # Populate the user form of the user we are editing.
             user_form = UserForm()
@@ -90,9 +91,18 @@ def edit_user(user_id):
     elif request.method == "POST":
         if not session.get('role') == "Regular":
             user_form = UserForm(request.form)
-            user_data = user_form.data
 
-            mongo.db.users.update({'_id': user_id}, {'$set': user_data})
+            mongo.db.users.update(
+                {'_id': ObjectId(user_id)},
+                {
+                    '$set': {
+                        'first_name': user_form.first_name.data,
+                        'last_name': user_form.last_name.data,
+                        'email': user_form.email.data,
+                        'role': user_form.role.data
+                    }
+                }
+            )
 
             return redirect(url_for('admin.users'))
         else:
@@ -103,7 +113,7 @@ def delete_user(user_id):
     '''
     Delete user
     '''
-    users = mongo.db.users.remove({'_id': user_id})
+    users = mongo.db.users.remove({'_id': ObjectId(user_id)})
     return redirect(url_for('admin.users'))
 
 
@@ -111,8 +121,8 @@ def delete_user(user_id):
 def change_password():
 
     user_id = session.get('user_id')
-    user = mongo.db.users.find_one({'_id': user_id})
-
+    user = mongo.db.users.find_one({'_id': json_util.loads(user_id)})
+    print user
     old_password = request.form['oldPassword']
     new_password = bcrypt.generate_password_hash(request.form['newPassword'], rounds=12)
 
@@ -124,7 +134,7 @@ def change_password():
         return render_template('mod_admin/users.html', message=error, results=json_obj['results'])
     else:
         mongo.db.users.update(
-            {'_id': user_id},
+            {'_id': json_util.loads(user_id)},
             {"$set": {'password': new_password}
         })
 

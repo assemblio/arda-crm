@@ -96,7 +96,8 @@
         <div class="panel-heading">
         {% if company_name is defined and result_services|length > 0 %}
           <p>Services provided to Company: <strong>{{result_services[0]['company']['name']}}</strong><p>
-        {% else %}
+        {% endif %}
+        {% if not company_name and result_services|length > 0  %}
         <p>All Services provided by <strong>ARDA</strong><p>
         {% endif %}
         </div>

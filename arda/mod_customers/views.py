@@ -1,12 +1,10 @@
 from flask import Blueprint, render_template, \
                   session, redirect, url_for, current_app, request
-from arda import mongo
-from arda.utils.utils import Utils
+from arda import mongo, utils
 import json
 from forms.customer_form import CustomerForm
 from slugify import slugify
-utils = Utils()
-
+from bson import ObjectId
 
 mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
 
@@ -27,17 +25,15 @@ def edit_customer():
         return render_template('mod_customers/edit_customer.html', form=form)
 
     if request.method == "POST":
-        #create an Id for the document we want to store
-        costumer_id = utils.get_doc_id()
         #call the function which builds than stores the json document
-        buld_save_costumers_document(costumer_id)
+        buld_save_costumers_document()
 
         return redirect(url_for('customers.customers'))
 
 
 @mod_customers.route('/delete/<customer_id>', methods=['GET'])
 def delete_customer(customer_id):
-    mongo.db.customers.remove({'_id': customer_id})
+    mongo.db.customers.remove({'_id': ObjectId(customer_id)})
 
     return redirect(url_for('customers.customers'))
 
@@ -54,7 +50,7 @@ def build_customers_cursor(cursor):
     return response
 
 
-def buld_save_costumers_document(doc_id):
+def buld_save_costumers_document():
 
     customer_form = CustomerForm(request.form)
     costumer = customer_form.data
@@ -98,8 +94,4 @@ def buld_save_costumers_document(doc_id):
         'provided_services': []
     }
 
-    mongo.db.customers.update(
-        {'_id': doc_id},
-        {'$set': json_obj},
-        True
-    )
+    mongo.db.customers.insert(json_obj)
