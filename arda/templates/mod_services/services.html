@@ -90,10 +90,20 @@
 	  	</div>
     {% endif %}
         <br></br>
-    {% if result_services is defined and result_services|length > 0 %}
-      Services provided by Company: <strong>{{result_services[0]['company']['name']}}</strong>
-    {% endif %}
-		<div id="table_div"></div>
+    
+    <div class="panel panel-warning">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+        {% if result_services is defined and result_services|length > 0 %}
+          <p>Services provided to Company: <strong>{{result_services[0]['company']['name']}}</strong><p>
+        {% endif %}
+        </div>
+        <div class="panel-body">
+          <!-- Table -->
+          <div id="table_div"></div>
+        </div>
+      </div>
+		
 	</div>
 </section>
 

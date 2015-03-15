@@ -1,6 +1,7 @@
 from flask_wtf import Form
 from wtforms import RadioField, TextField, PasswordField
 
+
 class UserForm(Form):
 
     first_name = TextField("First Name")
@@ -10,8 +11,8 @@ class UserForm(Form):
     role = RadioField(
         "User Type",
         choices=[
-            ('Regular', 'regular'),
-            ('Admin', 'admin')
+            ('Regular', 'Regular'),
+            ('Admin', 'Admin')
         ],
         default='Regular'
     )
