@@ -122,7 +122,7 @@ def change_password():
 
     user_id = session.get('user_id')
     user = mongo.db.users.find_one({'_id': json_util.loads(user_id)})
-    print user
+
     old_password = request.form['oldPassword']
     new_password = bcrypt.generate_password_hash(request.form['newPassword'], rounds=12)
 
