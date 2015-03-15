@@ -7,9 +7,9 @@ mod_services = Blueprint('services', __name__, url_prefix='/services')
 @mod_services.route('/', methods=['GET'])
 def services():
 
-    customer = mongo.db.customers.find({})
+    customer = retrieve_all_services()
 
-    return render_template('mod_services/services.html', result=customer)
+    return render_template('mod_services/services.html', result_services=customer)
 
 
 @mod_services.route('/<string:company_name>', methods=['GET'])
@@ -79,6 +79,57 @@ def get_services_for_given_company(company_name):
                 "company.slug": company_name
             }
         },
+        {
+            "$unwind": "$provided_services"
+        },
+        {
+            "$group": {
+                "_id": {
+                    "company": {
+                        "name": "$company.name",
+                        "slug": "$company.slug",
+                    },
+                    "customer": {
+                        "firstName": "$first_name",
+                        "lastName": "$last_name",
+                        "customerId": "$_id"
+                    },
+                    "service": {
+                        "type": "$provided_services.provided_service",
+                        "description": "$provided_services.description",
+                        "fee": "$provided_services.service_fee",
+                        "date": "$provided_services.service_date"
+                    }
+                }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "company": {
+                    "name": "$_id.company.name",
+                    "slug": "$_id.company.slug",
+                },
+                "customer": {
+                    "firstName": "$_id.customer.firstName",
+                    "lastName": "$_id.customer.lastName",
+                    "customerId": "$_id.customer.customerId",
+                },
+                "service": {
+                    "type": "$_id.service.type",
+                    "description": "$_id.service.description",
+                    "fee": "$_id.service.fee",
+                    "date": "$_id.service.date"
+                }
+            }
+        }
+    ])
+    return json_obj['result']
+
+
+def retrieve_all_services():
+
+    json_obj = mongo.db.customers.aggregate([
         {
             "$unwind": "$provided_services"
         },

@@ -1,22 +1,70 @@
 {% extends "layout.html" %}
-
 {% block body %}
+<script type="text/javascript">
+	$(document).ready(function(){
+
+  $('.passform').formValidation({
+      framework: 'bootstrap',
+      icon: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+          oldPassword: {
+              validators: {
+                  notEmpty: {
+                      message: "Password field can't be empty!"
+                  }
+              }
+          },
+          newPassword: {
+              err: '#passwordMessage',
+              validators: {
+                  notEmpty: {
+                      message: "Password field can't be empty!"
+                  }
+              }
+          },
+          passwordConfirm: {
+              err: '.passMessage',
+              validators: {
+                  notEmpty: {
+                      message:  "Password field can't be empty!"
+                  },
+                  identical: {
+                  field: 'newPassword',
+                  message: "Password doesn't match!"
+                  }
+              }
+          }
+      }
+  });
+});
+</script>
 <section>
 
 	<div role="tabpanel" style="padding-left:5%;padding-right">
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
+			{% if session.role != "Regular" %}
 			<li role="presentation" class="active">
 				<a href="#main" aria-controls="main" role="tab" data-toggle="tab">Main</a>
 			</li>
 			<li role="presentation">
 				<a href="#portfolio" aria-controls="portfolio" role="tab" data-toggle="tab">Portfolio</a>
 			</li>
+			{% else %}
+			<li role="account">
+				<a href="#portfolio" aria-controls="portfolio" role="tab" data-toggle="tab">Account Settings</a>
+			</li>
+			{% endif %}
 			
 		</ul>
 
 		<!-- Tab panes -->
 		<div class="tab-content">
+			{% if session.role != "Regular" %}
 			<div role="tabpanel" class="tab-pane active" id="main">
 				<br>
 				<div class="container" align="center">
@@ -136,6 +184,43 @@
 				    </div>		    
 				</div>
 			</div>
+			{% else %}
+				<div role="tabpanel" class="tab-pane active" id="portofolio">
+				<br>
+				<div class="container" align="center">
+					 <form id="passwordForm" method="post" action="{{url_for('admin.change_password')}}" class="form-horizontal passform">
+	                <input type="hidden" name="action" id="action" value="password">
+	                <div class="form-group  col-xs-8">
+	                    <label for="oldPassword" class="col-xs-4 control-label">Current Password</label>
+	                      <div class="col-xs-7">
+	                    <input type="password" class="form-control col-xs-5" id="oldPassword" name="oldPassword">
+	                    </div>
+	                </div>
+	                <div class="form-group col-xs-8">
+	                    <label for="newPassword" class="col-xs-4 control-label">New Password</label>
+	                      <div class="col-xs-7">
+	                    <input type="password" class="form-control col-xs-5" id="newPassword" name="newPassword">
+	                    <span class="help-block" id="passwordMessage" />
+	                    
+	                    </div>
+	                </div>
+	                <div class="form-group  col-xs-8">
+	                 <label for="passwordConfirm" class="col-xs-4 control-label">Confirm Password</label>
+	                  <div class="col-xs-7">
+	                   <input type="password" class="form-control col-xs-5" id="passwordConfirm" name="passwordConfirm">
+	                   <span class="help-block passMessage" />
+	                  </div>
+	                </div>
+					<br>
+	                <br>
+                	</br>
+                    <div class="form-group col-xs-12" >
+    				    <button type="submit"  id="submitForm" class="col-xs-offset-1 btn btn-primary">Submit</button>
+                    </div>
+                </form>
+				</div>
+			</div>
+			{% endif %}
 		</div>
 	</div>
 </section>

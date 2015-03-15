@@ -16,11 +16,12 @@ def users():
     '''
     List users
     '''
-    users = mongo.db.users.find({})
-    json_obj = build_contacts_cursor(users)
-
-    return render_template('mod_admin/users.html', results=json_obj['results'])
-
+    if not session.get('role') == "Regular":
+        users = mongo.db.users.find({})
+        json_obj = build_contacts_cursor(users)
+        return render_template('mod_admin/users.html', results=json_obj['results'])
+    else:
+        return redirect(url_for('customers.customers'))
 
 @mod_admin.route('/users/create', methods=['GET', 'POST'])
 def create_user():
@@ -31,28 +32,33 @@ def create_user():
     from arda import bcrypt
     # If we do a get request, we are just requesting the page.
     if request.method == "GET":
-        return render_template(
-            'mod_admin/edit_user.html',
-            form=user_form,
-            action=url_for('admin.create_user'),
-            display_pass_field=False
-        )
+        if not session.get('role') == "Regular":
+            return render_template(
+                'mod_admin/edit_user.html',
+                form=user_form,
+                action=url_for('admin.create_user'),
+                display_pass_field=False
+            )
+        else:
+            return redirect(url_for('customers.customers'))
 
     elif request.method == "POST":
-        user_form = UserForm(request.form)
-        user_data = user_form.data
-        user_doc = {
-            "last_name": user_data['last_name'],
-            "first_name": user_data['first_name'],
-            "role": user_data['role'],
-            "email": user_data['email'],
-            "password": bcrypt.generate_password_hash(user_data['password'], rounds=12),
-        }
-        user_id = utils.get_doc_id()
-        mongo.db.users.update({'_id': user_id}, {"$set": user_doc}, True)
+        if not session.get('role') == "Regular":
+            user_form = UserForm(request.form)
+            user_data = user_form.data
+            user_doc = {
+                "last_name": user_data['last_name'],
+                "first_name": user_data['first_name'],
+                "role": user_data['role'],
+                "email": user_data['email'],
+                "password": bcrypt.generate_password_hash(user_data['password'], rounds=12),
+            }
+            user_id = utils.get_doc_id()
+            mongo.db.users.update({'_id': user_id}, {"$set": user_doc}, True)
 
-        return redirect(url_for('admin.users'))
-
+            return redirect(url_for('admin.users'))
+        else:
+            return redirect(url_for('customers.customers'))
     return render_template('mod_admin/edit_user.html', form=user_form)
 
 
@@ -62,31 +68,35 @@ def edit_user(user_id):
     Edit user
     '''
     if request.method == "GET":
-        user_doc = mongo.db.users.find_one({'_id': user_id})
+        if not session.get('role') == "Regular":
+            user_doc = mongo.db.users.find_one({'_id': user_id})
 
-        # Populate the user form of the user we are editing.
-        user_form = UserForm()
-        user_form.first_name.data = user_doc['first_name']
-        user_form.last_name.data = user_doc['last_name']
-        user_form.email.data = user_doc['email']
-        user_form.role.data = user_doc['role']
+            # Populate the user form of the user we are editing.
+            user_form = UserForm()
+            user_form.first_name.data = user_doc['first_name']
+            user_form.last_name.data = user_doc['last_name']
+            user_form.email.data = user_doc['email']
+            user_form.role.data = user_doc['role']
 
-        return render_template(
-            'mod_admin/edit_user.html',
-            form=user_form,
-            action=url_for('admin.edit_user',
-            user_id=user_doc['_id']),
-            display_pass_field=True
-        )
-
+            return render_template(
+                'mod_admin/edit_user.html',
+                form=user_form,
+                action=url_for('admin.edit_user',
+                user_id=user_doc['_id']),
+                display_pass_field=True
+            )
+        else:
+            return redirect(url_for('customers.customers'))
     elif request.method == "POST":
-        user_form = UserForm(request.form)
-        user_data = user_form.data
+        if not session.get('role') == "Regular":
+            user_form = UserForm(request.form)
+            user_data = user_form.data
 
-        mongo.db.users.update({'_id': user_id}, {'$set': user_data})
+            mongo.db.users.update({'_id': user_id}, {'$set': user_data})
 
-        return redirect(url_for('admin.users'))
-
+            return redirect(url_for('admin.users'))
+        else:
+            return redirect(url_for('customers.customers'))
 
 @mod_admin.route('/users/delete/<user_id>', methods=['GET'])
 def delete_user(user_id):
@@ -149,13 +159,16 @@ def settings():
         settings_form.li_url.data = settings_doc['li_url']
 
     if request.method == 'POST':
-        settings_form = SettingsForm(request.form)
-        settings_data = settings_form.data
+        if not session.get('role') == "Regular":
+            settings_form = SettingsForm(request.form)
+            settings_data = settings_form.data
 
-        mongo.db.settings.update({'_id': 0}, {'$set': settings_data}, True)
+            mongo.db.settings.update({'_id': 0}, {'$set': settings_data}, True)
 
-        # Update session with new settings data.
-        session['settings'] = settings_form.data
+            # Update session with new settings data.
+            session['settings'] = settings_form.data
+        else:
+            return redirect(url_for('customers.customers'))
 
     portfolio_form = PortfolioForm()
     return render_template('mod_admin/settings.html', form=settings_form, pf_form=portfolio_form, portfolio=portfolio)

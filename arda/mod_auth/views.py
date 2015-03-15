@@ -28,7 +28,7 @@ def login():
     else:
         session['logged_in'] = True
         session['user_id'] = user_doc['_id']
-        print user_doc['_id']
+        session['role'] = user_doc['role']
         session['email'] = email
         current_app.logger.info("User '%s' logged in." % email)
 
@@ -46,6 +46,7 @@ def logout():
     session.pop('email', None)
     session.pop('logged_in', None)
     session.pop('user_id', None)
+    session.pop('role', None)
 
     current_app.logger.info("User '%s' logged out." % email)
 

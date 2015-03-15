@@ -94,8 +94,10 @@
     <div class="panel panel-warning">
         <!-- Default panel contents -->
         <div class="panel-heading">
-        {% if result_services is defined and result_services|length > 0 %}
+        {% if company_name is defined and result_services|length > 0 %}
           <p>Services provided to Company: <strong>{{result_services[0]['company']['name']}}</strong><p>
+        {% else %}
+        <p>All Services provided by <strong>ARDA</strong><p>
         {% endif %}
         </div>
         <div class="panel-body">
