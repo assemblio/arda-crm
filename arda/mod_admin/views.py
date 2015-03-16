@@ -24,6 +24,7 @@ def users():
     else:
         return redirect(url_for('customers.customers'))
 
+
 @mod_admin.route('/users/create', methods=['GET', 'POST'])
 def create_user():
     '''

@@ -14,8 +14,11 @@ def services():
 
 @mod_services.route('/<string:company_name>', methods=['GET'])
 def company_services(company_name):
+    query = {
+        'company.slug': company_name
+    }
 
-    services = get_services_for_given_company(company_name)
+    services = get_services_for_given_company(query)
 
     return render_template(
         'mod_services/services.html',
@@ -32,8 +35,8 @@ def customer_services(company_name, customer_id):
         '_id': ObjectId(customer_id)
     }
 
-    customer = mongo.db.customers.find_one(query)
-    print customer
+    customer = get_services_for_given_company(query)
+
     return render_template(
         'mod_services/services.html',
         company_name=company_name,
@@ -71,13 +74,11 @@ def edit_service():
     return redirect(url_for('services.customer_services', company_name=company_name, customer_id=customer_id))
 
 
-def get_services_for_given_company(company_name):
+def get_services_for_given_company(query):
 
     json_obj = mongo.db.customers.aggregate([
         {
-            "$match": {
-                "company.slug": company_name
-            }
+            "$match": query
         },
         {
             "$unwind": "$provided_services"
