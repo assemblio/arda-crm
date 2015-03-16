@@ -61,7 +61,7 @@ def edit_service():
         'provided_service': provided_service,
         'service_date': date,
         'description': description,
-        'service_fee': service_fee
+        'service_fee': int(service_fee)
     }
 
     mongo.db.customers.update(
@@ -96,6 +96,12 @@ def delete_service(company_name, customer_id, service_id):
             customer_id=customer_id
         )
     )
+
+
+@mod_services.route('/analytics', methods=['GET'])
+def analytics():
+    services_incomes = provided_services_incomes()
+    return render_template('mod_services/analytics.html', results=services_incomes)
 
 
 def get_services_for_given_company(query):
@@ -205,6 +211,33 @@ def retrieve_all_services():
                     "fee": "$_id.service.fee",
                     "date": "$_id.service.date"
                 }
+            }
+        }
+    ])
+    return json_obj['result']
+
+
+def provided_services_incomes():
+
+    json_obj = mongo.db.customers.aggregate([
+        {
+            "$unwind": "$provided_services"
+        },
+        {
+            "$group": {
+                "_id": {
+                    "serviceType": "$provided_services.provided_service"
+                },
+                'sumOfService': {
+                    "$sum": '$provided_services.service_fee'
+                }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "serviceType": "$_id.serviceType",
+                "valueOfService": "$sumOfService"
             }
         }
     ])
