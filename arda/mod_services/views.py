@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, request, url_for
 
-from arda import mongo
+from arda import mongo, utils
 mod_services = Blueprint('services', __name__, url_prefix='/services')
 from bson import ObjectId
 
@@ -57,6 +57,7 @@ def edit_service():
     service_fee = request.form['fee']
 
     json_obj = {
+        'serviceId': ObjectId(utils.get_doc_id()),
         'provided_service': provided_service,
         'service_date': date,
         'description': description,
@@ -74,6 +75,29 @@ def edit_service():
     return redirect(url_for('services.customer_services', company_name=company_name, customer_id=customer_id))
 
 
+@mod_services.route('/delete/<string:company_name>/<string:customer_id>/<service_id>', methods=['GET'])
+def delete_service(company_name, customer_id, service_id):
+
+    mongo.db.customers.update(
+        {
+            "company.slug": company_name, "_id": ObjectId(customer_id)
+        },
+        {
+            "$pull": {
+                "provided_services": {
+                    'serviceId': ObjectId(service_id)}
+            }
+        }
+    )
+    return redirect(
+        url_for(
+            'services.customer_services',
+            company_name=company_name,
+            customer_id=customer_id
+        )
+    )
+
+
 def get_services_for_given_company(query):
 
     json_obj = mongo.db.customers.aggregate([
@@ -86,6 +110,7 @@ def get_services_for_given_company(query):
         {
             "$group": {
                 "_id": {
+                    '_id': '$_id',
                     "company": {
                         "name": "$company.name",
                         "slug": "$company.slug",
@@ -96,6 +121,7 @@ def get_services_for_given_company(query):
                         "customerId": "$_id"
                     },
                     "service": {
+                        'serviceId': '$provided_services.serviceId',
                         "type": "$provided_services.provided_service",
                         "description": "$provided_services.description",
                         "fee": "$provided_services.service_fee",
@@ -112,11 +138,13 @@ def get_services_for_given_company(query):
                     "slug": "$_id.company.slug",
                 },
                 "customer": {
+                    "_id": "$_id._id",
                     "firstName": "$_id.customer.firstName",
                     "lastName": "$_id.customer.lastName",
                     "customerId": "$_id.customer.customerId",
                 },
                 "service": {
+                    'serviceId': '$serviceId',
                     "type": "$_id.service.type",
                     "description": "$_id.service.description",
                     "fee": "$_id.service.fee",
@@ -137,6 +165,7 @@ def retrieve_all_services():
         {
             "$group": {
                 "_id": {
+                    '_id': '$_id',
                     "company": {
                         "name": "$company.name",
                         "slug": "$company.slug",
@@ -147,6 +176,7 @@ def retrieve_all_services():
                         "customerId": "$_id"
                     },
                     "service": {
+                        'serviceId': '$provided_services.serviceId',
                         "type": "$provided_services.provided_service",
                         "description": "$provided_services.description",
                         "fee": "$provided_services.service_fee",
@@ -163,11 +193,13 @@ def retrieve_all_services():
                     "slug": "$_id.company.slug",
                 },
                 "customer": {
+                    "_id": "$_id._id",
                     "firstName": "$_id.customer.firstName",
                     "lastName": "$_id.customer.lastName",
                     "customerId": "$_id.customer.customerId",
                 },
                 "service": {
+                    'serviceId': '$serviceId',
                     "type": "$_id.service.type",
                     "description": "$_id.service.description",
                     "fee": "$_id.service.fee",
