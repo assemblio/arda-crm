@@ -47,7 +47,7 @@
 	<div role="tabpanel" style="padding-left:5%;padding-right">
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
-			{% if session.role != "Regular" %}
+			{% if current_user.has_role('Admin') %}
 			<li role="presentation" class="active">
 				<a href="#main" aria-controls="main" role="tab" data-toggle="tab">Main</a>
 			</li>
@@ -64,7 +64,7 @@
 
 		<!-- Tab panes -->
 		<div class="tab-content">
-			{% if session.role != "Regular" %}
+			{% if current_user.has_role('Admin') %}
 			<div role="tabpanel" class="tab-pane active" id="main">
 				<br>
 				<div class="container" align="center">

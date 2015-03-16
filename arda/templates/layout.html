@@ -70,7 +70,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                {% if not session.logged_in %}
+                {% if current_user.is_authenticated() %}
                     <a class="navbar-brand" href="#">{{ session.settings.site_navbar_title }}</a>
                 {% else %}
                     <a class="navbar-brand" href="{{url_for('customers.customers')}}">{{ session.settings.site_navbar_title }}</a>
@@ -85,7 +85,7 @@
                     </li>
                 </ul>
 
-                {% if not session.logged_in %}
+                {% if not current_user.is_authenticated() %}
                 <form class="navbar-form navbar-right" method="post" role="login" action="{{url_for('auth.login')}}">
                     <div class="form-group">
                         <input type="text" name="email" id="email" placeholder="E-mail"/>
@@ -101,7 +101,7 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    {% if session.role != "Regular"%}
+                    {% if current_user.has_role('Admin') %}
                     <li><a href="{{url_for('admin.users')}}">Users</a></li>
                     {% endif %}
                     <li><a href="{{url_for('admin.settings')}}">Settings</a></li>

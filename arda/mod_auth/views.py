@@ -2,6 +2,10 @@ from flask import Blueprint, render_template, \
     session, redirect, url_for, current_app, request
 from arda import mongo, bcrypt
 from bson import json_util, ObjectId
+from arda.mod_admin.models.user_model import Users, Role
+from flask.ext.security import login_user, login_required, logout_user
+from mongoengine import DoesNotExist
+
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 
@@ -15,7 +19,7 @@ def login():
     email = request.form['email']
     password = request.form['password']
 
-    user_doc = mongo.db.users.find_one({'email': email})
+    user_doc = Users.objects.get(email=email)
     # If invalid username
     if not user_doc:
         error = 'Invalid username'
@@ -26,10 +30,7 @@ def login():
 
     # Login success, return to index page
     else:
-        session['logged_in'] = True
-        session['user_id'] = json_util.dumps(ObjectId(user_doc['_id']))
-        session['role'] = user_doc['role']
-        session['email'] = email
+        login_user(user_doc)
         current_app.logger.info("User '%s' logged in." % email)
 
         return redirect(url_for('customers.customers'))
@@ -38,16 +39,10 @@ def login():
 
 
 @mod_auth.route('/logout', methods=['GET'])
+@login_required
 def logout():
     ''' Logout request.
     '''
-    email = session['email']
-
-    session.pop('email', None)
-    session.pop('logged_in', None)
-    session.pop('user_id', None)
-    session.pop('role', None)
-
-    current_app.logger.info("User '%s' logged out." % email)
-
+    logout_user()
+    #current_app.logger.info("User '%s' logged out." % email)
     return redirect(url_for('home_page.home_page'))
