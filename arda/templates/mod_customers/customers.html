@@ -23,12 +23,13 @@
                 <th>Work Phone</th>
                 <th>Mobile Phone</th>
                 <th>E-mail</th>
+                <th>Services</th>
                 <th>Operations</th>
               </tr>
             </thead>
             <tbody id="customers-list">
               {% for customer in result['results']%}
-              <tr>
+              <tr align="center">
                 <td>{{customer['first_name']}}</td>
                 <td>{{customer['last_name']}}</td>
                 <td>{{customer['job_title']}}</td>
@@ -41,13 +42,6 @@
                   <table>
                     <tr>
                       <td>
-                        <form method="get">
-                          <button type="submit" class="btn btn-default btn-sm btn-default">
-                            <span class="glyphicon glyphicon-edit"></span>
-                          </button>&nbsp;
-                        </form>
-                      </td>
-                      <td>
                         <form method="get" action="{{ url_for('services.company_services', company_name=customer['company']['slug']) }}">
                         
                           <button type="submit" class="btn btn-default btn-sm btn-default">
@@ -59,6 +53,19 @@
                         <form method="get" action="{{ url_for('services.customer_services', company_name=customer['company']['slug'], customer_id=customer['_id']) }}">
                           <button type="submit" class="btn btn-default btn-sm btn-default">
                             <span class="glyphicon glyphicon-list"></span>
+                          </button>&nbsp;
+                        </form>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td>
+                  <table>
+                    <tr>
+                      <td>
+                        <form method="get">
+                          <button type="submit" class="btn btn-default btn-sm btn-default">
+                            <span class="glyphicon glyphicon-edit"></span>
                           </button>&nbsp;
                         </form>
                       </td>

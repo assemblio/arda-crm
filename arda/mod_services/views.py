@@ -75,7 +75,7 @@ def edit_service():
     return redirect(url_for('services.customer_services', company_name=company_name, customer_id=customer_id))
 
 
-@mod_services.route('/delete/<string:company_name>/<string:customer_id>/<service_id>', methods=['GET'])
+@mod_services.route('/delete/<string:company_name>/<string:customer_id>/<string:service_id>', methods=['GET'])
 def delete_service(company_name, customer_id, service_id):
 
     mongo.db.customers.update(
@@ -144,7 +144,7 @@ def get_services_for_given_company(query):
                     "customerId": "$_id.customer.customerId",
                 },
                 "service": {
-                    'serviceId': '$serviceId',
+                    'serviceId': '$_id.service.serviceId',
                     "type": "$_id.service.type",
                     "description": "$_id.service.description",
                     "fee": "$_id.service.fee",
@@ -199,7 +199,7 @@ def retrieve_all_services():
                     "customerId": "$_id.customer.customerId",
                 },
                 "service": {
-                    'serviceId': '$serviceId',
+                    'serviceId': '$_id.service.serviceId',
                     "type": "$_id.service.type",
                     "description": "$_id.service.description",
                     "fee": "$_id.service.fee",
