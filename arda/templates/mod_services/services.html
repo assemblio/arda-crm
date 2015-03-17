@@ -18,14 +18,29 @@
           fields: {
               fee: {
                   validators: {
+                      integer: {
+                        message: 'The value is not an integer'
+                    }
+                  }
+              },
+              date: {
+                  validators: {
                       notEmpty: {
-                          message: "Fill the field with proper format!"
-                      }
+                          message: "Can't be empty!"
+                      },
+                      date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'The value is not a valid date'
+                    }
                   }
               },
               
           }
       });
+      $('.service-date-picker').on('change.dp show.dp', function(e) {
+          $('.serviceForm').bootstrapValidator('revalidateField', 'date');
+      });
+
   });
 </script>
 
@@ -78,12 +93,16 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
               <td>{{service['customer']['firstName']}}</td>
               <td>{{service['customer']['lastName']}}</td>
               <td>{{service['service']['type']}}</td>
-              <td>{{service['service']['date']}}</td>
+              {% set year = service.service.date.year %}
+              {% set month = service.service.date.month %}
+              {% set day = service.service.date.day %}
+              {% set date_service = (day, month, year)|join("/") %}
+              <td>{{date_service}}</td>
               <td>{{service['service']['fee']}}</td>
               <td>{{service['service']['description']}}</td>
               <td>
-                <table>
-                  <tr>
+                <table align="center">
+                  <tr align="center">
                     <td>
                       
                       <form method="get" action="{{url_for('services.delete_service',company_name=service['company']['slug'], customer_id=service['customer']['_id'], service_id=service['service']['serviceId'])}}">
@@ -91,7 +110,6 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
                           <span class="glyphicon glyphicon-remove"></span>
                         </button>&nbsp;
                       </form>
-                      
                     </td>
                   </tr>
                 </table>
@@ -107,13 +125,17 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
               <td>{{service['customer']['firstName']}}</td>
               <td>{{service['customer']['lastName']}}</td>
               <td>{{service['service']['type']}}</td>
-              <td>{{service['service']['date']}}</td>
+              {% set year = service.service.date.year %}
+              {% set month = service.service.date.month %}
+              {% set day = service.service.date.day %}
+              {% set date_service = (day, month, year)|join("/") %}
+              <td>{{date_service}}</td>
               <td>{{service['service']['fee']}}</td>
               <td>{{service['service']['description']}}</td>
               <td>
-                <table>
-                  <tr>
-                    <td>
+                <table align="center">
+                  <tr align="center">
+                    <td >
                       
                       <form method="get" action="{{url_for('services.delete_service',company_name=service['company']['slug'], customer_id=service['customer']['_id'], service_id=service['service']['serviceId'])}}">
                         <button type="submit" class="btn btn-default btn-sm btn-danger">

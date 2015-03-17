@@ -53,8 +53,8 @@ $(document).ready(function(){
 {% endif %}
 	<div class="form-group">
 		<form method="get" action="{{ url_for('admin.create_user') }}">
-	    	<button type="input" class="btn btn-primary">Create User</button>
-	  	</form>
+    	<button type="input" class="btn btn-primary">Create User</button>
+  	</form>
 		<div>
 	      <a href="#" data-original-title="Change Password" data-toggle="modal" data-target="#changePassModal" data-backdrop="false" type="button" class="btn btn-sm btn-primary pull-right">Change Password</a>
 	  	</div>
@@ -118,47 +118,47 @@ $(document).ready(function(){
 
 <!-- Change password Form -->
 <div class="modal fade" id="changePassModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="close" class="close" data-dismiss="modal" aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></button>
-                <h4 class="modal-title" id="myModalLabel">Change Password</h4>
-            </div>
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="close" class="close" data-dismiss="modal" aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></button>
+              <h4 class="modal-title" id="myModalLabel">Change Password</h4>
+          </div>
 
-            <div class="modal-body">
-                <!-- The form is placed inside the body of modal -->
-                <form id="passwordForm" method="post" action="{{url_for('admin.change_password')}}" class="form-horizontal passform">
-                <input type="hidden" name="action" id="action" value="password">
-                <div class="form-group">
-                    <label for="oldPassword" class="col-xs-4 control-label">Current Password</label>
-                      <div class="col-xs-7">
-                    <input type="password" class="form-control" id="oldPassword" name="oldPassword">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="newPassword" class="col-xs-4 control-label">New Password</label>
-                      <div class="col-xs-7">
-                    <input type="password" class="form-control" id="newPassword" name="newPassword">
-                    <span class="help-block" id="passwordMessage" />
-                    
-                    </div>
-                </div>
-                <div class="form-group">
-                 <label for="passwordConfirm" class="col-xs-4 control-label">Confirm Password</label>
-                  <div class="col-xs-7">
-                   <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
-                   <span class="help-block passMessage" />
+          <div class="modal-body">
+              <!-- The form is placed inside the body of modal -->
+              <form id="passwordForm" method="post" action="{{url_for('admin.change_password')}}" class="form-horizontal passform">
+              <input type="hidden" name="action" id="action" value="password">
+              <div class="form-group">
+                  <label for="oldPassword" class="col-xs-4 control-label">Current Password</label>
+                    <div class="col-xs-7">
+                  <input type="password" class="form-control" id="oldPassword" name="oldPassword">
                   </div>
+              </div>
+              <div class="form-group">
+                  <label for="newPassword" class="col-xs-4 control-label">New Password</label>
+                    <div class="col-xs-7">
+                  <input type="password" class="form-control" id="newPassword" name="newPassword">
+                  <span class="help-block" id="passwordMessage" />
+                  
+                  </div>
+              </div>
+              <div class="form-group">
+               <label for="passwordConfirm" class="col-xs-4 control-label">Confirm Password</label>
+                <div class="col-xs-7">
+                 <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
+                 <span class="help-block passMessage" />
                 </div>
+              </div>
 
-                <div class="form-group">
-                    <div class="col-xs-3" style="float: right">
-                        <button type="submit" id="submitForm" class="btn btn-primary">Submit</button>
-                    </div>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
+              <div class="form-group">
+                  <div class="col-xs-3" style="float: right">
+                      <button type="submit" id="submitForm" class="btn btn-primary">Submit</button>
+                  </div>
+              </div>
+              </form>
+          </div>
+      </div>
+  </div>
 </div>
 {% endblock %}
