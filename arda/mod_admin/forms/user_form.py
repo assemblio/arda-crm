@@ -8,7 +8,7 @@ class UserForm(Form):
     last_name = TextField("Last Name")
     email = TextField("E-mail")
     password = PasswordField("Password")
-    roles = RadioField(
+    role = RadioField(
         "User Type",
         choices=[
             ('Regular', 'Regular'),

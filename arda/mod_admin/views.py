@@ -55,6 +55,7 @@ def create_user():
                 last_name=user_data['last_name'],
                 first_name=user_data['first_name'],
                 email=user_data['email'],
+                role=user_data['role'],
                 password=bcrypt.generate_password_hash(user_data['password'], rounds=12)
             )
             user.save()
@@ -127,9 +128,7 @@ def delete_user(user_id):
 @mod_admin.route('/change/password', methods=['POST'])
 @login_required
 def change_password():
-
-    user_id = current_user['id']
-    user = mongo.db.users.find_one({'_id': json_util.loads(user_id)})
+    user = mongo.db.users.find_one({'_id': ObjectId(current_user.id)})
 
     old_password = request.form['oldPassword']
     new_password = bcrypt.generate_password_hash(request.form['newPassword'], rounds=12)
@@ -142,12 +141,11 @@ def change_password():
         return render_template('mod_admin/users.html', message=error, results=json_obj['results'])
     else:
         mongo.db.users.update(
-            {'_id': json_util.loads(user_id)},
+            {'_id': ObjectId(current_user.id)},
             {"$set": {'password': new_password}
         })
 
         return redirect(url_for('admin.users'))
-
 
 @mod_admin.route('/settings', methods=['GET', 'POST'])
 @login_required
@@ -188,7 +186,6 @@ def settings():
             session['settings'] = settings_form.data
         else:
             return redirect(url_for('customers.customers'))
-
     portfolio_form = PortfolioForm()
     return render_template('mod_admin/settings.html', form=settings_form, pf_form=portfolio_form, portfolio=portfolio)
 
@@ -196,40 +193,45 @@ def settings():
 @mod_admin.route('/settings/portfolio/update', methods=['POST'])
 @login_required
 def settings_portfolio_update():
-    portfolio_form = PortfolioForm(request.form)
-    portfolio_data = portfolio_form.data
-    portfolio_data['id'] = utils.get_doc_id()
+    if current_user.has_role('Admin'):
+        portfolio_form = PortfolioForm(request.form)
+        portfolio_data = portfolio_form.data
+        portfolio_data['id'] = utils.get_doc_id()
 
-    mongo.db.settings.update({'_id': 0}, {'$push': {'portfolio': portfolio_data}})
+        mongo.db.settings.update({'_id': 0}, {'$push': {'portfolio': portfolio_data}})
 
-    session['settings']['portfolio'] = portfolio_data
+        session['settings']['portfolio'] = portfolio_data
 
-    return redirect(url_for('admin.settings'))
+        return redirect(url_for('admin.settings'))
+    else:
+        return redirect(url_for('customers.customers'))
 
 
 @mod_admin.route('/settings/portfolio/delete/<item_id>', methods=['GET'])
 @login_required
 def settings_portfolio_delete(item_id):
+    if current_user.has_role('Admin'):
+        settings = mongo.db.settings.find_one({'_id': 0})
+        porfolio = []
 
-    settings = mongo.db.settings.find_one({'_id': 0})
-    porfolio = []
+        for item in settings['portfolio']:
+            if item['id'] != item_id:
+                porfolio.append(item)
 
-    for item in settings['portfolio']:
-        if item['id'] != item_id:
-            porfolio.append(item)
-
-    mongo.db.settings.update(
-        {'_id': 0},
-        {
-            '$set': {
-                'portfolio':  porfolio
+        mongo.db.settings.update(
+            {'_id': 0},
+            {
+                '$set': {
+                    'portfolio':  porfolio
+                }
             }
-        }
-    )
+        )
 
-    session['settings']['portfolio'] = porfolio
+        session['settings']['portfolio'] = porfolio
 
-    return redirect(url_for('admin.settings'))
+        return redirect(url_for('admin.settings'))
+    else:
+        return redirect(url_for('customers.customers'))
 
 
 def build_contacts_cursor(cursor):

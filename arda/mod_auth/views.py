@@ -18,22 +18,22 @@ def login():
 
     email = request.form['email']
     password = request.form['password']
+    try:
+        user_doc = Users.objects.get(email=email)
+        # If invalid password
+        if not bcrypt.check_password_hash(user_doc["password"], password):
+            error = 'Invalid password'
 
-    user_doc = Users.objects.get(email=email)
+        # Login success, return to index page
+        else:
+            login_user(user_doc)
+            current_app.logger.info("User '%s' logged in." % email)
+
+            return redirect(url_for('customers.customers'))
     # If invalid username
-    if not user_doc:
+    except DoesNotExist:
         error = 'Invalid username'
 
-    # If invalid password
-    elif not bcrypt.check_password_hash(user_doc["password"], password):
-        error = 'Invalid password'
-
-    # Login success, return to index page
-    else:
-        login_user(user_doc)
-        current_app.logger.info("User '%s' logged in." % email)
-
-        return redirect(url_for('customers.customers'))
 
     return render_template('index.html', error=error)
 

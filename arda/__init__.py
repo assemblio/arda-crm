@@ -158,6 +158,7 @@ def create_user_roles(user_datastore):
                 email="admin@admin.com",
                 password="$2a$10$o6k9L8RUiYkpaPF/Ym0freJbHzoDGTAxSP9cU8RgneDEGkas/5MSq",
                 first_name="Filan",
-                last_name="Fisteku"
+                last_name="Fisteku",
+                role="Admin"
             )
             user_datastore.add_role_to_user(user, role)

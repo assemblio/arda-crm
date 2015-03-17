@@ -1,6 +1,6 @@
 from arda import db
 from flask.ext.security import UserMixin, RoleMixin
-
+from bson import ObjectId
 
 class Role(db.Document, RoleMixin):
     name = db.StringField(max_length=80, unique=True)
@@ -13,6 +13,7 @@ class Users(db.Document, UserMixin):
     email = db.StringField(max_length=255)
     password = db.StringField(default=True)
     roles = db.ListField(db.ReferenceField(Role), default=[])
+    role = db.StringField()
 
     def is_authenticated(self):
         return True
@@ -28,3 +29,6 @@ class Users(db.Document, UserMixin):
 
     def __repr__(self):
         return '<email {}'.format(self.email)
+
+    def get_user(self, id):
+        return Users.objects.get(id=id)

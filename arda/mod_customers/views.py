@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, \
                   session, redirect, url_for, current_app, request
+from flask.ext.security import login_required
 from arda import mongo, utils
 import json
 from forms.customer_form import CustomerForm
@@ -10,6 +11,7 @@ mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
 
 
 @mod_customers.route('', methods=['GET'])
+@login_required
 def customers():
     customers = mongo.db.customers.find({})
     response = build_customers_cursor(customers)
