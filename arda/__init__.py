@@ -54,12 +54,14 @@ def create_app():
     from arda.mod_customers.views import mod_customers
     from arda.mod_services.views import mod_services
     from arda.mod_admin.views import mod_admin
+    from arda.mod_api.views import mod_api
 
     app.register_blueprint(mod_auth)
     app.register_blueprint(mod_home_page)
     app.register_blueprint(mod_customers)
     app.register_blueprint(mod_services)
     app.register_blueprint(mod_admin)
+    app.register_blueprint(mod_api)
 
     #Initialize the app to work with MongoDB
     mongo.init_app(app, config_prefix='MONGO')
@@ -156,7 +158,7 @@ def create_user_roles(user_datastore):
         except DoesNotExist:
             user = user_datastore.create_user(
                 email="admin@admin.com",
-                password="$2a$10$o6k9L8RUiYkpaPF/Ym0freJbHzoDGTAxSP9cU8RgneDEGkas/5MSq",
+                password="$2a$10$BQQey1ITMshl1f2PdKgek.vkRv4i/mTJ0ISR/OuaeAAAj3gJ/3OkC",
                 first_name="Filan",
                 last_name="Fisteku",
                 role="Admin"

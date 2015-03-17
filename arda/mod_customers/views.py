@@ -13,10 +13,10 @@ mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
 @mod_customers.route('', methods=['GET'])
 @login_required
 def customers():
+
     customers = mongo.db.customers.find({})
     response = build_customers_cursor(customers)
-
-    return render_template('mod_customers/customers.html', result=response)
+    return render_template('mod_customers/customers.html', results=response)
 
 
 @mod_customers.route('/edit', methods=['GET', 'POST'])
@@ -45,10 +45,8 @@ def build_customers_cursor(cursor):
     '''
     response = json.loads('{}')
     response_to_append_to = response['results'] = []
-
     for idx, itm in enumerate(cursor):
         response_to_append_to.append(itm)
-
     return response
 
 

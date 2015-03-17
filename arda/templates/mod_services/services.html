@@ -1,57 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
-<script type="text/javascript">
-  $(document).ready(function(){
-
-      $('.service-date-picker').datepicker({
-          autoclose: true,
-          todayHighlight: true,
-          format: 'dd/mm/yyyy',
-      });
-      $('.serviceForm').formValidation({
-          framework: 'bootstrap',
-          icon: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
-          fields: {
-              fee: {
-                  validators: {
-                      integer: {
-                        message: 'The value is not an integer'
-                    }
-                  }
-              },
-              date: {
-                  validators: {
-                      notEmpty: {
-                          message: "Can't be empty!"
-                      },
-                      date: {
-                        format: 'DD/MM/YYYY',
-                        message: 'The value is not a valid date'
-                    }
-                  }
-              },
-              
-          }
-      });
-      $('.service-date-picker').on('change.dp show.dp', function(e) {
-          $('.serviceForm').bootstrapValidator('revalidateField', 'date');
-      });
-
-  });
-</script>
 
 <section>
 	<div class="container" align="center">
     {% if result is defined %}
-		<div>
-
-	      <a href="#" data-original-title="Add service" data-toggle="modal" data-target="#add-service-form-modal" data-backdrop="false" type="button" class="btn btn-sm btn-primary">
-        Add Service</a>
-
+		<div>    
         <p>{% if result|length > 0 %}Services provided to Customer <strong>{{result[0]['customer']['firstName'] ~" "~
 result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){% endif %}</p>
   	</div>
@@ -158,66 +111,5 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
 	</div>
 </section>
 
-<!-- modal to add new service -->
-    <div class="portfolio-modal modal fade" id="add-service-form-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="modal-body">                            
-                    <h4>Add new service by filling the fields below</h4>
-                    <br></br>
-                    <form class="form-horizontal serviceForm" method="post" action="{{url_for('services.edit_service')}}">
-                    	<div class="form-group col-xs-offset-3 col-xs-9">
-                        <input type="hidden" name="company_name" id="company_name" value="{{company_name}}"/>
-                        <input type="hidden" name="customer_id" id="customer_id" value="{{customer_id}}"/>
-                    		<div class="col-xs-6">
-                        		<label class="control-label pull-right" for="providedService">Provided Service:</label>
-                        	</div>
-                        	<div class="col-xs-6">
-                                <select class="form-control col-xs-6" id="providedService" name="providedService">
-                                  <option value="Phone calls">Phone calls</option>
-                                  <option value="E-mail">E-mail</option>
-                                  <option value="Face-to-face meeting">Face-to-face meeting</option>
-                                </select> 
-                        	</div>
-                    	</div>
-                    	<div class="form-group col-xs-offset-3 col-xs-9">
-                    		<div class="col-xs-6">
-                        		<label for="date" class="control-label pull-right">Date:</label>
-                        	</div>
-                        	<div class="col-xs-6">
-                        		<input id="date" name="date" class="form-control service-date-picker" type="text">
-                        	</div>
-                        </div>
-                        <div class="form-group col-xs-offset-3 col-xs-9">
-                            <div class="col-xs-6">
-                                <label for="fee" class="control-label pull-right">Service Fee:</label>
-                            </div>
-                            <div class="col-xs-6">
-                                <input id="fee" name="fee" class="form-control" type="integer">
-                            </div>
-                        </div>
-                    	<div class="form-group col-xs-offset-3 col-xs-9">
-                    		<div class="col-xs-6">
-                    			<label for="description" class="control-label pull-right">Description:</label>
-                    		</div>
-                    		<div class="col-xs-6">
-                    			<textarea rows="4" id="description" name="description" class="form-control" ></textarea>
-                    		</div>
-                    	</div>
-                    	<br>
-                    	</br>
-                        <div class="form-group col-xs-12" >
-        				    <button type="submit" class="col-xs-offset-1 btn btn-primary">Save Service</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+
 {% endblock %}
