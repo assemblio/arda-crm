@@ -34,7 +34,7 @@
         var from_date = $('#fromDate').val();
         var to_date = $('#toDate').val();
 
-        url = "{{ url_for(api.date_fee_chart) }} " + "from="+from_date+"&to="+to_date;  
+        url = "{{ url_for('api.date_fee_chart') }}" + "from=" +from_date + "&to=" + to_date;  
 
         $.get(url, function(result){
           drawChart(result);
