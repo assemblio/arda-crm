@@ -1,9 +1,12 @@
 from flask import Blueprint, render_template, redirect, request, url_for
 
 from arda import mongo, utils
-mod_services = Blueprint('services', __name__, url_prefix='/services')
 from bson import ObjectId
 from datetime import datetime
+from forms.servicetypes import ServiceTypes
+
+mod_services = Blueprint('services', __name__, url_prefix='/services')
+
 
 @mod_services.route('/', methods=['GET'])
 def services():
@@ -48,24 +51,22 @@ def customer_services(company_name, customer_id):
 @mod_services.route('/add/<company_name>/<customer_id>', methods=['GET', 'POST'])
 def edit_service(company_name, customer_id):
     if request.method == "GET":
+        form = ServiceTypes()
         return render_template(
             'mod_services/add_service.html',
+            form=form,
             company_name=company_name,
             customer_id=customer_id
         )
     elif request.method == "POST":
         #services
-        provided_service = request.form['providedService']
-        date_time = request.form['date']
-        description = request.form['description']
-        service_fee = request.form['fee']
-
+        service_form = ServiceTypes(request.form)
         json_obj = {
             'serviceId': ObjectId(utils.get_doc_id()),
-            'provided_service': provided_service,
-            'service_date': datetime.strptime(date_time, "%d/%m/%Y"),
-            'description': description,
-            'service_fee': int(service_fee)
+            'provided_service': service_form.provided_service.data,
+            'service_date': datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
+            'description': service_form.description.data,
+            'service_fee': int(service_form.service_fee.data)
         }
 
         mongo.db.customers.update(

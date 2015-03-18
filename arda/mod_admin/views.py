@@ -115,6 +115,7 @@ def edit_user(user_id):
         else:
             return redirect(url_for('customers.customers'))
 
+
 @mod_admin.route('/users/delete/<user_id>', methods=['GET'])
 @login_required
 def delete_user(user_id):
@@ -158,7 +159,7 @@ def settings():
     if request.method == 'GET':
         settings_doc = mongo.db.settings.find_one({'_id': 0})
         portfolio = []
-
+        service_type = retrieve_all_service_types()
         if settings_doc is None:
             settings_doc = utils.get_default_settings()
 
@@ -187,7 +188,13 @@ def settings():
         else:
             return redirect(url_for('customers.customers'))
     portfolio_form = PortfolioForm()
-    return render_template('mod_admin/settings.html', form=settings_form, pf_form=portfolio_form, portfolio=portfolio)
+    return render_template(
+        'mod_admin/settings.html',
+        form=settings_form,
+        pf_form=portfolio_form,
+        portfolio=portfolio,
+        service_type=service_type
+    )
 
 
 @mod_admin.route('/settings/portfolio/update', methods=['POST'])
@@ -234,6 +241,48 @@ def settings_portfolio_delete(item_id):
         return redirect(url_for('customers.customers'))
 
 
+@mod_admin.route('/service/type/delete/<type_id>', methods=['GET'])
+@login_required
+def delete_service_type(type_id):
+
+    mongo.db.servicetypes.update(
+        {},
+        {
+            '$pull': {
+                'serviceTypes': {
+                    'serviceId': ObjectId(type_id)
+                }
+            }
+        }
+    )
+    return redirect(url_for('admin.settings'))
+
+
+@mod_admin.route('/add/service/type/<type_id>', methods=['POST'])
+@login_required
+def add_service_type(type_id):
+    from slugify import slugify
+    service_type = request.form['serviceType']
+    service_description = request.form['serviceDescription']
+    new_type = {
+        'serviceId': ObjectId(utils.get_doc_id()),
+        "type": {
+            "name": service_type,
+            "slug": slugify(service_type)
+        },
+        "description": service_description
+    }
+    mongo.db.servicetypes.update(
+        {'_id': ObjectId(type_id)},
+        {
+            '$push': {
+                'serviceTypes': new_type
+            }
+        }
+    )
+    return redirect(url_for('admin.settings'))
+
+
 def build_contacts_cursor(cursor):
     ''' Builds a JSON response for a given cursor
     '''
@@ -244,3 +293,20 @@ def build_contacts_cursor(cursor):
         response_to_append_to.append(itm)
 
     return response
+
+
+def retrieve_all_service_types():
+    json_result = mongo.db.servicetypes.aggregate([
+        {"$unwind": "$serviceTypes"},
+        {
+            "$group": {
+                "_id": {
+                    '_id': '$_id',
+                    "serviceId": "$serviceTypes.serviceId",
+                    "serviceType": "$serviceTypes.type.name",
+                    "description": "$serviceTypes.description",
+                }
+            }
+        }
+    ])
+    return json_result['result']

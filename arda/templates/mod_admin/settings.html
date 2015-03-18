@@ -54,6 +54,9 @@
 			<li role="presentation">
 				<a href="#portfolio" aria-controls="portfolio" role="tab" data-toggle="tab">Portfolio</a>
 			</li>
+			<li role="presentation">
+				<a href="#servicesType" aria-controls="servicesType" role="tab" data-toggle="tab">Service Managment</a>
+			</li>
 			{% else %}
 			<li role="account">
 				<a href="#portfolio" aria-controls="portfolio" role="tab" data-toggle="tab">Account Settings</a>
@@ -175,6 +178,7 @@
 						  	</table>
 						</div>
 					</div>
+
 				    {% endif %}
 
 				    <div align="right">
@@ -182,6 +186,66 @@
 							Add Item
 						</a>
 				    </div>		    
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="servicesType">
+				<br>
+				<div class="container">
+					<div class="form-group">
+						<div class="form-group">
+							<p align="center">If You want to add or Service Provided Types fill the fields below:</p>
+							<form class="form-horizontal" method="post" action="{{url_for('admin.add_service_type', type_id=service_type[0]['_id']['_id'])}}">
+							    <div class="col-xs-2">
+							        <label for="serviceType" class="control-label pull-right">Service Type:</label>
+							    </div>
+							    <div class="col-xs-3">
+							        <input id="serviceType" name="serviceType" class="form-control" type="text">
+							    </div>
+							    <div class="col-xs-2">
+							        <label for="serviceDescription" class="control-label pull-right">Service Description:</label>
+							    </div>
+							    <div class="col-xs-3">
+							        <input id="serviceDescription" name="serviceDescription" class="form-control" type="text">
+							    </div>
+							    <div class="form-group col-xs-2">
+						            <button type="submit" id="addType" class="col-xs-offset-1 btn btn-primary">Add Type</button>							        
+							    </div>
+							</form>
+						</div>
+					</div>
+					<br><br></br>
+					{% if service_type|length %}
+			      	<div class="panel panel-info ">
+				        <!-- Default panel contents -->
+				        <div class="table-responsive">
+				          <!-- Table -->
+				          <table class="table table-striped">
+				            <thead>
+				              <tr class="success">
+				                <th>Service Type</th>
+				                <th>Description</th>
+				                <th>Operation</th>
+				              </tr>
+				            </thead>
+				            {% for result in service_type %}
+				            <tbody id="user-list">			              
+				              <tr align="center">
+				                <td>{{result['_id']['serviceType']}}</td>
+				                <td>{{result['_id']['description']}}</td>			                
+				                <td>
+				                  <form action="{{url_for('admin.delete_service_type', type_id=result['_id']['serviceId'])}}" method="get">
+	      								<button type="submit" class="btn btn-default btn-sm">
+	      									<span class="glyphicon glyphicon-remove"></span>
+	      								</button>
+	      							</form>
+				                </td>
+				              </tr>
+				            </tbody>
+				           {% endfor %}
+				          </table>
+			        	</div>
+			      </div>
+			      {% endif %}			  
 				</div>
 			</div>
 			{% else %}
