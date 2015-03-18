@@ -18,7 +18,7 @@ def date_fee_chart():
 
     if from_date and to_date:
         match = {
-            "$match":{
+            "$match": {
                 'provided_services.service_date': {
                     '$gte': datetime.strptime(from_date, "%d-%m-%Y"),
                     '$lte': datetime.strptime(to_date, "%d-%m-%Y")
@@ -32,20 +32,24 @@ def date_fee_chart():
 
     group = {
         "$group": {
-                "_id": {
-                    "serviceType": "$provided_services.provided_service"
-                },
-                'sumOfService': {
-                    "$sum": '$provided_services.service_fee'
-                }
+            "_id": {
+                "serviceType": "$provided_services.provided_service"
+            },
+            'sumOfService': {
+                "$sum": '$provided_services.service_fee'
+            },
+            'countServices': {
+                "$sum": 1
             }
+        }
     }
 
     project = {
         "$project": {
             "_id": 0,
             "serviceType": "$_id.serviceType",
-            "valueOfService": "$sumOfService"
+            "valueOfService": "$sumOfService",
+            'countServices': '$countServices'
         }
     }
 

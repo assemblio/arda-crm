@@ -8,31 +8,48 @@
   var service_result = {{results|tojson}} 
 
   google.load("visualization", "1", {packages:["corechart"]});
+  
   google.setOnLoadCallback(drawChart);
+  //draw Value chart 
+  function drawValuePieChart(result){
+    var title = "Incomes based on services fee";
+    drawChart(title, "valueChart", result);
+  }
 
-  function drawChart(results) {
+  //draw count chart
+  function drawCountPieChart(result){
+    var title = "Number of provided services type";
+    drawChart(title, "countChart", result);
+  }
+  //draw pie chart 
+  function drawChart(title, containerId, results) {
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn('string', 'Service Type');
     dataTable.addColumn('number', 'Service Fee');
 
     for(var idx in results){
       var type = results[idx]['serviceType'];
-      var sum = results[idx]['valueOfService'];
-
+      if ( containerId === "valueChart"){
+        var sum = results[idx]['valueOfService'];
+      }else{
+        var sum = results[idx]['countServices']
+      }
       type = type.toString();
       dataTable.addRow([type, sum]);
     }
 
     var options = {
-      title: 'Incomes based on provided services'
+      title: title
     };
 
-    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    var chart = new google.visualization.PieChart(document.getElementById(containerId));
     chart.draw(dataTable, options);
   };
 
+  //load document 
   $(document).ready(function() {
-    drawChart(service_result);
+    drawValuePieChart(service_result);
+    drawCountPieChart(service_result);
 
     $('#filterButton').click(function(){
         var from_date = $('#fromDate').val();
@@ -41,7 +58,12 @@
         url = "{{ url_for('api.date_fee_chart') }}" + "?from=" +from_date + "&to=" + to_date;  
 
         $.get(url, function(result){
-          drawChart(result);
+          if($('#service-fees').is(':checked')){
+            drawValuePieChart(result);
+          }
+          if($('#service-counts').is(':checked')){
+            drawCountPieChart(result);
+          }
         });
       });
       
@@ -123,7 +145,7 @@
       <br>
 
     </li>
-    <li style="border-bottom-width:0px;padding-right:30px;padding-left:30px;"">
+    <li style="border-bottom-width:0px;padding-right:30px;padding-left:30px;">
       <button type="button" class="form-control" id="filterButton">Filter</button>
     </li>
   </ul>
@@ -131,7 +153,8 @@
 
 <section id="portofolio">
   <div id="container" align="center">
-    <div id="piechart" style="width: 750px; height: 400px;"></div>
+    <div id="valueChart" style="width: 750px; height: 400px;"></div>
+    <div id="countChart" style="width: 750px; height: 400px;"></div>
   </div>
 </section>
 

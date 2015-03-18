@@ -23,6 +23,9 @@ def provided_services_incomes():
                 },
                 'sumOfService': {
                     "$sum": '$provided_services.service_fee'
+                },
+                'countServices': {
+                    "$sum": 1
                 }
             }
         },
@@ -30,7 +33,8 @@ def provided_services_incomes():
             "$project": {
                 "_id": 0,
                 "serviceType": "$_id.serviceType",
-                "valueOfService": "$sumOfService"
+                "valueOfService": "$sumOfService",
+                'countServices': '$countServices'
             }
         }
     ])
