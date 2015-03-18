@@ -34,6 +34,10 @@ $(document).ready(function(){
   $( ".cbp-spmenu-vertical-item-parent" ).click(function() {
     var elemId = $(this).attr('id');
 
+    if(elemId == "dates"){
+      elemId = $('.chart-type:checked').val() + "-" + elemId;
+    }
+
     if ( $( ".cbp-spmenu-vertical-item-child#" + elemId ).is( ":hidden" ) ) {
       $( ".cbp-spmenu-vertical-item-child#" + elemId ).slideDown( "fast", function() {
         // Animation complete.
@@ -49,4 +53,29 @@ $(document).ready(function(){
   $('.services-types-checkbox').click(function() {
     console.log(this.value);
   });
+
+  $('.chart-type').click(function() {
+    if($(this).val() == "pie-chart"){
+      if($(".cbp-spmenu-vertical-item-child.line-chart-dates").css('display') != 'none'){
+        $(".cbp-spmenu-vertical-item-child.line-chart-dates").css('display', 'none');
+      }
+
+      if($(".cbp-spmenu-vertical-item-child.pie-chart-dates").css('display') == 'none'){
+        $( ".cbp-spmenu-vertical-item-child.pie-chart-dates").slideDown( "fast", function() {
+          // Animation complete.
+        });
+      }
+    }else if ($(this).val() == "line-chart"){
+      if($(".cbp-spmenu-vertical-item-child.pie-chart-dates").css('display') != 'none'){
+        $(".cbp-spmenu-vertical-item-child.pie-chart-dates").css('display', 'none');
+      }
+
+      if($(".cbp-spmenu-vertical-item-child.line-chart-dates").css('display') == 'none'){
+        $( ".cbp-spmenu-vertical-item-child.line-chart-dates").slideDown( "fast", function() {
+          // Animation complete.
+        });
+      }
+    }
+  });
+
 });
