@@ -8,48 +8,31 @@
   var service_result = {{results|tojson}} 
 
   google.load("visualization", "1", {packages:["corechart"]});
-  
   google.setOnLoadCallback(drawChart);
-  //draw Value chart 
-  function drawValuePieChart(result){
-    var title = "Incomes based on services fee";
-    drawChart(title, "valueChart", result);
-  }
 
-  //draw count chart
-  function drawCountPieChart(result){
-    var title = "Number of all provided services basedon service type";
-    drawChart(title, "countChart", result);
-  }
-  //draw pie chart 
-  function drawChart(title, containerId, results) {
+  function drawChart(results) {
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn('string', 'Service Type');
     dataTable.addColumn('number', 'Service Fee');
 
     for(var idx in results){
       var type = results[idx]['serviceType'];
-      if ( containerId === "valueChart"){
-        var sum = results[idx]['valueOfService'];
-      }else{
-        var sum = results[idx]['countServices']
-      }
+      var sum = results[idx]['valueOfService'];
+
       type = type.toString();
       dataTable.addRow([type, sum]);
     }
 
     var options = {
-      title: title
+      title: 'Incomes based on provided services'
     };
 
-    var chart = new google.visualization.PieChart(document.getElementById(containerId));
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
     chart.draw(dataTable, options);
   };
 
-  //load document 
   $(document).ready(function() {
-    drawValuePieChart(service_result);
-    drawCountPieChart(service_result);
+    drawChart(service_result);
 
     $('#filterButton').click(function(){
         var from_date = $('#fromDate').val();
@@ -58,8 +41,7 @@
         url = "{{ url_for('api.date_fee_chart') }}" + "?from=" +from_date + "&to=" + to_date;  
 
         $.get(url, function(result){
-          drawValuePieChart(result);
-          drawCountPieChart(result);
+          drawChart(result);
         });
       });
       
@@ -68,14 +50,6 @@
         todayHighlight: true,
         format: 'dd-mm-yyyy',
     });
-
-      $('.date-picker-month-year').datepicker({
-        autoclose: true,
-        todayHighlight: true,
-        format: 'mm-yyyy',
-        viewMode: "months", 
-        minViewMode: "months"
-      });
   });
 </script>
 
@@ -86,23 +60,23 @@
       <span id="showLeft" class="showLeft">&laquo;<span>
     </li>
 
-    <li class="cbp-spmenu-vertical-item-parent" id="chart-type">
+    <li class="cbp-spmenu-vertical-item-parent" id="parameter">
       Chart Type
     </li>
-    <li class="cbp-spmenu-vertical-item-child" id="chart-type">
-      <input type="radio" id="pie-chart" name="rb1" value="pie-chart" class="chart-type" checked />
-      <label for="pie-chart"><span></span>Pie Chart</label>
+    <li class="cbp-spmenu-vertical-item-child" id="parameter">
+      <input type="radio" id="service-fees" name="rb1" value="service-fees" class="parameter-radio" checked />
+      <label for="pie-chart"><span></span>Service Fees</label>
       <br>
 
-      <input type="radio" id="line-chart" name="rb1" value="line-chart" class="chart-type" />
-      <label for="line-chart"><span></span>Line Chart</label>
+      <input type="radio" id="service-counts" name="rb1" value="service-counts" class="parameter-radio" />
+      <label for="service-counts"><span></span>Service Counts</label>
       <br>
     </li>
 
     <li class="cbp-spmenu-vertical-item-parent" id="company">
       Customer
     </li>
-    <li class="cbp-spmenu-vertical-item-child" id="company" style="padding-right: 30px;padding-left: 30px;display: none;">
+    <li class="cbp-spmenu-vertical-item-child" id="company" style="padding-right:30px;padding-left:30px;display:none;">
       <input type="text" id="company" class="form-control" placeholder="Company" />
       <input type="text" id="customer-first-name" class="form-control" placeholder="First Name" />
       <input type="text" id="customer-last-name" class="form-control" placeholder="Last Name" />
@@ -127,7 +101,7 @@
     <li class="cbp-spmenu-vertical-item-parent" id="dates">
       Dates
     </li>
-    <li class="cbp-spmenu-vertical-item-child pie-chart-dates" id="pie-chart-dates" style="display:none;">
+    <li class="cbp-spmenu-vertical-item-child pie-chart-date-filters" id="dates" style="display:none;">
       <input type="radio" id="no-limit" name="rb2" value="no-limit" class="date-radio" checked />
       <label for="no-limit"><span></span>No Limit</label>
       <br>
@@ -142,17 +116,13 @@
     
       <input type="radio" id="data-range" name="rb2" value="data-range" class="date-radio" />
         <label for="data-range"><span></span>Date Range:</label>
-        <div style="padding-right:30px;padding-left: 30px;">
-          <input type="text" id="fromDate" name="fromDate" class="form-control date-picker" placeholder="Start Date">
-          <input type="text" id="toDate" name="toDate" class="form-control date-picker" placeholder="End Date">
-        </div>
+        <div style="padding-right:30px;padding-left:30px;">
+        <input type="text" id="fromDate" name="fromDate" class="form-control date-picker" placeholder="Start Date">
+        <input type="text" id="toDate" name="toDate" class="form-control date-picker" placeholder="End Date">
+      </div>
       <br>
     </li>
-    <li class="cbp-spmenu-vertical-item-child line-chart-dates" id="line-chart-dates" style="padding-right:30px;padding-left: 30px;display:none;">
-        <input type="text" id="month-year" name="month-year" class="form-control date-picker-month-year" placeholder="Month">
-      <br>
-    </li>
-    <li style="border-bottom-width:0px;padding-right:30px;padding-left:30px;">
+    <li style="border-bottom-width:0px;padding-right:30px;padding-left:30px;"">
       <button type="button" class="form-control" id="filterButton">Filter</button>
     </li>
   </ul>
@@ -160,8 +130,7 @@
 
 <section id="portofolio">
   <div id="container" align="center">
-    <div id="valueChart" style="width: 750px; height: 400px;"></div>
-    <div id="countChart" style="width: 750px; height: 400px;"></div>
+    <div id="piechart" style="width: 750px; height: 400px;"></div>
   </div>
 </section>
 
