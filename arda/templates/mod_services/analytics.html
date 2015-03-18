@@ -2,28 +2,36 @@
 {% block body %}
 <script type="text/javascript">
   var service_result = {{results|tojson}} 
+
   google.load("visualization", "1", {packages:["corechart"]});
   google.setOnLoadCallback(drawChart);
-  function drawChart(result) {
-  var data = google.visualization.arrayToDataTable([
-    ['Income Type', 'Value'],
-    for( var idx in service_result ){
-      [service_result[idx]['serviceType'], result[idx]['valueOfService']],
-    };
-  ]);
+
+  function drawChart(results) {
+  var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn('string', 'Service Type');
+    dataTable.addColumn('number', 'Service Fee');
+
+    for(var idx in results){
+      var type = results[idx]['serviceType'];
+      var sum = results[idx]['valueOfService'];
+
+      type = type.toString();
+      dataTable.addRow([type, sum]);
+    }
   var options = {
   title: 'Incomes based on provided services'
   };
   var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-  chart.draw(data, options);
+  chart.draw(dataTable, options);
   };
   $(document).ready(function() {
+    drawChart(service_result);
     $('#filterButton').click(function(){
         var from_date = $('#fromDate').val();
         var to_date = $('#toDate').val();
         url = "/api/service-fee?fromDate="+from_date+"&toDate="+to_date;  
-        alert(url);    
         $.get(url, function(result){
+          alert(result)
           drawChart(result);
         });
       });
@@ -45,24 +53,25 @@
         </td>
         <td>
             <form class="form-horizontal">
-            <div class="form-group">
-                <div class="col-xs-6">
-                  <label for="fromDate" class="control-label pull-right">from:</label>
+                  <div class="form-group col-xs-8">
+                    <div class="col-xs-4">
+                      <label for="fromDate" class="control-label pull-right">from:</label>
+                    </div>
+                    <div class="col-xs-8">
+                      <input id="fromDate" name="fromDate" class="form-control date-picker" type="text">
+                  </div>
                 </div>
-                <div class="col-xs-6">
-                  <input id="fromDate" name="fromDate" class="form-control date-picker" type="text">
+                <div class="form-group col-xs-8">
+                  <div class="col-xs-4">
+                    <label for="toDate" class="control-label pull-right">to:</label>
+                    </div>
+                  <div class="col-xs-8">
+                    <input id="toDate" name="toDate" class="form-control date-picker" type="text">
+                  </div>
                 </div>
-              </div>
-              <div class="col-xs-6">
-                  <label for="toDate" class="control-label pull-right">to:</label>
+                 <div class="col-xs-4">
+                    <button type="button" class="form-control" id="filterButton">Filter</button>
                 </div>
-                <div class="col-xs-6">
-                  <input id="toDate" name="toDate" class="form-control date-picker" type="text">
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <button type="button" class="form-control col-xs-2" id="filterButton">Filter</button>
-              </div>
             </div>
             </form>
         </td>
