@@ -44,6 +44,16 @@ $(document).ready(function(){
         var opt_val = $('#serviceType').val();
         $("#providedService").append("<option value="+opt_val+">"+opt_val+"</option>");
     });
+    $('#removeType').click(function(){
+        var opt_val = $('#serviceType').val();
+        var length = $('#providedService').children('option').length;
+        if(length > 0 ){
+            $("#providedService option[value="+opt_val+"]").remove();
+        }
+        else{
+            $('#removeType').attr("disabled", true);
+        }
+    });
     
 
 });
@@ -58,7 +68,7 @@ $(document).ready(function(){
         		<label class="control-label pull-right" for="providedService">Provided Service:</label>
         	</div>
         	<div class="col-xs-6">
-                <select class="form-control col-xs-6" id="providedService" name="providedService">
+                <select class="form-control col-xs-6 providedService" id="providedService" name="providedService">
                   <option value="Phone calls">Phone calls</option>
                   <option value="E-mail">E-mail</option>
                   <option value="Face-to-face meeting">Face-to-face meeting</option>
@@ -96,24 +106,5 @@ $(document).ready(function(){
         </div>
     </form>
 </div>
-<br>
-</br>
-<div class="form-group">
-        <div class="form-group col-xs-offset-3">
-            <p class="col-xs-offset-2">If You want to add more Service Types fill the field below:</p>
-        </div>
-        <div class="form-group col-xs-offset-3 col-xs-9">
-            <div class="col-xs-3">
-                <label for="serviceType" class="control-label pull-right">Service Type:</label>
-            </div>
-            <div class="col-xs-3">
-                <input id="serviceType" name="serviceType" class="form-control" type="text">
-            </div>
-            <div class="col-xs-3">
-                <button type="button" id="addType" class="col-xs-offset-1 btn btn-primary">Add Type</button>
-
-            </div>
-        </div>
-    </div>
 </section>
 {% endblock %}
