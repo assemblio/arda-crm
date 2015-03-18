@@ -106,12 +106,6 @@ def delete_service(company_name, customer_id, service_id):
     )
 
 
-@mod_services.route('/analytics', methods=['GET'])
-def analytics():
-    services_incomes = provided_services_incomes()
-    return render_template('mod_services/analytics.html', results=services_incomes)
-
-
 def get_services_for_given_company(query):
 
     json_obj = mongo.db.customers.aggregate([
@@ -223,52 +217,3 @@ def retrieve_all_services():
         }
     ])
     return json_obj['result']
-
-
-def provided_services_incomes():
-
-    json_obj = mongo.db.customers.aggregate([
-        {
-            "$unwind": "$provided_services"
-        },
-        {
-            "$group": {
-                "_id": {
-                    "serviceType": "$provided_services.provided_service"
-                },
-                'sumOfService': {
-                    "$sum": '$provided_services.service_fee'
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                "serviceType": "$_id.serviceType",
-                "valueOfService": "$sumOfService"
-            }
-        }
-    ])
-    return json_obj['result']
-
-
-def provided_services_incomes_by_month():
-
-    json_obj = mongo.db.customers.aggregate([
-        {
-            "$unwind": "$provided_services"
-        },
-        {
-            "$group": {
-                "_id": {
-                    "muaji": {
-                        "$month": "$provided_services.service_date"
-                    }
-                },
-                "valueOfService": {
-                    "$sum": '$provided_services.service_fee'
-                }
-            }
-        }
-    ])
-    return json_obj
