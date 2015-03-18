@@ -40,6 +40,11 @@ $(document).ready(function(){
     $('.service-date-picker').on('change.dp show.dp', function(e) {
         $('.serviceForm').bootstrapValidator('revalidateField', 'date');
     });
+    $('#addType').click(function(){
+        var opt_val = $('#serviceType').val();
+        $("#providedService").append("<option value="+opt_val+">"+opt_val+"</option>");
+    });
+    
 
 });
 </script>
@@ -94,6 +99,9 @@ $(document).ready(function(){
 <br>
 </br>
 <div class="form-group">
+        <div class="form-group col-xs-offset-3">
+            <p class="col-xs-offset-2">If You want to add more Service Types fill the field below:</p>
+        </div>
         <div class="form-group col-xs-offset-3 col-xs-9">
             <div class="col-xs-3">
                 <label for="serviceType" class="control-label pull-right">Service Type:</label>
@@ -102,7 +110,7 @@ $(document).ready(function(){
                 <input id="serviceType" name="serviceType" class="form-control" type="text">
             </div>
             <div class="col-xs-3">
-                <button type="submit" class="col-xs-offset-1 btn btn-primary">Add Type</button>
+                <button type="button" id="addType" class="col-xs-offset-1 btn btn-primary">Add Type</button>
 
             </div>
         </div>
