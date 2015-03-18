@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='analytics-controls/analytics-controls.css') }}" />
+<script src="{{ url_for('static', filename='analytics-controls/analytics-controls.js') }}"></script>
+
 <script type="text/javascript">
   var service_result = {{results|tojson}} 
 
@@ -49,40 +53,74 @@
   });
 </script>
 
+<!-- body has the class "cbp-spmenu-push" -->
+<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+  <ul>
+    <li id="menuTitle" class="cbp-spmenu-title"><b>Filters<b>
+      <span id="showLeft" class="showLeft">&laquo;<span>
+    </li>
+
+    <li class="cbp-spmenu-vertical-item-parent" id="company">
+      Customer
+    </li>
+    <li class="cbp-spmenu-vertical-item-child" id="company" style="padding-right:30px;padding-left:30px;">
+      <input type="text" id="company" class="form-control" placeholder="Company" />
+      <input type="text" id="customer-first-name" class="form-control" placeholder="First Name" />
+      <input type="text" id="customer-last-name" class="form-control" placeholder="Last Name" />
+    </li>
+
+    <li class="cbp-spmenu-vertical-item-parent" id="service-types">
+      Service Types
+    </li>
+    <li class="cbp-spmenu-vertical-item-child" id="service-types">
+      <input type="checkbox" id="phone-calls" name="cc" value="phone-calls" class="service-types-checkbox" checked />
+      <label for="phone-calls"><span></span>Phone Calls</label>
+      <br>
+
+      <input type="checkbox" id="e-mails" name="cc" value="e-mails" class="e-mails" class="service-types-checkbox" checked />
+      <label for="e-mails"><span></span>E-mails</label>
+      <br>
+
+      <input type="checkbox" id="face-to-face-meeting" name="cc" value="face-to-face-meeting" class="service-types-checkbox" checked />
+      <label for="face-to-face-meeting"><span></span>Face-To-Face</label>
+    </li>
+
+    <li class="cbp-spmenu-vertical-item-parent" id="dates">
+      Dates
+    </li>
+    <li class="cbp-spmenu-vertical-item-child" id="dates">
+      <input type="radio" id="no-limit" name="rb" value="no-limit" class="date-radio" checked />
+      <label for="no-limit"><span></span>No Limit</label>
+      <br>
+
+      <input type="radio" id="last-thirty" name="rb" value="last-thirty" class="date-radio" />
+      <label for="last-thirty"><span></span>Last 30 Days</label>
+      <br>
+
+      <input type="radio" id="last-seven" name="rb" value="last-seven" class="date-radio" />
+      <label for="last-seven"><span></span>Last 7 Days</label>
+      <br>
+    
+      <input type="radio" id="data-range" name="rb" value="data-range" class="date-radio" />
+        <label for="data-range"><span></span>Date Range:</label>
+        <div style="padding-right:30px;padding-left:30px;">
+        <input type="text" id="fromDate" name="fromDate" class="form-control date-picker" placeholder="Start Date">
+        <input type="text" id="toDate" name="toDate" class="form-control date-picker" placeholder="End Date">
+      </div>
+      <br>
+
+    </li>
+    <li style="border-bottom-width:0px;padding-right:30px;padding-left:30px;"">
+      <button type="button" class="form-control" id="filterButton">Filter</button>
+    </li>
+  </ul>
+</nav>
+
 <section id="portofolio">
   <div id="container" align="center">
-    <table>
-      <tr>
-        <td>
-          <div id="piechart" style="width: 750px; height: 400px;"></div>
-        </td>
-        <td>
-            <form class="form-horizontal">
-                  <div class="form-group col-xs-8">
-                    <div class="col-xs-4">
-                      <label for="fromDate" class="control-label pull-right">from:</label>
-                    </div>
-                    <div class="col-xs-8">
-                      <input id="fromDate" name="fromDate" class="form-control date-picker" type="text">
-                  </div>
-                </div>
-                <div class="form-group col-xs-8">
-                  <div class="col-xs-4">
-                    <label for="toDate" class="control-label pull-right">to:</label>
-                    </div>
-                  <div class="col-xs-8">
-                    <input id="toDate" name="toDate" class="form-control date-picker" type="text">
-                  </div>
-                </div>
-                 <div class="col-xs-4">
-                    <button type="button" class="form-control" id="filterButton">Filter</button>
-                </div>
-            </div>
-            </form>
-        </td>
-      </tr>
-    </table>
-    
+    <div id="piechart" style="width: 750px; height: 400px;"></div>
   </div>
 </section>
+
+    
 {% endblock %}
