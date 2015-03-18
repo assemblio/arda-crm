@@ -14,7 +14,6 @@ def date_fee_chart():
         from_date = request.args.get('from')
         to_date = request.args.get('to')
 
-
     match = {}
 
     if from_date and to_date:
@@ -51,8 +50,6 @@ def date_fee_chart():
     }
 
     pipeline = [unwind, match, group, project]
-
-    print pipeline
 
     json_obj = mongo.db.customers.aggregate(pipeline)
 
