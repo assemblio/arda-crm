@@ -16,13 +16,12 @@ def date_fee_chart():
 
     match_dict = {}
     if from_date:
-        match_dict['provided_services.service_date'] = datetime.strptime(from_date)
+        match_dict['provided_services.service_date'] = datetime.strptime(from_date, "%d/%m/%Y")
 
     if to_date:
-        match_dict['provided_services.service_date'] = datetime.strptime(to_date)
-
+        match_dict['provided_services.service_date'] = datetime.strptime(to_date, "%d/%m/%Y")
     #lets retrieve the document based in the parameter we gave
-    json_obj = mongo.db.malignantdisease.aggregate([
+    json_obj = mongo.db.customers.aggregate([
         {
             "$unwind": "$provided_services"
         },
@@ -47,7 +46,6 @@ def date_fee_chart():
             }
         }
     ])
-    print json_obj
     resp = Response(
         response=json_util.dumps(json_obj['result']),
         mimetype='application/json'
