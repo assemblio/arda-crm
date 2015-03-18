@@ -15,21 +15,27 @@ def date_fee_chart():
         to_date = request.args.get('toDate')
 
     match_dict = {}
-    if from_date:
-        match_dict['provided_services.service_date'] = datetime.strptime(from_date, "%d/%m/%Y")
+    match_dict['provided_services'] = {}
 
-    if to_date:
-        match_dict['provided_services.service_date'] = datetime.strptime(to_date, "%d/%m/%Y")
-    #lets retrieve the document based in the parameter we gave
-    json_obj = mongo.db.customers.aggregate([
-        {
-            "$unwind": "$provided_services"
-        },
-        {
-            "$match": match_dict
-        },
-        {
-            "$group": {
+
+    match = {}
+
+    if from_date and to_date:
+        match = {
+            "$match":{
+                'provided_services.service_date': {
+                    '$gte': datetime.strptime(from_date, "%d-%m-%Y"),
+                    '$lte': datetime.strptime(to_date, "%d-%m-%Y")
+                }
+            }
+        }
+
+    unwind = {
+        "$unwind": "$provided_services"
+    }
+
+    group = {
+        "$group": {
                 "_id": {
                     "serviceType": "$provided_services.provided_service"
                 },
@@ -37,17 +43,25 @@ def date_fee_chart():
                     "$sum": '$provided_services.service_fee'
                 }
             }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                "serviceType": "$_id.serviceType",
-                "valueOfService": "$sumOfService"
-            }
+    }
+
+    project = {
+        "$project": {
+            "_id": 0,
+            "serviceType": "$_id.serviceType",
+            "valueOfService": "$sumOfService"
         }
-    ])
+    }
+
+    pipeline = [unwind, match, group, project]
+
+    print pipeline
+
+    json_obj = mongo.db.customers.aggregate(pipeline)
+
     resp = Response(
         response=json_util.dumps(json_obj['result']),
         mimetype='application/json'
     )
+
     return resp

@@ -7,7 +7,7 @@
   google.setOnLoadCallback(drawChart);
 
   function drawChart(results) {
-  var dataTable = new google.visualization.DataTable();
+    var dataTable = new google.visualization.DataTable();
     dataTable.addColumn('string', 'Service Type');
     dataTable.addColumn('number', 'Service Fee');
 
@@ -18,20 +18,25 @@
       type = type.toString();
       dataTable.addRow([type, sum]);
     }
-  var options = {
-  title: 'Incomes based on provided services'
+
+    var options = {
+      title: 'Incomes based on provided services'
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    chart.draw(dataTable, options);
   };
-  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-  chart.draw(dataTable, options);
-  };
+
   $(document).ready(function() {
     drawChart(service_result);
+
     $('#filterButton').click(function(){
         var from_date = $('#fromDate').val();
         var to_date = $('#toDate').val();
+
         url = "/api/service-fee?fromDate="+from_date+"&toDate="+to_date;  
+
         $.get(url, function(result){
-          alert(result)
           drawChart(result);
         });
       });
@@ -39,7 +44,7 @@
       $('.date-picker').datepicker({
         autoclose: true,
         todayHighlight: true,
-        format: 'dd/mm/yyyy',
+        format: 'dd-mm-yyyy',
     });
   });
 </script>
