@@ -11,11 +11,8 @@ mod_api = Blueprint('api', __name__, url_prefix='/api')
 def date_fee_chart():
 
     if(len(request.args) > 0):
-        from_date = request.args.get('fromDate')
-        to_date = request.args.get('toDate')
-
-    match_dict = {}
-    match_dict['provided_services'] = {}
+        from_date = request.args.get('from')
+        to_date = request.args.get('to')
 
 
     match = {}
