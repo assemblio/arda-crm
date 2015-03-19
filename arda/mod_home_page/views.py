@@ -50,7 +50,7 @@ def create_services():
         }
     ]
     mongo.db.servicetypes.update(
-        {'_id': ObjectId(doc_id)},
-        {'$set': {"serviceTypes": initial_services}},
+        {'_id': ObjectId('5509cb3b484d3f17a2409cea')},
+        {'$setOnInsert': {"serviceTypes": initial_services}},
         True
     )
