@@ -77,9 +77,9 @@ def search():
 
     match_field = {}
     if f_name:
-        match_field['first_name'] = f_name
+        match_field['first_name.slug'] = slugify(f_name)
     if l_name:
-        match_field['last_name'] = l_name
+        match_field['last_name.slug'] = slugify(l_name)
     if company:
         match_field['company.slug'] = slugify(company)
 
@@ -91,8 +91,8 @@ def search():
         "$group": {
             "_id": {
                 "_id": "$_id",
-                "first_name": "$first_name",
-                "last_name": "$last_name",
+                "first_name": "$first_name.value",
+                "last_name": "$last_name.value",
                 "job_title": "$job_title",
                 "company": {
                     "name": "$company.slug",
@@ -129,7 +129,7 @@ def search():
     pipeline = [match, group, project]
 
     json_obj = mongo.db.customers.aggregate(pipeline)
-    print json_obj
+
     resp = Response(
         response=json_util.dumps(json_obj['result']),
         mimetype='application/json'

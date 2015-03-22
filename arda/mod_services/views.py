@@ -66,6 +66,7 @@ def edit_service(company_name, customer_id):
             'provided_service': service_form.provided_service.data,
             'service_date': datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
             'description': service_form.description.data,
+            'contactVia': service_form.contact_via.data,
             'service_fee': int(service_form.service_fee.data)
         }
 

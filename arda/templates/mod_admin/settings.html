@@ -57,6 +57,9 @@
 			<li role="presentation">
 				<a href="#servicesType" aria-controls="servicesType" role="tab" data-toggle="tab">Service Managment</a>
 			</li>
+			<li role="presentation">
+				<a href="#contactViaType" aria-controls="contactViaType" role="tab" data-toggle="tab">Contact Via</a>
+			</li>
 			{% else %}
 			<li role="account">
 				<a href="#portfolio" aria-controls="portfolio" role="tab" data-toggle="tab">Account Settings</a>
@@ -234,6 +237,66 @@
 				                <td>{{result['_id']['description']}}</td>			                
 				                <td>
 				                  <form action="{{url_for('admin.delete_service_type', type_id=result['_id']['serviceId'])}}" method="get">
+	      								<button type="submit" class="btn btn-default btn-sm">
+	      									<span class="glyphicon glyphicon-remove"></span>
+	      								</button>
+	      							</form>
+				                </td>
+				              </tr>
+				            </tbody>
+				           {% endfor %}
+				          </table>
+			        	</div>
+			      </div>
+			      {% endif %}			  
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="contactViaType">
+				<br>
+				<div class="container">
+					<div class="form-group">
+						<div class="form-group">
+							<p align="center">Manage types of contacting manners</p>
+							<form class="form-horizontal" method="post" action="{{url_for('admin.add_contact_type', type_id=contact_via_types[0]['_id']['_id'])}}">
+							    <div class="col-xs-2">
+							        <label for="contactVia" class="control-label pull-right">Contact Via:</label>
+							    </div>
+							    <div class="col-xs-3">
+							        <input id="contactVia" name="contactVia" class="form-control" type="text">
+							    </div>
+							    <div class="col-xs-2">
+							        <label for="contactDescription" class="control-label pull-right">Description:</label>
+							    </div>
+							    <div class="col-xs-3">
+							        <input id="contactDescription" name="contactDescription" class="form-control" type="text">
+							    </div>
+							    <div class="form-group col-xs-2">
+						            <button type="submit" id="addContactType" class="col-xs-offset-1 btn btn-primary">Add Type</button>							        
+							    </div>
+							</form>
+						</div>
+					</div>
+					<br><br></br>
+					{% if contact_via_types|length > 0 %}
+			      	<div class="panel panel-info ">
+				        <!-- Default panel contents -->
+				        <div class="table-responsive">
+				          <!-- Table -->
+				          <table class="table table-striped">
+				            <thead>
+				              <tr class="success">
+				                <th>Contacting Manners</th>
+				                <th>Description</th>
+				                <th>Operation</th>
+				              </tr>
+				            </thead>
+				            {% for contact in contact_via_types %}
+				            <tbody id="user-list">			              
+				              <tr align="center">
+				                <td>{{contact['_id']['contactType']}}</td>
+				                <td>{{contact['_id']['description']}}</td>		                
+				                <td>
+				                  <form action="{{url_for('admin.delete_contact_type', type_id=contact['_id']['contactId'])}}" method="get">
 	      								<button type="submit" class="btn btn-default btn-sm">
 	      									<span class="glyphicon glyphicon-remove"></span>
 	      								</button>

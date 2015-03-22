@@ -17,21 +17,21 @@
                     "<table align='center'>"+
                     "<tr align='center'>"+
                       "<td>"+
-                        "<form method='get' action='{{ url_for('services.edit_service', company_name="+result[index]['company']['slug']+", customer_id="+result[index]['company']['slug']+") }}'>"+
+                        "<form method='get' action=''>"+
                           "<button type='submit' class='btn btn-default btn-sm btn-default'>"+
                             "<span class='glyphicon glyphicon-plus'></span>"+
                           "</button>&nbsp;"+
                         "</form>"+
                       "</td>"+
                       "<td>"+
-                        "<form method='get' action='{{ url_for('services.customer_services', company_name="+result[index]['company']['slug']+", customer_id="+result[index]['_id']+") }}'>"+
+                        "<form method='get' action=''>"+
                           "<button type='submit' class='btn btn-default btn-sm btn-default'>"+
                             "<span class='glyphicon glyphicon-user'></span>"+
                           "</button>&nbsp;"+
                         "</form>"+
                       "</td>"+
                       "<td>"+
-                        "<form method='get' action='{{ url_for('services.company_services', company_name="+ result[index]['company']['slug'] +")}}'>"+
+                        "<form method='get' action=''>"+
                         
                           "<button type='submit' class='btn btn-default btn-sm btn-default'>"+
                             "<span class='glyphicon glyphicon-th-list'></span>"+
@@ -52,7 +52,7 @@
                         "</form>"+
                       "</td>"+
                       "<td>"+
-                        "<form method='get' action='{{ url_for('customers.delete_customer', customer_id="+result[index]['_id']+") }}'>"+
+                        "<form method='get' action=''>"+
                           "<button type='submit' class='btn btn-default btn-sm btn-danger'>"+
                             "<span class='glyphicon glyphicon-remove'></span>"+
                           "</button>&nbsp;"+
@@ -127,8 +127,8 @@
             <tbody id="customers-list">
               {% for customer in results['results'] %}
               <tr align="center">
-                <td>{{customer['first_name']}}</td>
-                <td>{{customer['last_name']}}</td>
+                <td>{{customer['first_name']['value']}}</td>
+                <td>{{customer['last_name']['value']}}</td>
                 <td>{{customer['job_title']}}</td>
                 <td>{{customer['company']['name']}}</td>
                 <td>{{customer['phone']['main_phone']}}</td>

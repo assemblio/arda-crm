@@ -61,8 +61,14 @@ def buld_save_costumers_document():
             'name': costumer['company_name'],
             'slug': slugify(costumer['company_name'])
         },
-        'first_name': costumer['first_name'],
-        'last_name': costumer['last_name'],
+        'first_name': {
+        	'value': costumer['first_name'],
+        	'slug': slugify(costumer['first_name']),
+        },
+        'last_name': {
+        	'value': costumer['last_name'],
+        	'slug': slugify(costumer['last_name'])
+        },
         'costumer_type': costumer['costumer_type'],
         'job_title': costumer['job_title'],
         'phone': {

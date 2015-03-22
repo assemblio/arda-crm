@@ -10,6 +10,9 @@ from bson import json_util, ObjectId
 from arda.mod_admin.models.user_model import Users, Role
 from flask.ext.security import login_user, login_required, logout_user, current_user
 from arda import user_datastore
+from slugify import slugify
+
+
 mod_admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 
@@ -159,7 +162,10 @@ def settings():
     if request.method == 'GET':
         settings_doc = mongo.db.settings.find_one({'_id': 0})
         portfolio = []
+        #retireve types in order to manage in settings page
         service_type = retrieve_all_service_types()
+        contact_via_types = retrieve_all_contact_types()
+
         if settings_doc is None:
             settings_doc = utils.get_default_settings()
 
@@ -193,7 +199,8 @@ def settings():
         form=settings_form,
         pf_form=portfolio_form,
         portfolio=portfolio,
-        service_type=service_type
+        service_type=service_type,
+        contact_via_types=contact_via_types
     )
 
 
@@ -241,7 +248,7 @@ def settings_portfolio_delete(item_id):
         return redirect(url_for('customers.customers'))
 
 
-@mod_admin.route('/service/type/delete/<type_id>', methods=['GET'])
+@mod_admin.route('/delete/service/type/<type_id>', methods=['GET'])
 @login_required
 def delete_service_type(type_id):
 
@@ -261,7 +268,6 @@ def delete_service_type(type_id):
 @mod_admin.route('/add/service/type/<type_id>', methods=['POST'])
 @login_required
 def add_service_type(type_id):
-    from slugify import slugify
     service_type = request.form['serviceType']
     service_description = request.form['serviceDescription']
     new_type = {
@@ -277,6 +283,48 @@ def add_service_type(type_id):
         {
             '$push': {
                 'serviceTypes': new_type
+            }
+        }
+    )
+    return redirect(url_for('admin.settings'))
+
+
+@mod_admin.route('/add/contact-via/type/<type_id>', methods=['POST'])
+@login_required
+def add_contact_type(type_id):
+
+    contact_type = request.form['contactVia']
+    description = request.form['contactDescription']
+    new_type = {
+        "type": {
+            "name": contact_type,
+            "slug": slugify(contact_type)
+        },
+        'contactId': ObjectId(utils.get_doc_id()),
+        "description": description
+    }
+    mongo.db.servicetypes.update(
+        {'_id': ObjectId(type_id)},
+        {
+            '$push': {
+                'contactVia': new_type
+            }
+        }
+    )
+    return redirect(url_for('admin.settings'))
+
+
+@mod_admin.route('/delete/contact-via/type/<type_id>', methods=['GET'])
+@login_required
+def delete_contact_type(type_id):
+
+    mongo.db.servicetypes.update(
+        {},
+        {
+            '$pull': {
+                'contactVia': {
+                    'contactId': ObjectId(type_id)
+                }
             }
         }
     )
@@ -304,7 +352,24 @@ def retrieve_all_service_types():
                     '_id': '$_id',
                     "serviceId": "$serviceTypes.serviceId",
                     "serviceType": "$serviceTypes.type.name",
-                    "description": "$serviceTypes.description",
+                    "description": "$serviceTypes.description"
+                }
+            }
+        }
+    ])
+    return json_result['result']
+
+
+def retrieve_all_contact_types():
+    json_result = mongo.db.servicetypes.aggregate([
+        {"$unwind": "$contactVia"},
+        {
+            "$group": {
+                "_id": {
+                    '_id': '$_id',
+                    "contactId": "$contactVia.contactId",
+                    "contactType": "$contactVia.type.name",
+                    "description": "$contactVia.description"
                 }
             }
         }

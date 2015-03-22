@@ -49,8 +49,31 @@ def create_services():
             "description": "Face-to-Face Service"
         }
     ]
+    initial_contact_manner = [
+    	{
+            "type": {
+                "name": "1",
+                "slug": "1"
+            },
+            'contactId': ObjectId(utils.get_doc_id()),
+            "description": "this one contact manner"
+        },
+        {
+            "type": {
+                "name": "2",
+                "slug": "2"
+            },
+            'contactId': ObjectId(utils.get_doc_id()),
+            "description": "this another contact manner"
+        }
+    ]
     mongo.db.servicetypes.update(
         {'_id': ObjectId('5509cb3b484d3f17a2409cea')},
-        {'$setOnInsert': {"serviceTypes": initial_services}},
+        {
+        	'$setOnInsert': {
+        		"serviceTypes": initial_services,
+        		"contactVia": initial_contact_manner
+        	}
+        },
         True
     )
