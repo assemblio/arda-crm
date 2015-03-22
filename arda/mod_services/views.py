@@ -48,7 +48,7 @@ def customer_services(company_name, customer_id):
     )
 
 
-@mod_services.route('/add/<company_name>/<customer_id>', methods=['GET', 'POST'])
+@mod_services.route('/add/new/to/<company_name>/<customer_id>', methods=['GET', 'POST'])
 def edit_service(company_name, customer_id):
     if request.method == "GET":
         form = ServiceTypes()
@@ -126,8 +126,8 @@ def get_services_for_given_company(query):
                         "slug": "$company.slug",
                     },
                     "customer": {
-                        "firstName": "$first_name",
-                        "lastName": "$last_name",
+                        "firstName": "$first_name.value",
+                        "lastName": "$last_name.value",
                         "customerId": "$_id"
                     },
                     "service": {
@@ -181,8 +181,8 @@ def retrieve_all_services():
                         "slug": "$company.slug",
                     },
                     "customer": {
-                        "firstName": "$first_name",
-                        "lastName": "$last_name",
+                        "firstName": "$first_name.value",
+                        "lastName": "$last_name.value",
                         "customerId": "$_id"
                     },
                     "service": {

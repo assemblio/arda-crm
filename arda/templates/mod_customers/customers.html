@@ -6,6 +6,15 @@
     // First remove the results before showing the new results table
         $("#results-table td").remove();
         for (var index in result) {
+        		var slug = result[index]['company']['slug'];
+        		var customer_id = result[index]['_id'];
+        		console.log(customer_id);
+        		/* we are building url with requeired parameters
+        		   for AJAX request we need 
+        		*/
+        		var url_action = "{{url_for('services.edit_service', company_name='company_slug', customer_id='customerID')}}".replace('company_slug/customerID', slug + "/" + customer_id['$oid']);
+        		var url_action_customer = "{{url_for('services.customer_services', company_name='company_slug', customer_id='customerID')}}".replace('company_slug/customerID', slug + "/" + customer_id['$oid']);
+
                 $("#customers-list").append("<tr>" +
                     "<td>"+result[index]["first_name"]+"</td>"+
                     "<td>"+result[index]["last_name"]+"</td>"+
@@ -17,21 +26,21 @@
                     "<table align='center'>"+
                     "<tr align='center'>"+
                       "<td>"+
-                        "<form method='get' action=''>"+
+                        "<form method='get' action='"+url_action+"'>"+
                           "<button type='submit' class='btn btn-default btn-sm btn-default'>"+
                             "<span class='glyphicon glyphicon-plus'></span>"+
                           "</button>&nbsp;"+
                         "</form>"+
                       "</td>"+
                       "<td>"+
-                        "<form method='get' action=''>"+
+                        "<form method='get' action='"+url_action_customer+"'>"+
                           "<button type='submit' class='btn btn-default btn-sm btn-default'>"+
                             "<span class='glyphicon glyphicon-user'></span>"+
                           "</button>&nbsp;"+
                         "</form>"+
                       "</td>"+
                       "<td>"+
-                        "<form method='get' action=''>"+
+                        "<form method='get' action='{{url_for('services.company_services', company_name="+slug+")}}'>"+
                         
                           "<button type='submit' class='btn btn-default btn-sm btn-default'>"+
                             "<span class='glyphicon glyphicon-th-list'></span>"+
@@ -52,7 +61,7 @@
                         "</form>"+
                       "</td>"+
                       "<td>"+
-                        "<form method='get' action=''>"+
+                        "<form method='get' action='{{ url_for('customers.delete_customer', customer_id="+ customer_id +") }}'>"+
                           "<button type='submit' class='btn btn-default btn-sm btn-danger'>"+
                             "<span class='glyphicon glyphicon-remove'></span>"+
                           "</button>&nbsp;"+

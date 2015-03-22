@@ -95,8 +95,8 @@ def search():
                 "last_name": "$last_name.value",
                 "job_title": "$job_title",
                 "company": {
-                    "name": "$company.slug",
                     "name": "$company.name",
+                    "slug": "$company.slug",
                 },
                 "phone": {
                     "main_phone": "$phone.main_phone",
