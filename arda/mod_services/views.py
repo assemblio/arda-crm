@@ -4,6 +4,7 @@ from arda import mongo, utils
 from bson import ObjectId
 from datetime import datetime
 from forms.servicetypes import ServiceTypes
+from slugify import slugify
 
 mod_services = Blueprint('services', __name__, url_prefix='/services')
 
@@ -63,7 +64,10 @@ def edit_service(company_name, customer_id):
         service_form = ServiceTypes(request.form)
         json_obj = {
             'serviceId': ObjectId(utils.get_doc_id()),
-            'provided_service': service_form.provided_service.data,
+            'provided_service': {
+            	'value': service_form.provided_service.data,
+            	'slug': slugify(service_form.provided_service.data),
+            },
             'service_date': datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
             'description': service_form.description.data,
             'contactVia': service_form.contact_via.data,
@@ -132,7 +136,8 @@ def get_services_for_given_company(query):
                     },
                     "service": {
                         'serviceId': '$provided_services.serviceId',
-                        "type": "$provided_services.provided_service",
+                        'contactVia': '$provided_services.contactVia',
+                        "type": "$provided_services.provided_service.value",
                         "description": "$provided_services.description",
                         "fee": "$provided_services.service_fee",
                         "date": "$provided_services.service_date"
@@ -155,6 +160,7 @@ def get_services_for_given_company(query):
                 },
                 "service": {
                     'serviceId': '$_id.service.serviceId',
+                    'contactVia': '$_id.service.contactVia',
                     "type": "$_id.service.type",
                     "description": "$_id.service.description",
                     "fee": "$_id.service.fee",
@@ -187,7 +193,8 @@ def retrieve_all_services():
                     },
                     "service": {
                         'serviceId': '$provided_services.serviceId',
-                        "type": "$provided_services.provided_service",
+                        'contactVia': '$provided_services.contactVia',
+                        "type": "$provided_services.provided_service.value",
                         "description": "$provided_services.description",
                         "fee": "$provided_services.service_fee",
                         "date": "$provided_services.service_date"
@@ -210,6 +217,7 @@ def retrieve_all_services():
                 },
                 "service": {
                     'serviceId': '$_id.service.serviceId',
+                    'contactVia': '$_id.service.contactVia',
                     "type": "$_id.service.type",
                     "description": "$_id.service.description",
                     "fee": "$_id.service.fee",

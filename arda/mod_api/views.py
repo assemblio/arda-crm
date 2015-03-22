@@ -22,8 +22,8 @@ def date_fee_chart():
         match = {
             "$match": {
                 'provided_services.service_date': {
-                    '$gte': datetime.strptime(from_date, "%d-%m-%Y"),
-                    '$lte': datetime.strptime(to_date, "%d-%m-%Y")
+                    '$gte': datetime.strptime(from_date, "%d/%m/%Y"),
+                    '$lte': datetime.strptime(to_date, "%d/%m/%Y")
                 }
             }
         }
@@ -35,7 +35,7 @@ def date_fee_chart():
     group = {
         "$group": {
             "_id": {
-                "serviceType": "$provided_services.provided_service"
+                "serviceType": "$provided_services.provided_service.value"
             },
             'sumOfService': {
                 "$sum": '$provided_services.service_fee'
@@ -127,6 +127,74 @@ def search():
     }
 
     pipeline = [match, group, project]
+
+    json_obj = mongo.db.customers.aggregate(pipeline)
+
+    resp = Response(
+        response=json_util.dumps(json_obj['result']),
+        mimetype='application/json'
+    )
+
+    return resp
+
+
+@mod_api.route('/search/service', methods=['GET'])
+def search_service():
+
+    if len(request.args) > 0:
+        service_type = request.args.get('serviceType')
+        from_dt = request.args.get('from')
+        to_dt = request.args.get('to')
+
+    match_fields = {}
+
+    if service_type:
+        match_fields['provided_services.provided_service.slug'] = slugify(service_type)
+
+    if from_dt and to_dt:
+        match_fields['provided_services.service_date'] = {
+            '$gte': datetime.strptime(from_dt, "%d/%m/%Y"),
+            '$lte': datetime.strptime(to_dt, "%d/%m/%Y")
+        }
+
+    match = {
+        "$match": match_fields
+    }
+
+    unwind = {
+        "$unwind": "$provided_services"
+    }
+
+    group = {
+        "$group": {
+            "_id": {
+                "firstName": "$first_name.value",
+                "lastName": "$last_name.value",
+                "serviceType": "$provided_services.provided_service.value",
+                'serviceId': '$provided_services.serviceId',
+                'contactVia': '$provided_services.contactVia',
+                "description": "$provided_services.description",
+                "fee": "$provided_services.service_fee",
+                "date": "$provided_services.service_date"
+            }
+        }
+    }
+
+    project = {
+        "$project": {
+            "_id": 0,
+            "first_name": "$_id.firstName",
+            "last_name": "$_id.lastName",
+            "serviceType": "$_id.serviceType",
+            "serviceId": "$_id.serviceId",
+            "contactVia": "$_id.contactVia",
+            "description": "$_id.description",
+            "fee": "$_id.fee",
+            "date": "$_id.date",
+        }
+    }
+
+    pipeline = [unwind, match, group, project]
 
     json_obj = mongo.db.customers.aggregate(pipeline)
 

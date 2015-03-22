@@ -1,6 +1,62 @@
 {% extends "layout.html" %}
 {% block body %}
+<script>
+function rebuildTable(result){
+	$('.table-result td').remove();
+	//Now we populate the table based on the filtering parameters
+	for (var index in result) {
+		var d = new Date(result[index]['date']['$date']);
+		var date_string =  d.getDate() + "/" + (d.getMonth() + 1) + "/" + (d.getYear() + 1900);
 
+		var serviceId = result[index]['serviceId'];
+
+		var url_action_delete = "{{url_for('customers.delete_customer',customer_id='customerID')}}".replace('customerID', serviceId['$oid']);
+         $("#customers-list").append(
+         	"<tr>" +				
+	            "<td>"+result[index]["first_name"]+"</td>"+
+	            "<td>"+result[index]["last_name"]+"</td>"+
+	            "<td>"+result[index]["serviceType"]+"</td>"+
+	            "<td>"+result[index]['contactVia']+"</td>"+
+	            "<td>"+date_string+"</td>"+
+	            "<td>"+result[index]["fee"]+"</td>"+
+	            "<td>"+result[index]["description"]+"</td>"+
+	            "<td>"+
+		            "<table align='center'>"+
+			            "<tr align='center'>"+
+			              "<td>"+
+			              	"<form method='get' action='"+url_action_delete+"'>"+
+	                          "<button type='submit' class='btn btn-default btn-sm btn-danger'>"+
+	                            "<span class='glyphicon glyphicon-remove'></span>"+
+	                          "</button>&nbsp;"+
+	                        "</form>"+
+			              "</td>"+
+			            "</tr>"+
+		          	"</table>"+
+	            "</td>"+
+        	"</tr>"
+        );
+
+	}
+};
+$(document).ready(function(){
+
+	$('.service-date-picker').datepicker({
+	        autoclose: true,
+	        todayHighlight: true,
+	        format: 'dd/mm/yyyy',
+    });
+    //Get result to populate service table
+    $('#searchButon').click(function(){
+    	var service_type = $('#serviceType').val();
+    	var from_date = $('#from').val();
+    	var to_date = $('#to').val();
+    	var url = "{{url_for('api.search_service')}}" + "?serviceType="+service_type+"&from="+from_date+"&to="+to_date;
+    	$.get(url, function(result){
+    		rebuildTable(result);
+    	});
+    });
+});
+</script>
 <section>
 	<div class="container" align="center">
     {% if result is defined %}
@@ -17,9 +73,26 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
 
       {% if not company_name and result_services|length > 0  %}
       <p>All Services provided by <strong>ARDA</strong></p>
-      {% endif %}
+      
     </div>
-        <br></br>
+    <div class="form-group form-group-sm">
+      <form class="form-horizontal">
+        <div class="col-xs-offset-1 col-xs-5">
+          <input type="text" class="form-control" id='serviceType' name='serviceType' placeholder="Service Type">
+        </div>
+        <div class="col-xs-2">
+          <input type="text" class="form-control service-date-picker" id='from' name='from' placeholder="from date">
+        </div>
+        <div class="col-xs-2">
+          <input type="text" class="form-control service-date-picker" id='to' name='to' placeholder="to date">
+        </div>
+        <div class="col-xs-2">
+          <button type="button" class="btn btn-success" id="searchButon">Search</button>
+        </div>
+      </form>
+    </div>
+    {% endif %}
+        <br></br><br>
     
     <div class="panel panel-info ">
       <!-- Default panel contents -->
@@ -27,12 +100,13 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
         <!-- Table -->
         
 
-        <table class="table table-striped table-condensed">
+        <table class="table table-striped table-condensed table-result">
           <thead >
             <tr class="danger">
               <th>First Name</th>
               <th>Last Name</th>
               <th>Service Type</th>
+              <th>Contacted Via</th>
               <th>Service Date</th>
               <th>Service Fee</th>
               <th>Service Description</th>
@@ -40,12 +114,13 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
             </tr>
           </thead>
           {% if result is defined %}
-          <tbody id="customers-list text-center">
+          <tbody id="customers-list">
             {% for service in result %}
             <tr align="center">
               <td>{{service['customer']['firstName']}}</td>
               <td>{{service['customer']['lastName']}}</td>
               <td>{{service['service']['type']}}</td>
+              <td>{{service['service']['contactVia']}}</td>
               {% set year = service.service.date.year %}
               {% set month = service.service.date.month %}
               {% set day = service.service.date.day %}
@@ -72,12 +147,13 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
             {% endif %}
           </tbody>
           {% if result_services is defined and result_services|length > 0 %}
-          <tbody id="customers-list text-center">
+          <tbody id="customers-list">
             {% for service in result_services %}
             <tr align="center">
               <td>{{service['customer']['firstName']}}</td>
               <td>{{service['customer']['lastName']}}</td>
               <td>{{service['service']['type']}}</td>
+              <td>{{service['service']['contactVia']}}</td>
               {% set year = service.service.date.year %}
               {% set month = service.service.date.month %}
               {% set day = service.service.date.day %}

@@ -19,7 +19,7 @@ def provided_services_incomes():
         {
             "$group": {
                 "_id": {
-                    "serviceType": "$provided_services.provided_service"
+                    "serviceType": "$provided_services.provided_service.value"
                 },
                 'sumOfService': {
                     "$sum": '$provided_services.service_fee'
