@@ -9,7 +9,7 @@ class ServiceTypes(Form):
     service_fee = IntegerField("Service Fee")
     service_date = StringField("Schedule")
     provided_service = SelectField("Provided Service")
-    contact_via = SelectField("Contact via")
+    contact_via = SelectField("Contacted via")
 
     def __init__(self, *args, **kwargs):
         # pre-populate provided service Selectfield from database

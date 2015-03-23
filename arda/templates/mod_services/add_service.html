@@ -21,7 +21,7 @@ $(document).ready(function(){
                 	notEmpty: {
                         message: "Can't be empty!"
                     },
-                    integer: {
+                    digit: {
                       message: 'The value is not an integer'
                   }
                 }
@@ -52,7 +52,7 @@ $(document).ready(function(){
 <div class="container" align="center">                     
     <h4>Add new service by filling the fields below</h4>
     <br></br>
-    <form class="form-horizontal serviceForm" method="post" action="{{url_for('services.edit_service', company_name=company_name, customer_id=customer_id)}}">
+    <form class="form-horizontal serviceForm" method="post" action="{{url_for('services.add_service', company_name=company_name, customer_id=customer_id)}}">
     	<div class="form-group col-xs-offset-3 col-xs-9">
     		<div class="col-xs-6">
         		{{form.provided_service.label(class="control-label pull-right")}}

@@ -13,14 +13,12 @@ def home_page():
     settings_doc = mongo.db.settings.find_one({'_id': 0})
     #Create initial service types
     create_services()
-    if current_user.is_authenticated():
-    	return redirect(url_for('customers.customers'))
+
+    if settings_doc is None:
+        session['settings'] = utils.get_default_settings()
     else:
-	    if settings_doc is None:
-	        session['settings'] = utils.get_default_settings()
-	    else:
-	        session['settings'] = settings_doc
-	    return render_template('index.html')
+        session['settings'] = settings_doc
+    return render_template('index.html')
 
 
 def create_services():

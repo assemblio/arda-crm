@@ -139,7 +139,7 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
                 <table align="center">
                   <tr align="center">
                   	<td>
-                        <form method="get" action="">
+                        <form method="get" action="{{url_for('services.edit_service',company_name=service['company']['slug'], customer_id=service['customer']['_id'], service_id=service['service']['serviceId'])}}">
                           <button type="submit" class="btn btn-default btn-sm btn-default">
                             <span class="glyphicon glyphicon-edit"></span>
                           </button>&nbsp;
@@ -178,7 +178,7 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
                 <table align="center">
                   <tr align="center">
                   	<td>
-                        <form method="get" action="">
+                        <form method="get" action="{{url_for('services.edit_service',company_name=service['company']['slug'], customer_id=service['customer']['_id'], service_id=service['service']['serviceId'])}}">
                           <button type="submit" class="btn btn-default btn-sm btn-default">
                             <span class="glyphicon glyphicon-edit"></span>
                           </button>&nbsp;
