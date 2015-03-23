@@ -74,6 +74,7 @@ def search():
         f_name = request.args.get('firstName')
         l_name = request.args.get('lastName')
         company = request.args.get('company')
+        customer_type = request.args.get('customer_type')
 
     match_field = {}
     if f_name:
@@ -82,6 +83,8 @@ def search():
         match_field['last_name.slug'] = slugify(l_name)
     if company:
         match_field['company.slug'] = slugify(company)
+    if customer_type:
+        match_field['costumer_type'] = customer_type
 
     match = {
         "$match": match_field

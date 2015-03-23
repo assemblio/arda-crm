@@ -84,11 +84,13 @@
 
     //search patient logic
     $('#searchButon').click(function(){
+      var customer_type = $('#customer-type-select').val();
       var name = $('#firstName').val();
       var l_name = $('#lastName').val();
       var company = $('#company').val();
 
-      url = "{{ url_for('api.search') }}" + "?firstName=" + name + "&lastName=" + l_name + "&company=" + company;      
+      url = "{{ url_for('api.search') }}" + "?firstName=" + name + "&lastName=" + l_name + "&company=" + company + "&customer_type=" + customer_type;
+
       $.get(url, function(result){
         rebuildTable(result);
       });
@@ -105,13 +107,21 @@
     </div>
     <div class="form-group form-group-sm">
       <form class="form-horizontal">
-        <div class="col-xs-offset-1 col-xs-3">
+        <div class="col-xs-offset-1 col-xs-2">
+        <select id="customer-type-select" class="form-control">
+          <option value="Entrepreneur" selected="selected">Entrepreneur</option>
+          <option value="Non-governmental organisation">Non-governmental organisation</option>
+          <option value="Investor">Investor</option>
+          <option value="Municipalitie">Municipalitie</option>
+        </select>
+        </div>
+        <div class="col-xs-offset-0 col-xs-2">
           <input type="text" class="form-control" id='firstName' name='firstName' placeholder="First Name">
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-2">
           <input type="text" class="form-control" id='lastName' name='lastName' placeholder="Last Name">
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-2">
           <input type="text" class="form-control" id='company' name='company' placeholder="Company">
         </div>
         <div class="col-xs-2">
