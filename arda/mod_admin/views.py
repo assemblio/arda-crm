@@ -55,6 +55,7 @@ def create_user():
             user_form = UserForm(request.form)
             user_data = user_form.data
             user = Users(
+            	region=user_data['region'],
                 last_name=user_data['last_name'],
                 first_name=user_data['first_name'],
                 email=user_data['email'],

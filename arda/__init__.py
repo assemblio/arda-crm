@@ -163,6 +163,7 @@ def create_user_roles(user_datastore):
                 password="$2a$10$BQQey1ITMshl1f2PdKgek.vkRv4i/mTJ0ISR/OuaeAAAj3gJ/3OkC",
                 first_name="Filan",
                 last_name="Fisteku",
-                role="Admin"
+                role="Admin",
+                region="All",
             )
             user_datastore.add_role_to_user(user, role)

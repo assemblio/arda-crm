@@ -12,7 +12,6 @@
         		   for AJAX request we do
         		*/
 
-
         		var url_action = "{{url_for('services.edit_service', company_name='company_slug', customer_id='customerID')}}".replace('company_slug/customerID', slug + "/" + customer_id['$oid']);
 
         		var url_action_customer = "{{url_for('services.customer_services', company_name='company_slug', customer_id='customerID')}}".replace('company_slug/customerID', slug + "/" + customer_id['$oid']);

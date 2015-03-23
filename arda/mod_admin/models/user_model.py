@@ -10,6 +10,7 @@ class Role(db.Document, RoleMixin):
 class Users(db.Document, UserMixin):
     first_name = db.StringField(max_length=255)
     last_name = db.StringField(max_length=255)
+    region = db.StringField(max_length=255)
     email = db.StringField(max_length=255)
     password = db.StringField(default=True)
     roles = db.ListField(db.ReferenceField(Role), default=[])

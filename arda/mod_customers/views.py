@@ -6,6 +6,7 @@ import json
 from forms.customer_form import CustomerForm
 from slugify import slugify
 from bson import ObjectId
+from flask.ext.security import login_user, login_required, logout_user, current_user
 
 mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
 
@@ -54,7 +55,7 @@ def buld_save_costumers_document():
 
     customer_form = CustomerForm(request.form)
     costumer = customer_form.data
-
+    print current_user['region']
     json_obj = {}
     json_obj = {
         'company': {
@@ -71,6 +72,7 @@ def buld_save_costumers_document():
         },
         'costumer_type': costumer['costumer_type'],
         'job_title': costumer['job_title'],
+        'region':  current_user['region'],
         'phone': {
             'main_phone': costumer['main_phone'],
             'work_phone': costumer['work_phone'],

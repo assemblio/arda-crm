@@ -22,8 +22,8 @@ def date_fee_chart():
         match = {
             "$match": {
                 'provided_services.service_date': {
-                    '$gte': datetime.strptime(from_date, "%d/%m/%Y"),
-                    '$lte': datetime.strptime(to_date, "%d/%m/%Y")
+                    '$gte': datetime.strptime(from_date, "%d-%m-%Y"),
+                    '$lte': datetime.strptime(to_date, "%d-%m-%Y")
                 }
             }
         }
