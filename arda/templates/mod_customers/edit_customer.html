@@ -5,7 +5,7 @@
 	<h4 class="col-xs-offset-3">Create a new Costumer by filling the fields below</h4>
 	<br>
 	</br>
-	<form class="form-horizontal" action="{{url_for('customers.edit_customer')}}" method="post">
+	<form class="form-horizontal" action="{{action}}" method="post">
 		<div class="form-group col-xs-6">
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.company_name.label(class="pull-right")}}</div>
@@ -104,7 +104,7 @@
 		</div>
 		<br></br>
 		<div class="form-group">
-			<button class="col-xs-offset-6 btn btn-primary" type="submit">Create Contact</button>
+			<button class="col-xs-offset-6 btn btn-primary" type="submit">{{text}}</button>
 		</div>
 	</form>
 </div>
