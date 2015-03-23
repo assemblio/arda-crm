@@ -103,12 +103,16 @@
     </li>
     <li class="cbp-spmenu-vertical-item-child" id="region" style="padding-right: 30px;padding-left: 30px;display: none;">
       <select class="form-control">
+      {% if current_user.region == "All" %}
         <option>All Regions</option>
         <option>West</option>
         <option>South</option>
         <option>North</option>
         <option>East</option>
         <option>Center</option>
+      {% else %}
+      <option>{{current_user['region']}}</option>
+      {% endif %}
       </select>
     </li>
 
