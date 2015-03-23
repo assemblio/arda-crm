@@ -9,27 +9,26 @@
 
   google.load("visualization", "1", {packages:["corechart"]});
   
-  google.setOnLoadCallback(drawChart);
   //draw Value chart 
   function drawValuePieChart(result){
     var title = "Incomes based on services fee";
-    drawChart(title, "valueChart", result);
+    drawChart(title, "pieValueChart", result, true);
   }
 
   //draw count chart
   function drawCountPieChart(result){
-    var title = "Number of all provided services basedon service type";
-    drawChart(title, "countChart", result);
+    var title = "Number of all provided services based on service type";
+    drawChart(title, "pieCountChart", result, false);
   }
   //draw pie chart 
-  function drawChart(title, containerId, results) {
+  function drawChart(title, containerId, results, isCurrency) {
     var dataTable = new google.visualization.DataTable();
     dataTable.addColumn('string', 'Service Type');
     dataTable.addColumn('number', 'Service Fee');
 
     for(var idx in results){
       var type = results[idx]['serviceType'];
-      if ( containerId === "valueChart"){
+      if ( containerId === "pieValueChart"){
         var sum = results[idx]['valueOfService'];
       }else{
         var sum = results[idx]['countServices']
@@ -41,6 +40,14 @@
     var options = {
       title: title
     };
+    var formatter = new google.visualization.NumberFormat({
+            fractionDigits: 0,
+            prefix: '€ '
+    });
+
+    if(isCurrency == true){
+      formatter.format(dataTable, 1);
+    }
 
     var chart = new google.visualization.PieChart(document.getElementById(containerId));
     chart.draw(dataTable, options);
@@ -51,13 +58,41 @@
     drawValuePieChart(service_result);
     drawCountPieChart(service_result);
 
+    disableTextboxes();
+
+   
+
+    /*if($('#line-chart').is(':checked')){
+      var chartType = $('#line-chart').val();
+      console.log(chartType)
+    }
+    else{
+      console.log("Is Not checked")
+    }
+
+    console.log(chartType);*/
+
     $('#filterButton').click(function(){
-        var from_date = $('#fromDate').val();
-        var to_date = $('#toDate').val();
+      var chartTypeSelected = $('input[name=rb1]:checked', '#chart-type-form').val();
+      console.log(chartTypeSelected);
+      var dateRadioSelected = $('input[name=rb2]:checked', '#service-types-form').val();
+      console.log(dateRadioSelected);
+      var faceToFaceRadio = checkRadioButtons("#face-to-face-meeting");
+      var emailRadio = checkRadioButtons("#e-mails");
+      var phoneCallsRadio = checkRadioButtons("#phone-calls");
+      var company = $('#company-name').val();
+      var customerFirstName = $('#customer-first-name').val();
+      var customerLastName = $('#customer-last-name').val();
+      var region = $('#region-select').val();
+      var from_date = $('#fromDate').val();
+      var to_date = $('#toDate').val();
+       
 
-        url = "{{ url_for('api.date_fee_chart') }}" + "?from=" +from_date + "&to=" + to_date;  
+        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&email=" + emailRadio + "&phoneCall=" + phoneCallsRadio + "&f2f=" + faceToFaceRadio;
 
+        console.log(url);
         $.get(url, function(result){
+          console.log(result);
           drawValuePieChart(result);
           drawCountPieChart(result);
         });
@@ -77,6 +112,47 @@
         minViewMode: "months"
       });
   });
+
+  function disableTextboxes(){
+    $('#data-range[type="radio"]').click(function(){
+      if ($(this).is(':checked'))
+      {
+        $('#fromDate').prop("disabled",false);
+        $('#toDate').prop("disabled",false);
+      }
+    });
+    $('#no-limit[type="radio"]').click(function(){
+      if ($(this).is(':checked'))
+      {
+        $('#fromDate').prop("disabled",true);
+        $('#toDate').prop("disabled",true);
+      }
+    });
+    $('#last-thirty[type="radio"]').click(function(){
+      if ($(this).is(':checked'))
+      {
+        $('#fromDate').prop("disabled",true);
+        $('#toDate').prop("disabled",true);
+      }
+    });
+    $('#last-seven[type="radio"]').click(function(){
+      if ($(this).is(':checked'))
+      {
+        $('#fromDate').prop("disabled",true);
+        $('#toDate').prop("disabled",true);
+      }
+    });
+  }
+
+  function checkRadioButtons(id){
+    var faceToFace;
+    if ($(id).is(':checked')) {
+      faceToFace = $(id).val();
+    } else {
+      faceToFace = null;
+    }
+    return faceToFace;
+  }
 </script>
 
 <!-- body has the class "cbp-spmenu-push" -->
@@ -90,28 +166,30 @@
       Chart Type
     </li>
     <li class="cbp-spmenu-vertical-item-child" id="chart-type">
-      <input type="radio" id="pie-chart" name="rb1" value="pie-chart" class="chart-type" checked />
-      <label for="pie-chart"><span></span>Pie Chart</label>
-      <br>
+      <form id="chart-type-form">
+        <input type="radio" id="pie-chart" name="rb1" value="pie-chart" class="chart-type" checked />
+        <label for="pie-chart"><span></span>Pie Chart</label>
+        <br>
 
-      <input type="radio" id="line-chart" name="rb1" value="line-chart" class="chart-type" />
-      <label for="line-chart"><span></span>Line Chart</label>
+        <input type="radio" id="line-chart" name="rb1" value="line-chart" class="chart-type" />
+        <label for="line-chart"><span></span>Line Chart</label>
+      </form>
     </li>
 
     <li class="cbp-spmenu-vertical-item-parent" id="region">
       Region
     </li>
     <li class="cbp-spmenu-vertical-item-child" id="region" style="padding-right: 30px;padding-left: 30px;display: none;">
-      <select class="form-control">
+      <select id="region-select" class="form-control">
       {% if current_user.region == "All" %}
-        <option>All Regions</option>
-        <option>West</option>
-        <option>South</option>
-        <option>North</option>
-        <option>East</option>
-        <option>Center</option>
+        <option value="All">All Regions</option>
+        <option value="West">West</option>
+        <option value="South">South</option>
+        <option value="North">North</option>
+        <option value="East">East</option>
+        <option value="Center">Center</option>
       {% else %}
-      <option>{{current_user['region']}}</option>
+      <option value="{{current_user['region']}}">{{current_user['region']}}</option>
       {% endif %}
       </select>
     </li>
@@ -120,7 +198,7 @@
       Customer
     </li>
     <li class="cbp-spmenu-vertical-item-child" id="company" style="padding-right: 30px;padding-left: 30px;display: none;">
-      <input type="text" id="company" class="form-control" placeholder="Company" />
+      <input type="text" id="company-name" class="form-control" placeholder="Company" />
       <input type="text" id="customer-first-name" class="form-control" placeholder="First Name" />
       <input type="text" id="customer-last-name" class="form-control" placeholder="Last Name" />
     </li>
@@ -129,22 +207,25 @@
       Service Types
     </li>
     <li class="cbp-spmenu-vertical-item-child" id="service-types" style="display:none;">
-      <input type="checkbox" id="phone-calls" name="cc" value="phone-calls" class="service-types-checkbox" checked />
+    
+      <input type="checkbox" id="phone-calls" name="cc" value="phone-call" class="service-types-checkbox" checked />
       <label for="phone-calls"><span></span>Phone Calls</label>
       <br>
 
-      <input type="checkbox" id="e-mails" name="cc" value="e-mails" class="e-mails" class="service-types-checkbox" checked />
+      <input type="checkbox" id="e-mails" name="cc" value="e-mail" class="e-mails" class="service-types-checkbox" checked />
       <label for="e-mails"><span></span>E-mails</label>
       <br>
 
       <input type="checkbox" id="face-to-face-meeting" name="cc" value="face-to-face-meeting" class="service-types-checkbox" checked />
       <label for="face-to-face-meeting"><span></span>Face-To-Face</label>
+
     </li>
 
     <li class="cbp-spmenu-vertical-item-parent" id="dates">
       Dates
     </li>
     <li class="cbp-spmenu-vertical-item-child pie-chart-dates" id="pie-chart-dates" style="display:none;">
+    <form id="service-types-form">
       <input type="radio" id="no-limit" name="rb2" value="no-limit" class="date-radio" checked />
       <label for="no-limit"><span></span>No Limit</label>
       <br>
@@ -160,10 +241,11 @@
       <input type="radio" id="data-range" name="rb2" value="data-range" class="date-radio" />
         <label for="data-range"><span></span>Date Range:</label>
         <div style="padding-right:30px;padding-left: 30px;">
-          <input type="text" id="fromDate" name="fromDate" class="form-control date-picker" placeholder="Start Date">
-          <input type="text" id="toDate" name="toDate" class="form-control date-picker" placeholder="End Date">
+          <input type="text" id="fromDate" name="fromDate" disabled="true" class="form-control date-picker" placeholder="Start Date">
+          <input type="text" id="toDate" name="toDate" disabled="true" class="form-control date-picker" placeholder="End Date">
         </div>
       <br>
+      </form>
     </li>
     <li class="cbp-spmenu-vertical-item-child line-chart-dates" id="line-chart-dates" style="padding-right:30px;padding-left: 30px;display:none;">
         <input type="text" id="month-year" name="month-year" class="form-control date-picker-month-year" placeholder="Month">
@@ -177,8 +259,10 @@
 
 <section id="portofolio">
   <div id="container" align="center">
-    <div id="valueChart" style="width: 750px; height: 400px;"></div>
-    <div id="countChart" style="width: 750px; height: 400px;"></div>
+    <div id="pieValueChart" style="width: 750px; height: 400px;"></div>
+    <div id="pieCountChart" style="width: 750px; height: 400px;"></div>
+    <div id="lineValueChart" style="width: 750px; height: 400px;"></div>
+    <div id="lineCountChart" style="width: 750px; height: 400px;"></div>
   </div>
 </section>
 

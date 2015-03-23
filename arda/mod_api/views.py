@@ -151,7 +151,6 @@ def search_service():
     if service_type:
         match_fields['provided_services.provided_service.slug'] = slugify(service_type)
 
-
     if from_dt and to_dt:
         match_fields['provided_services.service_date'] = {
             '$gte': datetime.strptime(from_dt, "%d/%m/%Y"),
@@ -207,7 +206,58 @@ def search_service():
     return resp
 
 
-def aggregate_all_result(match):
+@mod_api.route('/services-search', methods=['GET'])
+@login_required
+def search_service_analytics():
+
+    if len(request.args) > 0:
+        region = request.args.get('region')
+        from_dt = request.args.get('from')
+        to_dt = request.args.get('to')
+        f_name = request.args.get('customerFname')
+        l_name = request.args.get('customerLname')
+        company = request.args.get('company')
+        phoneCall = request.args.get('phoneCall')
+        email = request.args.get('email')
+        faceToFace = request.args.get('f2f')
+
+    match_fields = {}
+
+    servicesArray = []
+    if phoneCall:
+        servicesArray.append(phoneCall)
+
+    if email:
+        servicesArray.append(email)
+
+    if faceToFace:
+        servicesArray.append(faceToFace)
+
+    if servicesArray != []:
+        print str(servicesArray)
+        #match_fields['provided_services.provided_service.slug'] = {"$in": servicesArray}
+
+    if region:
+        match_fields['region'] = region
+
+    if f_name:
+        match_fields['first_name.slug'] = slugify(f_name)
+
+    if l_name:
+        match_fields['last_name.slug'] = slugify(l_name)
+
+    if company:
+        match_fields['company.slug'] = slugify(company)
+
+    if from_dt and to_dt:
+        match_fields['provided_services.service_date'] = {
+            '$gte': datetime.strptime(from_dt, "%d-%m-%Y"),
+            '$lte': datetime.strptime(to_dt, "%d-%m-%Y")
+        }
+
+    match = {
+        "$match": match_fields
+    }
 
     unwind = {
         "$unwind": "$provided_services"
@@ -216,14 +266,13 @@ def aggregate_all_result(match):
     group = {
         "$group": {
             "_id": {
-                "firstName": "$first_name.value",
-                "lastName": "$last_name.value",
-                "serviceType": "$provided_services.provided_service.value",
-                'serviceId': '$provided_services.serviceId',
-                'contactVia': '$provided_services.contactVia',
-                "description": "$provided_services.description",
-                "fee": "$provided_services.service_fee",
-                "date": "$provided_services.service_date"
+                "serviceType": "$provided_services.provided_service.value"
+            },
+            'sumOfService': {
+                "$sum": '$provided_services.service_fee'
+            },
+            'countServices': {
+                "$sum": 1
             }
         }
     }
@@ -231,18 +280,14 @@ def aggregate_all_result(match):
     project = {
         "$project": {
             "_id": 0,
-            "first_name": "$_id.firstName",
-            "last_name": "$_id.lastName",
             "serviceType": "$_id.serviceType",
-            "serviceId": "$_id.serviceId",
-            "contactVia": "$_id.contactVia",
-            "description": "$_id.description",
-            "fee": "$_id.fee",
-            "date": "$_id.date",
+            "valueOfService": "$sumOfService",
+            'countServices': '$countServices'
         }
     }
 
     pipeline = [unwind, match, group, project]
+
     json_obj = mongo.db.customers.aggregate(pipeline)
 
     resp = Response(
