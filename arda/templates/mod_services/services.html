@@ -84,8 +84,11 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
     </div>
     <div class="form-group form-group-sm">
       <form class="form-horizontal">
-        <div class="col-xs-offset-1 col-xs-5">
-          <input type="text" class="form-control" id='serviceType' name='serviceType' placeholder="Service Type">
+        <div class="col-xs-offset-1 col-xs-3">
+          {{ form.provided_service(class='form-control',placeholder='target-group') }}
+        </div>
+        <div class="col-xs-2">
+          {{ form.contact_via(class='form-control',placeholder='target-group') }}
         </div>
         <div class="col-xs-2">
           <input type="text" class="form-control service-date-picker" id='from' name='from' placeholder="from date">

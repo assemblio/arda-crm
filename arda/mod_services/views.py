@@ -11,9 +11,9 @@ mod_services = Blueprint('services', __name__, url_prefix='/services')
 
 @mod_services.route('/', methods=['GET'])
 def services():
-
+    form = ServiceTypes()
     customer = retrieve_all_services()
-    return render_template('mod_services/services.html', result_services=customer)
+    return render_template('mod_services/services.html', result_services=customer, form=form)
 
 
 @mod_services.route('/<string:company_name>', methods=['GET'])
