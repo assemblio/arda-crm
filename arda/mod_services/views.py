@@ -49,15 +49,19 @@ def customer_services(company_name, customer_id):
     )
 
 
-@mod_services.route('/edit/<company_name>/<customer_id>', methods=['GET', 'POST'])
+@mod_services.route('/create/<company_name>/<customer_id>', methods=['GET', 'POST'])
 def add_service(company_name, customer_id):
     if request.method == "GET":
+        action = url_for('services.add_service', company_name=company_name, customer_id=customer_id)
+        text = "Add Service"
         form = ServiceTypes()
         return render_template(
             'mod_services/add_service.html',
             form=form,
             company_name=company_name,
-            customer_id=customer_id
+            customer_id=customer_id,
+            text=text,
+            action=action
         )
     elif request.method == "POST":
         #services
@@ -101,39 +105,44 @@ def edit_service(company_name, customer_id, service_id):
                 }
                        
             } )
-        print  service_doc['provided_services'][0]['provided_service']['value']
+
         form.provided_service.data = service_doc['provided_services'][0]['provided_service']['value']
         form.description.data = service_doc['provided_services'][0]['description']
         form.service_fee.data = service_doc['provided_services'][0]['service_fee']
-        form.service_date.data = service_doc['provided_services'][0]['service_date']
+        form.service_date.data = datetime.strftime(service_doc['provided_services'][0]['service_date'], '%d/%m/%Y')
         form.contact_via.data = service_doc['provided_services'][0]['contactVia']
-    
+        text = "Edit Service"
+        action = url_for('services.edit_service', company_name=company_name, customer_id=customer_id, service_id=service_id)
         return render_template(
             'mod_services/add_service.html',
             form=form,
             company_name=company_name,
-            customer_id=customer_id
+            customer_id=customer_id,
+            text=text,
+            action=action
         )
+
     elif request.method == "POST":
         #services
         service_form = ServiceTypes(request.form)
-        json_obj = {
-            'serviceId': ObjectId(utils.get_doc_id()),
-            'provided_service': {
-                'value': service_form.provided_service.data,
-                'slug': slugify(service_form.provided_service.data),
-            },
-            'service_date': datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
-            'description': service_form.description.data,
-            'contactVia': service_form.contact_via.data,
-            'service_fee': int(service_form.service_fee.data)
-        }
-
         mongo.db.customers.update(
-            {'_id': ObjectId(customer_id)},
             {
-                '$push': {
-                    'provided_services': json_obj
+                '_id': ObjectId(customer_id),
+                'provided_services.serviceId': ObjectId(service_id)
+            },
+            {
+                '$set': {
+                    'provided_services.$': {
+                        'serviceId': ObjectId(service_id),
+                        'provided_service': {
+                            'value': service_form.provided_service.data,
+                            'slug': slugify(service_form.provided_service.data),
+                        },
+                        'service_date': datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
+                        'description': service_form.description.data,
+                        'contactVia': service_form.contact_via.data,
+                        'service_fee': int(service_form.service_fee.data)
+                    }
                 }
             }
         )
