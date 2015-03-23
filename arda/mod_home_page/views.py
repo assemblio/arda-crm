@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, \
 
 from arda import mongo, utils
 from bson import ObjectId
+from flask.ext.security import current_user
 mod_home_page = Blueprint('home_page', __name__)
 
 
@@ -12,12 +13,14 @@ def home_page():
     settings_doc = mongo.db.settings.find_one({'_id': 0})
     #Create initial service types
     create_services()
-
-    if settings_doc is None:
-        session['settings'] = utils.get_default_settings()
+    if current_user.is_authenticated():
+    	return redirect(url_for('customers.customers'))
     else:
-        session['settings'] = settings_doc
-    return render_template('index.html')
+	    if settings_doc is None:
+	        session['settings'] = utils.get_default_settings()
+	    else:
+	        session['settings'] = settings_doc
+	    return render_template('index.html')
 
 
 def create_services():

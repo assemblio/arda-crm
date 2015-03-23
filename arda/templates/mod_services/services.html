@@ -24,6 +24,13 @@ function rebuildTable(result){
 		            "<table align='center'>"+
 			            "<tr align='center'>"+
 			              "<td>"+
+			              	"<form method='get' action=''>"+
+	                          "<button type='submit' class='btn btn-default btn-sm btn-danger'>"+
+	                            "<span class='glyphicon glyphicon-edit'></span>"+
+	                          "</button>&nbsp;"+
+	                        "</form>"+
+			              "</td>"+
+			              "<td>"+
 			              	"<form method='get' action='"+url_action_delete+"'>"+
 	                          "<button type='submit' class='btn btn-default btn-sm btn-danger'>"+
 	                            "<span class='glyphicon glyphicon-remove'></span>"+
@@ -131,8 +138,14 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
               <td>
                 <table align="center">
                   <tr align="center">
+                  	<td>
+                        <form method="get" action="">
+                          <button type="submit" class="btn btn-default btn-sm btn-default">
+                            <span class="glyphicon glyphicon-edit"></span>
+                          </button>&nbsp;
+                        </form>
+                    </td>
                     <td>
-                      
                       <form method="get" action="{{url_for('services.delete_service',company_name=service['company']['slug'], customer_id=service['customer']['_id'], service_id=service['service']['serviceId'])}}">
                         <button type="submit" class="btn btn-default btn-sm btn-danger">
                           <span class="glyphicon glyphicon-remove"></span>
@@ -164,8 +177,14 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
               <td>
                 <table align="center">
                   <tr align="center">
+                  	<td>
+                        <form method="get" action="">
+                          <button type="submit" class="btn btn-default btn-sm btn-default">
+                            <span class="glyphicon glyphicon-edit"></span>
+                          </button>&nbsp;
+                        </form>
+                    </td>
                     <td >
-                      
                       <form method="get" action="{{url_for('services.delete_service',company_name=service['company']['slug'], customer_id=service['customer']['_id'], service_id=service['service']['serviceId'])}}">
                         <button type="submit" class="btn btn-default btn-sm btn-danger">
                           <span class="glyphicon glyphicon-remove"></span>
