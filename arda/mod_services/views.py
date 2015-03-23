@@ -75,7 +75,7 @@ def add_service(company_name, customer_id):
             'service_date': datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
             'description': service_form.description.data,
             'contactVia': service_form.contact_via.data,
-            'service_fee': int(service_form.service_fee.data)
+            'service_fee': float(service_form.service_fee.data)
         }
 
         mongo.db.customers.update(
@@ -141,7 +141,7 @@ def edit_service(company_name, customer_id, service_id):
                         'service_date': datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
                         'description': service_form.description.data,
                         'contactVia': service_form.contact_via.data,
-                        'service_fee': int(service_form.service_fee.data)
+                        'service_fee': float(service_form.service_fee.data)
                     }
                 }
             }
