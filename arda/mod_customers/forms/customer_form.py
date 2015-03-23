@@ -17,10 +17,10 @@ class CustomerForm(Form):
     costumer_type = SelectField(
         "Costumer Type",
         choices=[
-            ('Entrepreneurs', 'Entrepreneurs'),
-            ('Non-governmental organisations', 'Non-governmental organisations'),
-            ('Investors', 'Investors'),
-            ('Municipalities', 'Municipalities')
+            ('Entrepreneur', 'Entrepreneur'),
+            ('Non-governmental organisation', 'Non-governmental organisation'),
+            ('Investor', 'Investor'),
+            ('Municipalitie', 'Municipalitie')
         ]
     )
 

@@ -19,6 +19,8 @@
         		var url_action_company = "{{url_for('services.company_services', company_name='company_slug')}}".replace('company_slug', slug);
 
         		var url_action_delete = "{{url_for('customers.delete_customer',customer_id='customerID')}}".replace('customerID', customer_id['$oid']);
+
+        		var url_action_edit = "{{url_for('customers.edit_customer',customer_id='customerID')}}".replace('customerID', customer_id['$oid']);
         		//populate table
                 $("#customers-list").append("<tr>" +
                     "<td>"+result[index]["first_name"]+"</td>"+
@@ -59,7 +61,7 @@
                   "<table align='center'>"+
                     "<tr align='center'>"+
                       "<td>"+
-                        "<form method='get'>"+
+                        "<form method='get' action='"+url_action_edit+"'>"+
                           "<button type='submit' class='btn btn-default btn-sm btn-default'>"+
                             "<span class='glyphicon glyphicon-edit'></span>"+
                           "</button>&nbsp;"+

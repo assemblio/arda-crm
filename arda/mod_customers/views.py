@@ -71,7 +71,12 @@ def edit_customer(customer_id):
 
         text = "Edit Contact"
         action = url_for('customers.edit_customer', customer_id=customer_id)
-        return render_template('mod_customers/edit_customer.html', form=form, action=action, text=text)
+        return render_template(
+            'mod_customers/edit_customer.html',
+            form=form,
+            action=action,
+            text=text
+        )
     elif request.method == "POST":
         edit_costumers_document(customer_id)
         return redirect(url_for('customers.customers'))
