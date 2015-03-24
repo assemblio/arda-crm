@@ -28,7 +28,7 @@ class CustomerForm(Form):
     #if Target Group is Business/Entrepreneur
     business_name = TextField("Business Name")
     vat = RadioField(
-        "Vat",
+        "VAT Number",
         choices=[
             ('Yes', 'Yes'),
             ('No', 'No'),
@@ -37,12 +37,12 @@ class CustomerForm(Form):
     )
     fiscal_number = TextField("Fiscal Number")
     legal_entity_types = TextField("Legal Entity Types")
-    industry = TextField("industry")
+    industry = TextField("Industry")
     main_activity = TextField("Main Activity")
-    founding_year = TextField("founding Year")
+    founding_year = TextField("Founding Year")
     number_of_employees = TextField("Number of Employees")
     size_category = SelectField(
-        "Size Catogory",
+        "Size",
         choices=[
             ('Micro', 'Micro'),
             ('Small', 'Small'),
@@ -65,10 +65,10 @@ class CustomerForm(Form):
 
     #if the Target Group is NGO
     ngo_registration_number_ngo = TextField("Registration Number")
-    vat_number_ngo = TextField("Vat Number")
+    vat_number_ngo = TextField("VAT Number")
     fiscal_number_ngo = TextField("Fiscal Number")
     sector_ngo = TextField("Sector")
-    founding_year_ngo = TextField("founding Year")
+    founding_year_ngo = TextField("Founding Year")
     number_of_staff_ngo = TextField("Number of Staff")
     description_of_ngo = TextField("Description")
     main_activities = TextField("Main Activities")

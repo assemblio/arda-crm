@@ -28,7 +28,7 @@ def create_customer():
 
     if request.method == "GET":
         action = url_for('customers.create_customer')
-        text = "Create Contact"
+        text = "Create Customer"
         return render_template('mod_customers/edit_customer.html', form=form, action=action, text=text)
 
     if request.method == "POST":
@@ -100,7 +100,7 @@ def edit_customer(customer_id):
         form.ship_postal_code.data = customer_doc['address']['shipping']['ship_postal_code']
         form.ship_country.data = customer_doc['address']['shipping']['ship_country']
 
-        text = "Edit Contact"
+        text = "Edit Customer"
         action = url_for('customers.edit_customer', customer_id=customer_id)
         return render_template(
             'mod_customers/edit_customer.html',
