@@ -57,7 +57,35 @@ def edit_customer(customer_id):
         form.fax.data = customer_doc['phone']['fax']
         form.email.data = customer_doc['email']
         form.website.data = customer_doc['website']
-        form.costumer_type.data = customer_doc['costumer_type']
+        # Let's check what target group we have in order to know what fields to fill
+        if customer_doc['costumer_type']['target_group'] == "Entrepreneur":
+            form.costumer_type.data = customer_doc['costumer_type']['target_group']
+            form.business_name.data = customer_doc['costumer_type']['business_name']
+            form.vat.data = customer_doc['costumer_type']['vat']
+            form.fiscal_number.data = customer_doc['costumer_type']['fiscal_number']
+            form.legal_entity_types.data = customer_doc['costumer_type']['legal_entity_types']
+            form.industry.data = customer_doc['costumer_type']['industry']
+            form.main_activity.data = customer_doc['costumer_type']['main_activity']
+            form.founding_year.data = customer_doc['costumer_type']['founding_year']
+            form.number_of_employees.data = customer_doc['costumer_type']['number_of_employees']
+            form.size_category.data = customer_doc['costumer_type']['size_category']
+            form.investment.data = customer_doc['costumer_type']['investment']
+            form.business_description.data = customer_doc['costumer_type']['business_description']
+        elif customer_doc['costumer_type']['target_group'] == "Non-Governmental Organisation":
+            form.costumer_type.data = customer_doc['costumer_type']['target_group']
+            form.ngo_registration_number_ngo.data = customer_doc['costumer_type']['ngo_registration_number_ngo']
+            form.vat_number_ngo.data = customer_doc['costumer_type']['vat_number_ngo']
+            form.fiscal_number_ngo.data = customer_doc['costumer_type']['fiscal_number_ngo']
+            form.sector_ngo.data = customer_doc['costumer_type']['sector_ngo']
+            form.founding_year_ngo.data = customer_doc['costumer_type']['founding_year_ngo']
+            form.number_of_staff_ngo.data = customer_doc['costumer_type']['number_of_staff_ngo']
+            form.description_of_ngo.data = customer_doc['costumer_type']['description_of_ngo']
+            form.main_activities.data = customer_doc['costumer_type']['main_activities']
+            form.donors.data = customer_doc['costumer_type']['donors']
+
+        else:
+            form.costumer_type.data = customer_doc['costumer_type']['target_group']
+
         form.bill_add1.data = customer_doc['address']['billing']['bill_add1']
         form.bill_add2.data = customer_doc['address']['billing']['bill_add2']
         form.bill_city.data = customer_doc['address']['billing']['bill_city']
@@ -150,8 +178,88 @@ def build_save_costumers_document():
         'provided_services': []
     }
 
+    if costumer['costumer_type'] == "Entrepreneur":
+        json_obj['costumer_type'] = {
+            'target_group': costumer['costumer_type'],
+            'business_name': costumer['business_name'],
+            'vat': costumer['vat'],
+            'fiscal_number': costumer['fiscal_number'],
+            'legal_entity_types': costumer['legal_entity_types'],
+            'industry': costumer['industry'],
+            'main_activity': costumer['main_activity'],
+            'founding_year': costumer['founding_year'],
+            'number_of_employees': costumer['number_of_employees'],
+            'size_category': costumer['size_category'],
+            'investment': costumer['investment'],
+            'business_description': costumer['business_description']
+        }
+    elif costumer['costumer_type'] == "Non-Governmental Organisation":
+        json_obj['customer_type'] = {
+            'target_group': costumer['costumer_type'],
+            'ngo_registration_number_ngo': costumer['ngo_registration_number_ngo'],
+            'vat_number_ngo': costumer['vat_number_ngo'],
+            'fiscal_number_ngo': costumer['fiscal_number_ngo'],
+            'sector_ngo': costumer['sector_ngo'],
+            'founding_year_ngo': costumer['founding_year_ngo'],
+            'number_of_staff_ngo': costumer['number_of_staff_ngo'],
+            'description_of_ngo': costumer['description_of_ngo'],
+            'main_activities': costumer['main_activities'],
+            'donors': costumer['donors']
+        }
+    else:
+        #Investor and Municipality fields not avaliable yet
+        json_obj['costumer_type']={
+            'target_group': costumer['costumer_type']
+        }
+    mongo.db.customers.insert(json_obj)
 
 
+def edit_costumers_document(customer_id):
+
+    customer_form = CustomerForm(request.form)
+    costumer = customer_form.data
+    json_obj = {
+        'company': {
+            'name': costumer['company_name'],
+            'slug': slugify(costumer['company_name'])
+        },
+        'first_name': {
+            'value': costumer['first_name'],
+            'slug': slugify(costumer['first_name']),
+        },
+        'last_name': {
+            'value': costumer['last_name'],
+            'slug': slugify(costumer['last_name'])
+        },
+        'job_title': costumer['job_title'],
+        'region':  current_user['region'],
+        'phone': {
+            'main_phone': costumer['main_phone'],
+            'work_phone': costumer['work_phone'],
+            'mobile': costumer['mobile'],
+            'fax': costumer['fax'],
+        },
+        'address': {
+            'billing': {
+                'bill_add1': costumer['bill_add1'],
+                'bill_add2': costumer['bill_add2'],
+                'bill_city': costumer['bill_city'],
+                'bill_state': costumer['bill_state'],
+                'bill_postal_code': costumer['bill_postal_code'],
+                'bill_country': costumer['bill_country'],
+            },
+            'shipping': {
+                'ship_add1': costumer['ship_add1'],
+                'ship_add2': costumer['ship_add2'],
+                'ship_city': costumer['ship_city'],
+                'ship_state': costumer['ship_state'],
+                'ship_postal_code': costumer['ship_postal_code'],
+                'ship_country': costumer['ship_country'],
+            }
+        },
+        'email': costumer['email'],
+        'website': costumer['website'],
+    }
 
     if costumer['costumer_type'] == "Entrepreneur":
         json_obj['costumer_type'] = {
@@ -182,63 +290,16 @@ def build_save_costumers_document():
             'donors': costumer['donors']
         }
     else:
-        #Investor and Municipality fields not defined yet
-        json_obj['costumer_type']=costumer['costumer_type']
-
-    mongo.db.customers.insert(json_obj)
-
-
-def edit_costumers_document(customer_id):
-
-    customer_form = CustomerForm(request.form)
-    costumer = customer_form.data
+        #Investor and Municipality fields not avaliable yet
+        json_obj['costumer_type']['target_group'] = {
+            'target_group': costumer['costumer_type']
+        }
 
     mongo.db.customers.update(
         {'_id': ObjectId(customer_id)},
         {
-            "$set":{
-                'company': {
-                'name': costumer['company_name'],
-                'slug': slugify(costumer['company_name'])
-                },
-                'first_name': {
-                    'value': costumer['first_name'],
-                    'slug': slugify(costumer['first_name']),
-                },
-                'last_name': {
-                    'value': costumer['last_name'],
-                    'slug': slugify(costumer['last_name'])
-                },
-                'costumer_type': costumer['costumer_type'],
-                'job_title': costumer['job_title'],
-                'region':  current_user['region'],
-                'phone': {
-                    'main_phone': costumer['main_phone'],
-                    'work_phone': costumer['work_phone'],
-                    'mobile': costumer['mobile'],
-                    'fax': costumer['fax'],
-                },
-                'address': {
-                    'billing': {
-                        'bill_add1': costumer['bill_add1'],
-                        'bill_add2': costumer['bill_add2'],
-                        'bill_city': costumer['bill_city'],
-                        'bill_state': costumer['bill_state'],
-                        'bill_postal_code': costumer['bill_postal_code'],
-                        'bill_country': costumer['bill_country'],
-                    },
-                    'shipping': {
-                        'ship_add1': costumer['ship_add1'],
-                        'ship_add2': costumer['ship_add2'],
-                        'ship_city': costumer['ship_city'],
-                        'ship_state': costumer['ship_state'],
-                        'ship_postal_code': costumer['ship_postal_code'],
-                        'ship_country': costumer['ship_country'],
-                    }
-                },
-                'email': costumer['email'],
-                'website': costumer['website'],
-            }
+            "$set": json_obj
+                
         }
     )
 
