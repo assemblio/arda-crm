@@ -6,7 +6,7 @@ from arda import mongo
 class ServiceTypes(Form):
     """Service Types Form"""
     description = TextAreaField("Description")
-    service_fee = IntegerField("Service Fee")
+    service_fee = StringField("Service Fee")
     service_date = StringField("Schedule")
     provided_service = SelectField("Provided Service")
     contact_via = SelectField("Contacted via")
