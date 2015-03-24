@@ -15,8 +15,8 @@ class CustomerForm(Form):
     email = TextField("Email")
     website = TextField("Website")
     costumer_type = SelectField(
-         "Costumer Type",
-         choices=[
+        "Costumer Type",
+    	choices=[
             ('Entrepreneur', 'Entrepreneur'),
             ('Non-Governmental Organisation', 'Non-Governmental Organisation'),
             ('Investor', 'Investor'),

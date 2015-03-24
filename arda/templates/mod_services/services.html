@@ -9,8 +9,13 @@ function rebuildTable(result){
 		var date_string =  d.getDate() + "/" + (d.getMonth() + 1) + "/" + (d.getYear() + 1900);
 
 		var serviceId = result[index]['serviceId'];
+		var company = result[index]['company']['slug'];
+		var customer_id = result[index]['_id'];
 
-		var url_action_delete = "{{url_for('customers.delete_customer',customer_id='customerID')}}".replace('customerID', serviceId['$oid']);
+		var url_action_delete = "{{url_for('services.delete_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', company+"/"+customer_id['$oid']+"/"+serviceId['$oid']);
+
+		var url_action_edit = "{{url_for('services.edit_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', company+"/"+customer_id['$oid']+"/"+serviceId['$oid']);
+
          $("#customers-list").append(
          	"<tr>" +				
 	            "<td>"+result[index]["first_name"]+"</td>"+
@@ -24,7 +29,7 @@ function rebuildTable(result){
 		            "<table align='center'>"+
 			            "<tr align='center'>"+
 			              "<td>"+
-			              	"<form method='get' action=''>"+
+			              	"<form method='get' action='"+url_action_edit+"'>"+
 	                          "<button type='submit' class='btn btn-default btn-sm btn-danger'>"+
 	                            "<span class='glyphicon glyphicon-edit'></span>"+
 	                          "</button>&nbsp;"+

@@ -148,7 +148,7 @@ def edit_service(company_name, customer_id, service_id):
         )
         return redirect(
             url_for(
-                'customers.customers',
+                'services.services',
             )
         )
 

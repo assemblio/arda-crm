@@ -175,6 +175,11 @@ def search_service():
     group = {
         "$group": {
             "_id": {
+            	'_id': '$_id',
+            	"company": {
+            		'name': '$company.name',
+            		'slug': '$company.slug'
+            	},
                 "firstName": "$first_name.value",
                 "lastName": "$last_name.value",
                 "serviceType": "$provided_services.provided_service.value",
@@ -190,6 +195,11 @@ def search_service():
     project = {
         "$project": {
             "_id": 0,
+            '_id': '$_id._id',
+            'company': {
+            	"name": "$company.name",
+            	"slug": "$company.slug"
+            },
             "first_name": "$_id.firstName",
             "last_name": "$_id.lastName",
             "serviceType": "$_id.serviceType",

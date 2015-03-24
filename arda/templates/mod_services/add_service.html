@@ -18,6 +18,9 @@ $(document).ready(function(){
         fields: {
             service_fee: {
                 validators: {
+                	numeric: {
+                        message: "Not a Valid value!"
+                    },
                 	notEmpty: {
                         message: "Can't be empty!"
                     }
@@ -47,7 +50,7 @@ $(document).ready(function(){
 </script>
 <section> 
 <div class="container" align="center">                     
-    <h4>Add new service by filling the fields below</h4>
+    <h4>{{text}} by filling the fields below</h4>
     <br></br>
     <form class="form-horizontal serviceForm" method="post" action="{{action}}">
     	<div class="form-group col-xs-offset-3 col-xs-9">
