@@ -30,14 +30,14 @@
 			            "<tr align='center'>"+
 			              "<td>"+
 			              	"<form method='get' action='"+url_action_edit+"'>"+
-	                          "<button type='submit' class='btn btn-default btn-sm btn-defualt'>"+
+	                          "<button type='submit'data-toggle='tooltip' data-placement='bottom' title='Edit Service' class='btn btn-default btn-sm btn-defualt'>"+
 	                            "<span class='glyphicon glyphicon-edit'></span>"+
 	                          "</button>&nbsp;"+
 	                        "</form>"+
 			              "</td>"+
 			              "<td>"+
 			              	"<form method='get' action='"+url_action_delete+"'>"+
-	                          "<button type='submit' class='btn btn-default btn-sm btn-danger'>"+
+	                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Delete Service' class='btn btn-default btn-sm btn-danger'>"+
 	                            "<span class='glyphicon glyphicon-remove'></span>"+
 	                          "</button>&nbsp;"+
 	                        "</form>"+
@@ -83,14 +83,14 @@
                     "<tr align='center'>"+
                       "<td>"+
                         "<form method='get' action='"+url_action+"'>"+
-                          "<button type='submit' class='btn btn-default btn-sm btn-default'>"+
+                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Add Service' class='btn btn-default btn-sm btn-default'>"+
                             "<span class='glyphicon glyphicon-plus'></span>"+
                           "</button>&nbsp;"+
                         "</form>"+
                       "</td>"+
                       "<td>"+
                         "<form method='get' action='"+url_action_customer+"'>"+
-                          "<button type='submit' class='btn btn-default btn-sm btn-default'>"+
+                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Individual Services' class='btn btn-default btn-sm btn-default'>"+
                             "<span class='glyphicon glyphicon-user'></span>"+
                           "</button>&nbsp;"+
                         "</form>"+
@@ -98,7 +98,7 @@
                       "<td>"+
                         "<form method='get' action='"+url_action_company+"'>"+
                         
-                          "<button type='submit' class='btn btn-default btn-sm btn-default'>"+
+                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Customer Services' class='btn btn-default btn-sm btn-default'>"+
                             "<span class='glyphicon glyphicon-th-list'></span>"+
                           "</button>&nbsp;"+
                         "</form>"+
@@ -111,14 +111,14 @@
                     "<tr align='center'>"+
                       "<td>"+
                         "<form method='get' action='"+url_action_edit+"'>"+
-                          "<button type='submit' class='btn btn-default btn-sm btn-default'>"+
+                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Edit Customer' class='btn btn-default btn-sm btn-default'>"+
                             "<span class='glyphicon glyphicon-edit'></span>"+
                           "</button>&nbsp;"+
                         "</form>"+
                       "</td>"+
                       "<td>"+
                         "<form method='get' action='"+url_action_delete+"'>"+
-                          "<button type='submit' class='btn btn-default btn-sm btn-danger'>"+
+                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Delete Customer' class='btn btn-default btn-sm btn-danger'>"+
                             "<span class='glyphicon glyphicon-remove'></span>"+
                           "</button>&nbsp;"+
                         "</form>"+
@@ -156,11 +156,10 @@
 		var from_date = $('#from').val();
 		var to_date = $('#to').val();
 		var url = "{{url_for('api.search_service')}}" + "?serviceType="+service_type+ "&contactVia="+ contactVia +"&from="+from_date+"&to="+to_date;
-		$.get(url, function(result){
-			rebuildServiceTable(result);
-		});
+  		$.get(url, function(result){
+  			rebuildServiceTable(result);
+  		});
     });
-
   });
 
 </script>
@@ -228,14 +227,14 @@
                     <tr align="center">
                       <td>
                         <form method="get" action="{{ url_for('services.add_service', company_name=customer['company']['slug'], customer_id=customer['_id']) }}">
-                          <button type="submit" class="btn btn-default btn-sm btn-default">
+                          <button type="submit"  data-toggle='tooltip' data-placement='top' title='Add Service' class="btn btn-default btn-sm btn-default">
                             <span class="glyphicon glyphicon-plus"></span>
                           </button>&nbsp;
                         </form>
                       </td>
                       <td>
                         <form method="get" action="{{ url_for('services.customer_services', company_name=customer['company']['slug'], customer_id=customer['_id']) }}">
-                          <button type="submit" class="btn btn-default btn-sm btn-default">
+                          <button type="submit" data-toggle='tooltip' data-placement='top' title='Individual Services' class="btn btn-default btn-sm btn-default">
                             <span class="glyphicon glyphicon-user"></span>
                           </button>&nbsp;
                         </form>
@@ -243,7 +242,7 @@
                       <td>
                         <form method="get" action="{{ url_for('services.company_services', company_name=customer['company']['slug']) }}">
                         
-                          <button type="submit" class="btn btn-default btn-sm btn-default">
+                          <button type="submit" data-toggle='tooltip' data-placement='top' title='Customer Services' class="btn btn-default btn-sm btn-default">
                             <span class="glyphicon glyphicon-th-list"></span>
                           </button>&nbsp;
                         </form>
@@ -256,14 +255,14 @@
                     <tr align="center">
                       <td>
                         <form method="get" action="{{ url_for('customers.edit_customer', customer_id=customer['_id']) }}">
-                          <button type="submit" class="btn btn-default btn-sm btn-default">
+                          <button type="submit" data-toggle='tooltip' data-placement='top' title='Edit Customer' class="btn btn-default btn-sm btn-default">
                             <span class="glyphicon glyphicon-edit"></span>
                           </button>&nbsp;
                         </form>
                       </td>
                       <td>
                         <form method="get" action="{{ url_for('customers.delete_customer', customer_id=customer['_id']) }}">
-                          <button type="submit" class="btn btn-default btn-sm btn-danger">
+                          <button type="submit" data-toggle='tooltip' data-placement='top' title='Delete Customer' class="btn btn-default btn-sm btn-danger">
                             <span class="glyphicon glyphicon-remove"></span>
                           </button>&nbsp;
                         </form>
@@ -341,14 +340,14 @@
 	                  <tr align="center">
 	                  	<td>
 	                        <form method="get" action="{{url_for('services.edit_service',company_name=service['company']['slug'], customer_id=service['customer']['_id'], service_id=service['service']['serviceId'])}}">
-	                          <button type="submit" class="btn btn-default btn-sm btn-default">
+	                          <button type="submit" data-toggle='tooltip' data-placement='bottom' title='Edit Service' class="btn btn-default btn-sm btn-default">
 	                            <span class="glyphicon glyphicon-edit"></span>
 	                          </button>&nbsp;
 	                        </form>
 	                    </td>
 	                    <td >
 	                      <form method="get" action="{{url_for('services.delete_service',company_name=service['company']['slug'], customer_id=service['customer']['_id'], service_id=service['service']['serviceId'])}}">
-	                        <button type="submit" class="btn btn-default btn-sm btn-danger">
+	                        <button type="submit" data-toggle='tooltip' data-placement='bottom' title='Delete Service' class="btn btn-default btn-sm btn-danger">
 	                          <span class="glyphicon glyphicon-remove"></span>
 	                        </button>&nbsp;
 	                      </form>
