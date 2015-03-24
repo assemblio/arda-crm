@@ -187,7 +187,8 @@ def settings():
         if current_user.has_role('Admin'):
             settings_form = SettingsForm(request.form)
             settings_data = settings_form.data
-
+            service_type = retrieve_all_service_types()
+            contact_via_types = retrieve_all_contact_types()
             mongo.db.settings.update({'_id': 0}, {'$set': settings_data}, True)
 
             # Update session with new settings data.
