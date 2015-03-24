@@ -197,8 +197,8 @@ def search_service():
             "_id": 0,
             '_id': '$_id._id',
             'company': {
-            	"name": "$company.name",
-            	"slug": "$company.slug"
+            	"name": "$_id.company.name",
+            	"slug": "$_id.company.slug"
             },
             "first_name": "$_id.firstName",
             "last_name": "$_id.lastName",
