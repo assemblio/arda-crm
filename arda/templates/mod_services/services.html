@@ -54,10 +54,11 @@ $(document).ready(function(){
     });
     //Get result to populate service table
     $('#searchButon').click(function(){
-    	var service_type = $('#serviceType').val();
+    	var service_type = $('#provided_service').val();
+      var contactVia = $('#contact_via').val();
     	var from_date = $('#from').val();
     	var to_date = $('#to').val();
-    	var url = "{{url_for('api.search_service')}}" + "?serviceType="+service_type+"&from="+from_date+"&to="+to_date;
+    	var url = "{{url_for('api.search_service')}}" + "?serviceType="+service_type+ "&contactVia="+ contactVia +"&from="+from_date+"&to="+to_date;
     	$.get(url, function(result){
     		rebuildTable(result);
     	});

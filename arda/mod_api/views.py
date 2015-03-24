@@ -148,8 +148,12 @@ def search_service():
         service_type = request.args.get('serviceType')
         from_dt = request.args.get('from')
         to_dt = request.args.get('to')
+        contactVia = request.args.get('contactVia')
 
     match_fields = {}
+
+    if contactVia:
+        match_fields['provided_services.contactVia'] = contactVia
 
     if service_type:
         match_fields['provided_services.provided_service.slug'] = slugify(service_type)

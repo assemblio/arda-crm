@@ -149,9 +149,10 @@
     $('#last-thirty[type="radio"]').click(function(){
       if ($(this).is(':checked'))
       {
-        
         $('#fromDate').hide();
+        $('#fromDate').val("");
         $('#toDate').hide();
+        $('#toDate').val("");
       }
     });
     $('#last-seven[type="radio"]').click(function(){
