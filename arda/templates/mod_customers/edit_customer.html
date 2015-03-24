@@ -118,7 +118,7 @@
 		</div>
 		<br><br>
 		</div>
-		<div id="Entrepreneur-targetGroup"style="display:none">
+		<div id="Entrepreneur-targetGroup">
 			<div class="form-group form-group-lg">
 				<label class="control-label col-xs-offset-4 col-xs-3" style="font-size: 18px;">Entrepreneur Target Group</label>
 				<hr>
@@ -130,7 +130,14 @@
 			</div>
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.vat.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.vat(class="form-control")}}</div>
+				<div class="btn-group col-xs-6 roles role" data-toggle="buttons">
+	                {% for subfield in form.vat %}
+	                    <div class="btn btn-default col-xs-12">
+	                        {{ subfield }}
+	                        {{ subfield.label }}
+	                    </div>
+	                {% endfor %}
+	            </div>
 			</div>
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.fiscal_number.label(class="pull-right")}}</div>
@@ -163,8 +170,16 @@
 				<div class="col-xs-6">{{form.size_category(class="form-control")}}</div>
 			</div>
 			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.investment.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.investment(class="form-control")}}</div>
+				<div class="col-xs-6">
+				{{form.investment.label(class="pull-right")}}</div>
+				<div class="btn-group col-xs-6 roles role" data-toggle="buttons">
+	                {% for subfield in form.investment %}
+	                    <div class="btn btn-default col-xs-12">
+	                        {{ subfield }}
+	                        {{ subfield.label }}
+	                    </div>
+	                {% endfor %}
+	            </div>
 			</div>
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.business_description.label(class="pull-right")}}</div>
