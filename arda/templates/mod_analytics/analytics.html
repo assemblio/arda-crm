@@ -17,48 +17,66 @@
 
   //draw count chart
   function drawCountPieChart(result){
+
     var title = "Number of all provided services based on service type";
     drawChart(title, "pieCountChart", result, false);
   }
   //draw pie chart 
   function drawChart(title, containerId, results, isCurrency) {
-    var dataTable = new google.visualization.DataTable();
-    dataTable.addColumn('string', 'Service Type');
-    dataTable.addColumn('number', 'Service Fee');
+    var chartTypeSelected = $('input[name=rb1]:checked', '#chart-type-form').val();
+      console.log(chartTypeSelected);
+      var dateRadioSelected = $('input[name=rb2]:checked', '#service-types-form').val();
+      console.log(dateRadioSelected);
+      var faceToFaceRadio = checkRadioButtons("#face-to-face-meeting");
+      var emailRadio = checkRadioButtons("#e-mails");
+      var phoneCallsRadio = checkRadioButtons("#phone-calls");
+      var company = $('#company-name').val();
+      var customerFirstName = $('#customer-first-name').val();
+      var customerLastName = $('#customer-last-name').val();
+      var region = $('#region-select').val();
+      var from_date = $('#fromDate').val();
+      var to_date = $('#toDate').val();
+       
 
-    for(var idx in results){
-      var type = results[idx]['serviceType'];
-      if ( containerId === "pieValueChart"){
-        var sum = results[idx]['valueOfService'];
-      }else{
-        var sum = results[idx]['countServices']
-      }
-      type = type.toString();
-      dataTable.addRow([type, sum]);
-    }
+        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&email=" + emailRadio + "&phoneCall=" + phoneCallsRadio + "&f2f=" + faceToFaceRadio;
+        $.get(url, function(result){
+          var dataTable = new google.visualization.DataTable();
+          dataTable.addColumn('string', 'Service Type');
+          dataTable.addColumn('number', 'Service Fee');
+          for(var idx in result){
+            var type = result[idx]['serviceType'];
+            if (containerId === "pieValueChart") {
+              var sum = result[idx]['valueOfService'];
+            } else{
+              var sum = result[idx]['countServices']
+            }
+            type = type.toString();
+            dataTable.addRow([type, sum]); 
+          }
+          var options = {
+            title: title
+          };
+          var formatter = new google.visualization.NumberFormat({
+                  fractionDigits: 0,
+                  prefix: '€ '
+          });
 
-    var options = {
-      title: title
-    };
-    var formatter = new google.visualization.NumberFormat({
-            fractionDigits: 0,
-            prefix: '€ '
-    });
+          if(isCurrency == true){
+            formatter.format(dataTable, 1);
+          }
 
-    if(isCurrency == true){
-      formatter.format(dataTable, 1);
-    }
-
-    var chart = new google.visualization.PieChart(document.getElementById(containerId));
-    chart.draw(dataTable, options);
+          var chart = new google.visualization.PieChart(document.getElementById(containerId));
+          chart.draw(dataTable, options);
+        })
   };
 
   //load document 
   $(document).ready(function() {
+    disableTextboxes();
+    $('#fromDate').hide();
+    $('#toDate').hide();
     drawValuePieChart(service_result);
     drawCountPieChart(service_result);
-
-    disableTextboxes();
 
    
 
@@ -117,29 +135,30 @@
     $('#data-range[type="radio"]').click(function(){
       if ($(this).is(':checked'))
       {
-        $('#fromDate').prop("disabled",false);
-        $('#toDate').prop("disabled",false);
+        $('#fromDate').show();
+        $('#toDate').show();
       }
     });
     $('#no-limit[type="radio"]').click(function(){
       if ($(this).is(':checked'))
       {
-        $('#fromDate').prop("disabled",true);
-        $('#toDate').prop("disabled",true);
+        $('#fromDate').hide();
+        $('#toDate').hide();
       }
     });
     $('#last-thirty[type="radio"]').click(function(){
       if ($(this).is(':checked'))
       {
-        $('#fromDate').prop("disabled",true);
-        $('#toDate').prop("disabled",true);
+        
+        $('#fromDate').hide();
+        $('#toDate').hide();
       }
     });
     $('#last-seven[type="radio"]').click(function(){
       if ($(this).is(':checked'))
       {
-        $('#fromDate').prop("disabled",true);
-        $('#toDate').prop("disabled",true);
+        $('#fromDate').hide();
+        $('#toDate').hide();
       }
     });
   }
@@ -241,8 +260,8 @@
       <input type="radio" id="data-range" name="rb2" value="data-range" class="date-radio" />
         <label for="data-range"><span></span>Date Range:</label>
         <div style="padding-right:30px;padding-left: 30px;">
-          <input type="text" id="fromDate" name="fromDate" disabled="true" class="form-control date-picker" placeholder="Start Date">
-          <input type="text" id="toDate" name="toDate" disabled="true" class="form-control date-picker" placeholder="End Date">
+          <input type="text" id="fromDate" name="fromDate" class="form-control date-picker" placeholder="Start Date">
+          <input type="text" id="toDate" name="toDate" class="form-control date-picker" placeholder="End Date">
         </div>
       <br>
       </form>
