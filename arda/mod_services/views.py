@@ -3,17 +3,9 @@ from flask import Blueprint, render_template, redirect, request, url_for
 from arda import mongo, utils
 from bson import ObjectId
 from datetime import datetime
-from forms.servicetypes import ServiceTypes
 from slugify import slugify
-
+from forms.servicetypes import ServiceTypes
 mod_services = Blueprint('services', __name__, url_prefix='/services')
-
-
-@mod_services.route('/', methods=['GET'])
-def services():
-    form = ServiceTypes()
-    customer = retrieve_all_services()
-    return render_template('mod_services/services.html', result_services=customer, form=form)
 
 
 @mod_services.route('/<string:company_name>', methods=['GET'])
@@ -24,10 +16,12 @@ def company_services(company_name):
 
     services = get_services_for_given_company(query)
 
+    form = ServiceTypes()
     return render_template(
         'mod_services/services.html',
         company_name=company_name,
-        result_services=services
+        result_services=services,
+        form=form
     )
 
 
@@ -40,12 +34,13 @@ def customer_services(company_name, customer_id):
     }
 
     customer = get_services_for_given_company(query)
-
+    form = ServiceTypes()
     return render_template(
         'mod_services/services.html',
         company_name=company_name,
         customer_id=customer_id,
-        result=customer
+        result=customer,
+        form=form
     )
 
 
@@ -148,7 +143,7 @@ def edit_service(company_name, customer_id, service_id):
         )
         return redirect(
             url_for(
-                'services.services',
+                'customers.customers',
             )
         )
 
@@ -168,9 +163,7 @@ def delete_service(company_name, customer_id, service_id):
     )
     return redirect(
         url_for(
-            'services.customer_services',
-            company_name=company_name,
-            customer_id=customer_id
+            'customers.customers',
         )
     )
 
@@ -235,58 +228,3 @@ def get_services_for_given_company(query):
     return json_obj['result']
 
 
-def retrieve_all_services():
-
-    json_obj = mongo.db.customers.aggregate([
-        {
-            "$unwind": "$provided_services"
-        },
-        {
-            "$group": {
-                "_id": {
-                    '_id': '$_id',
-                    "company": {
-                        "name": "$company.name",
-                        "slug": "$company.slug",
-                    },
-                    "customer": {
-                        "firstName": "$first_name.value",
-                        "lastName": "$last_name.value",
-                        "customerId": "$_id"
-                    },
-                    "service": {
-                        'serviceId': '$provided_services.serviceId',
-                        'contactVia': '$provided_services.contactVia',
-                        "type": "$provided_services.provided_service.value",
-                        "description": "$provided_services.description",
-                        "fee": "$provided_services.service_fee",
-                        "date": "$provided_services.service_date"
-                    }
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
-                "company": {
-                    "name": "$_id.company.name",
-                    "slug": "$_id.company.slug",
-                },
-                "customer": {
-                    "_id": "$_id._id",
-                    "firstName": "$_id.customer.firstName",
-                    "lastName": "$_id.customer.lastName",
-                    "customerId": "$_id.customer.customerId",
-                },
-                "service": {
-                    'serviceId': '$_id.service.serviceId',
-                    'contactVia': '$_id.service.contactVia',
-                    "type": "$_id.service.type",
-                    "description": "$_id.service.description",
-                    "fee": "$_id.service.fee",
-                    "date": "$_id.service.date"
-                }
-            }
-        }
-    ])
-    return json_obj['result']

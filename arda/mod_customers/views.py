@@ -7,6 +7,7 @@ from forms.customer_form import CustomerForm
 from slugify import slugify
 from bson import ObjectId
 from flask.ext.security import login_user, login_required, logout_user, current_user
+from arda.mod_services.forms.servicetypes import ServiceTypes
 
 mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
 
@@ -14,10 +15,11 @@ mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
 @mod_customers.route('', methods=['GET'])
 @login_required
 def customers():
-
+    form = ServiceTypes()
     customers = mongo.db.customers.find({})
     response = build_customers_cursor(customers)
-    return render_template('mod_customers/customers.html', results=response)
+    services = retrieve_all_services()
+    return render_template('mod_customers/customers.html', result_services=services, form=form, results=response)
 
 
 @mod_customers.route('/create', methods=['GET', 'POST'])
@@ -205,3 +207,60 @@ def edit_costumers_document(customer_id):
             }
         }
     )
+
+
+def retrieve_all_services():
+
+    json_obj = mongo.db.customers.aggregate([
+        {
+            "$unwind": "$provided_services"
+        },
+        {
+            "$group": {
+                "_id": {
+                    '_id': '$_id',
+                    "company": {
+                        "name": "$company.name",
+                        "slug": "$company.slug",
+                    },
+                    "customer": {
+                        "firstName": "$first_name.value",
+                        "lastName": "$last_name.value",
+                        "customerId": "$_id"
+                    },
+                    "service": {
+                        'serviceId': '$provided_services.serviceId',
+                        'contactVia': '$provided_services.contactVia',
+                        "type": "$provided_services.provided_service.value",
+                        "description": "$provided_services.description",
+                        "fee": "$provided_services.service_fee",
+                        "date": "$provided_services.service_date"
+                    }
+                }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "company": {
+                    "name": "$_id.company.name",
+                    "slug": "$_id.company.slug",
+                },
+                "customer": {
+                    "_id": "$_id._id",
+                    "firstName": "$_id.customer.firstName",
+                    "lastName": "$_id.customer.lastName",
+                    "customerId": "$_id.customer.customerId",
+                },
+                "service": {
+                    'serviceId': '$_id.service.serviceId',
+                    'contactVia': '$_id.service.contactVia',
+                    "type": "$_id.service.type",
+                    "description": "$_id.service.description",
+                    "fee": "$_id.service.fee",
+                    "date": "$_id.service.date"
+                }
+            }
+        }
+    ])
+    return json_obj['result']
