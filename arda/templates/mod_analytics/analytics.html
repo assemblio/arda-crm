@@ -57,7 +57,7 @@
             title: title
           };
           var formatter = new google.visualization.NumberFormat({
-                  fractionDigits: 0,
+                  fractionDigits: 2,
                   prefix: '€ '
           });
 
@@ -142,6 +142,8 @@
     $('#no-limit[type="radio"]').click(function(){
       if ($(this).is(':checked'))
       {
+        $('#fromDate').val("");
+        $('#toDate').val("");
         $('#fromDate').hide();
         $('#toDate').hide();
       }
@@ -149,15 +151,17 @@
     $('#last-thirty[type="radio"]').click(function(){
       if ($(this).is(':checked'))
       {
-        $('#fromDate').hide();
         $('#fromDate').val("");
-        $('#toDate').hide();
         $('#toDate').val("");
+        $('#fromDate').hide();
+        $('#toDate').hide();
       }
     });
     $('#last-seven[type="radio"]').click(function(){
       if ($(this).is(':checked'))
       {
+        $('#fromDate').val("");
+        $('#toDate').val("");
         $('#fromDate').hide();
         $('#toDate').hide();
       }
