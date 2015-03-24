@@ -1,5 +1,19 @@
 {% extends "layout.html" %}
 {% block body %}
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#costumer_type').change(function(){
+			var target_group_type = $('#costumer_type').val();
+			if (target_group_type == "Entrepreneur"){
+				$('#Entrepreneur-targetGroup').css("display", "block");
+				$('#NGO-targetGroup').css("display", "none");
+			} else if (target_group_type == "Non-Governmental Organisation") {
+				$('#NGO-targetGroup').css("display", "block");
+				$('#Entrepreneur-targetGroup').css("display", "none");
+			}
+		})
+	})
+</script>
 <section>
 <div class="container ">
 	<h4 class="col-xs-offset-3">Create a new Costumer by filling the fields below</h4>
@@ -55,6 +69,7 @@
 			</div>
 		</div>
 		<br></br>
+		<div id="address-details" style="display:none">
 		<div class="form-group form-group-lg">
 			<label class="control-label col-xs-offset-4 col-xs-3" style="font-size: 18px;">Address Details</label>
 			<hr>
@@ -84,7 +99,6 @@
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.ship_add1.label(class="pull-right")}}</div>
 				<div class="col-xs-6">{{form.ship_add1(class="form-control", placeholder="Address 1")}}</div>
-
 			</div>
 			<div class="form-group form-group-sm">
 				<div class="col-xs-offset-6 col-xs-6">{{form.ship_add2(class="form-control", placeholder="Address 2")}}</div>
@@ -100,6 +114,113 @@
 			</div>
 			<div class="form-group form-group-sm">
 				<div class="col-xs-offset-6 col-xs-6">{{form.ship_country(class="form-control", placeholder="Country")}}</div>
+			</div>
+		</div>
+		<br><br>
+		</div>
+		<div id="Entrepreneur-targetGroup"style="display:none">
+			<div class="form-group form-group-lg">
+				<label class="control-label col-xs-offset-4 col-xs-3" style="font-size: 18px;">Entrepreneur Target Group</label>
+				<hr>
+			</div><br>
+			<div class="form-group col-xs-6">
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.business_name.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.business_name(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.vat.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.vat(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.fiscal_number.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.fiscal_number(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.legal_entity_types.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.legal_entity_types(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.industry.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.industry(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.main_activity.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.main_activity(class="form-control")}}</div>
+			</div>
+			</div>
+			<div class="form-group col-xs-6">
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.founding_year.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.founding_year(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.number_of_employees.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.number_of_employees(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.size_category.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.size_category(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.investment.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.investment(class="form-control")}}</div>
+			</div>
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.business_description.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.business_description(class="form-control")}}</div>
+			</div>
+		</div>
+		</div>
+		<br>
+		<div id="NGO-targetGroup" style="display:none">
+			<div class="form-group form-group-lg">
+				<label class="control-label col-xs-offset-4 col-xs-3" style="font-size: 18px;">Non-Governmental Organisation Group</label>
+				<hr>
+			</div><br>
+			<div class="form-group col-xs-6">
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.ngo_registration_number_ngo.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.ngo_registration_number_ngo(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.vat_number_ngo.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.vat_number_ngo(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.fiscal_number_ngo.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.fiscal_number_ngo(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.sector_ngo.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.sector_ngo(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.founding_year_ngo.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.founding_year_ngo(class="form-control")}}</div>
+				</div>
+				</div>
+				<div class="form-group col-xs-6">
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.number_of_staff_ngo.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.number_of_staff_ngo(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.description_of_ngo.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.description_of_ngo(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.main_activities.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.main_activities(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.web_site.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.web_site(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.donors.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.donors(class="form-control")}}</div>
+				</div>
 			</div>
 		</div>
 		<br></br>
