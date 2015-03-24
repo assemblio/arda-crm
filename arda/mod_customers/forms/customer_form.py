@@ -14,7 +14,7 @@ class CustomerForm(Form):
     fax = TextField("Fax")
     email = TextField("Email")
     website = TextField("Website")
-    costumer_type = SelectField(
+    customer_type = SelectField(
         "Costumer Type",
     	choices=[
             ('Entrepreneur', 'Entrepreneur'),

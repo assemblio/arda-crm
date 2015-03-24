@@ -46,7 +46,7 @@ def edit_customer(customer_id):
     form = CustomerForm()
     if request.method == "GET":
         customer_doc = mongo.db.customers.find_one({'_id': ObjectId(customer_id)})
-
+        print customer_doc['customer_type']['target_group']
         form.company_name.data = customer_doc['company']['name']
         form.first_name.data = customer_doc['first_name']['value']
         form.last_name.data = customer_doc['last_name']['value']
@@ -58,33 +58,34 @@ def edit_customer(customer_id):
         form.email.data = customer_doc['email']
         form.website.data = customer_doc['website']
         # Let's check what target group we have in order to know what fields to fill
-        if customer_doc['costumer_type']['target_group'] == "Entrepreneur":
-            form.costumer_type.data = customer_doc['costumer_type']['target_group']
-            form.business_name.data = customer_doc['costumer_type']['business_name']
-            form.vat.data = customer_doc['costumer_type']['vat']
-            form.fiscal_number.data = customer_doc['costumer_type']['fiscal_number']
-            form.legal_entity_types.data = customer_doc['costumer_type']['legal_entity_types']
-            form.industry.data = customer_doc['costumer_type']['industry']
-            form.main_activity.data = customer_doc['costumer_type']['main_activity']
-            form.founding_year.data = customer_doc['costumer_type']['founding_year']
-            form.number_of_employees.data = customer_doc['costumer_type']['number_of_employees']
-            form.size_category.data = customer_doc['costumer_type']['size_category']
-            form.investment.data = customer_doc['costumer_type']['investment']
-            form.business_description.data = customer_doc['costumer_type']['business_description']
-        elif customer_doc['costumer_type']['target_group'] == "Non-Governmental Organisation":
-            form.costumer_type.data = customer_doc['costumer_type']['target_group']
-            form.ngo_registration_number_ngo.data = customer_doc['costumer_type']['ngo_registration_number_ngo']
-            form.vat_number_ngo.data = customer_doc['costumer_type']['vat_number_ngo']
-            form.fiscal_number_ngo.data = customer_doc['costumer_type']['fiscal_number_ngo']
-            form.sector_ngo.data = customer_doc['costumer_type']['sector_ngo']
-            form.founding_year_ngo.data = customer_doc['costumer_type']['founding_year_ngo']
-            form.number_of_staff_ngo.data = customer_doc['costumer_type']['number_of_staff_ngo']
-            form.description_of_ngo.data = customer_doc['costumer_type']['description_of_ngo']
-            form.main_activities.data = customer_doc['costumer_type']['main_activities']
-            form.donors.data = customer_doc['costumer_type']['donors']
+        if customer_doc['customer_type']['target_group'] == "Entrepreneur":
+            form.customer_type.data = customer_doc['customer_type']['target_group']
+            form.business_name.data = customer_doc['customer_type']['business_name']
+            form.vat.data = customer_doc['customer_type']['vat']
+            form.fiscal_number.data = customer_doc['customer_type']['fiscal_number']
+            form.legal_entity_types.data = customer_doc['customer_type']['legal_entity_types']
+            form.industry.data = customer_doc['customer_type']['industry']
+            form.main_activity.data = customer_doc['customer_type']['main_activity']
+            form.founding_year.data = customer_doc['customer_type']['founding_year']
+            form.number_of_employees.data = customer_doc['customer_type']['number_of_employees']
+            form.size_category.data = customer_doc['customer_type']['size_category']
+            form.investment.data = customer_doc['customer_type']['investment']
+            form.business_description.data = customer_doc['customer_type']['business_description']
+
+        elif customer_doc['customer_type']['target_group'] == "Non-Governmental Organisation":
+            form.customer_type.data = customer_doc['customer_type']['target_group']
+            form.ngo_registration_number_ngo.data = customer_doc['customer_type']['ngo_registration_number_ngo']
+            form.vat_number_ngo.data = customer_doc['customer_type']['vat_number_ngo']
+            form.fiscal_number_ngo.data = customer_doc['customer_type']['fiscal_number_ngo']
+            form.sector_ngo.data = customer_doc['customer_type']['sector_ngo']
+            form.founding_year_ngo.data = customer_doc['customer_type']['founding_year_ngo']
+            form.number_of_staff_ngo.data = customer_doc['customer_type']['number_of_staff_ngo']
+            form.description_of_ngo.data = customer_doc['customer_type']['description_of_ngo']
+            form.main_activities.data = customer_doc['customer_type']['main_activities']
+            form.donors.data = customer_doc['customer_type']['donors']
 
         else:
-            form.costumer_type.data = customer_doc['costumer_type']['target_group']
+            form.customer_type.data = customer_doc['customer_type']['target_group']
 
         form.bill_add1.data = customer_doc['address']['billing']['bill_add1']
         form.bill_add2.data = customer_doc['address']['billing']['bill_add2']
@@ -178,9 +179,9 @@ def build_save_costumers_document():
         'provided_services': []
     }
 
-    if costumer['costumer_type'] == "Entrepreneur":
-        json_obj['costumer_type'] = {
-            'target_group': costumer['costumer_type'],
+    if costumer['customer_type'] == "Entrepreneur":
+        json_obj['customer_type'] = {
+            'target_group': costumer['customer_type'],
             'business_name': costumer['business_name'],
             'vat': costumer['vat'],
             'fiscal_number': costumer['fiscal_number'],
@@ -193,9 +194,9 @@ def build_save_costumers_document():
             'investment': costumer['investment'],
             'business_description': costumer['business_description']
         }
-    elif costumer['costumer_type'] == "Non-Governmental Organisation":
+    elif costumer['customer_type'] == "Non-Governmental Organisation":
         json_obj['customer_type'] = {
-            'target_group': costumer['costumer_type'],
+            'target_group': costumer['customer_type'],
             'ngo_registration_number_ngo': costumer['ngo_registration_number_ngo'],
             'vat_number_ngo': costumer['vat_number_ngo'],
             'fiscal_number_ngo': costumer['fiscal_number_ngo'],
@@ -208,8 +209,8 @@ def build_save_costumers_document():
         }
     else:
         #Investor and Municipality fields not avaliable yet
-        json_obj['costumer_type']={
-            'target_group': costumer['costumer_type']
+        json_obj['customer_type']={
+            'target_group': costumer['customer_type']
         }
     mongo.db.customers.insert(json_obj)
 
@@ -261,9 +262,9 @@ def edit_costumers_document(customer_id):
         'website': costumer['website'],
     }
 
-    if costumer['costumer_type'] == "Entrepreneur":
-        json_obj['costumer_type'] = {
-            'target_group': costumer['costumer_type'],
+    if costumer['customer_type'] == "Entrepreneur":
+        json_obj['customer_type'] = {
+            'target_group': costumer['customer_type'],
             'business_name': costumer['business_name'],
             'vat': costumer['vat'],
             'fiscal_number': costumer['fiscal_number'],
@@ -276,9 +277,9 @@ def edit_costumers_document(customer_id):
             'investment': costumer['investment'],
             'business_description': costumer['business_description']
         }
-    elif costumer['costumer_type'] == "Non-Governmental Organisation":
+    elif costumer['customer_type'] == "Non-Governmental Organisation":
         json_obj['customer_type'] = {
-            'target_group': costumer['costumer_type'],
+            'target_group': costumer['customer_type'],
             'ngo_registration_number_ngo': costumer['ngo_registration_number_ngo'],
             'vat_number_ngo': costumer['vat_number_ngo'],
             'fiscal_number_ngo': costumer['fiscal_number_ngo'],
@@ -291,8 +292,8 @@ def edit_costumers_document(customer_id):
         }
     else:
         #Investor and Municipality fields not avaliable yet
-        json_obj['costumer_type']['target_group'] = {
-            'target_group': costumer['costumer_type']
+        json_obj['customer_type'] = {
+            'target_group': costumer['customer_type']
         }
 
     mongo.db.customers.update(

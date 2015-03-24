@@ -2,8 +2,8 @@
 {% block body %}
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('#costumer_type').change(function(){
-			var target_group_type = $('#costumer_type').val();
+		$('#customer_type').change(function(){
+			var target_group_type = $('#customer_type').val();
 			if (target_group_type == "Entrepreneur"){
 				$('#Entrepreneur-targetGroup').css("display", "block");
 				$('#NGO-targetGroup').css("display", "none");
@@ -34,8 +34,8 @@
 				<div class="col-xs-6">{{form.last_name(class="form-control")}}</div>
 			</div>
 			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.costumer_type.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.costumer_type(class="form-control")}}</div>
+				<div class="col-xs-6">{{form.customer_type.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.customer_type(class="form-control")}}</div>
 			</div>
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.job_title.label(class="pull-right")}}</div>
