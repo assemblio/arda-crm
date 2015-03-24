@@ -104,7 +104,7 @@ def build_save_costumers_document():
 
     customer_form = CustomerForm(request.form)
     costumer = customer_form.data
-
+    print costumer
     json_obj = {}
     json_obj = {
         'company': {
@@ -118,8 +118,7 @@ def build_save_costumers_document():
         'last_name': {
         	'value': costumer['last_name'],
         	'slug': slugify(costumer['last_name'])
-        },
-        'costumer_type': costumer['costumer_type'],
+        }, 
         'job_title': costumer['job_title'],
         'region':  current_user['region'],
         'phone': {
@@ -150,6 +149,41 @@ def build_save_costumers_document():
         'website': costumer['website'],
         'provided_services': []
     }
+
+
+
+
+    if costumer['costumer_type'] == "Entrepreneur":
+        json_obj['costumer_type'] = {
+            'target_group': costumer['costumer_type'],
+            'business_name': costumer['business_name'],
+            'vat': costumer['vat'],
+            'fiscal_number': costumer['fiscal_number'],
+            'legal_entity_types': costumer['legal_entity_types'],
+            'industry': costumer['industry'],
+            'main_activity': costumer['main_activity'],
+            'founding_year': costumer['founding_year'],
+            'number_of_employees': costumer['number_of_employees'],
+            'size_category': costumer['size_category'],
+            'investment': costumer['investment'],
+            'business_description': costumer['business_description']
+        }
+    elif costumer['costumer_type'] == "Non-Governmental Organisation":
+        json_obj['customer_type'] = {
+            'target_group': costumer['costumer_type'],
+            'ngo_registration_number_ngo': costumer['ngo_registration_number_ngo'],
+            'vat_number_ngo': costumer['vat_number_ngo'],
+            'fiscal_number_ngo': costumer['fiscal_number_ngo'],
+            'sector_ngo': costumer['sector_ngo'],
+            'founding_year_ngo': costumer['founding_year_ngo'],
+            'number_of_staff_ngo': costumer['number_of_staff_ngo'],
+            'description_of_ngo': costumer['description_of_ngo'],
+            'main_activities': costumer['main_activities'],
+            'donors': costumer['donors']
+        }
+    else:
+        #Investor and Municipality fields not defined yet
+        json_obj['costumer_type']=costumer['costumer_type']
 
     mongo.db.customers.insert(json_obj)
 
