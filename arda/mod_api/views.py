@@ -234,25 +234,8 @@ def search_service_analytics():
         f_name = request.args.get('customerFname')
         l_name = request.args.get('customerLname')
         company = request.args.get('company')
-        phoneCall = request.args.get('phoneCall')
-        email = request.args.get('email')
-        faceToFace = request.args.get('f2f')
 
     match_fields = {}
-
-    servicesArray = []
-    if phoneCall:
-        servicesArray.append(phoneCall)
-
-    if email:
-        servicesArray.append(email)
-
-    if faceToFace:
-        servicesArray.append(faceToFace)
-
-    if servicesArray != []:
-        print str(servicesArray)
-        #match_fields['provided_services.provided_service.slug'] = {"$in": servicesArray}
 
     if region:
         match_fields['region'] = region

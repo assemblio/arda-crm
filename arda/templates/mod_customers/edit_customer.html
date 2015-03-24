@@ -2,6 +2,18 @@
 {% block body %}
 <script type="text/javascript">
 	$(document).ready(function(){
+		var target_group_type1 = $('#customer_type').val();
+		if (target_group_type1 == "Entrepreneur"){
+				$('#Entrepreneur-targetGroup').css("display", "block");
+				$('#NGO-targetGroup').css("display", "none");
+		} else if (target_group_type1 == "Non-Governmental Organisation") {
+			$('#NGO-targetGroup').css("display", "block");
+			$('#Entrepreneur-targetGroup').css("display", "none");
+		} else {
+			$('#NGO-targetGroup').css("display", "none");
+			$('#Entrepreneur-targetGroup').css("display", "none");
+		}
+
 		$('#customer_type').change(function(){
 			var target_group_type = $('#customer_type').val();
 			if (target_group_type == "Entrepreneur"){
@@ -9,6 +21,10 @@
 				$('#NGO-targetGroup').css("display", "none");
 			} else if (target_group_type == "Non-Governmental Organisation") {
 				$('#NGO-targetGroup').css("display", "block");
+				$('#Entrepreneur-targetGroup').css("display", "none");
+			}
+			else {
+				$('#NGO-targetGroup').css("display", "none");
 				$('#Entrepreneur-targetGroup').css("display", "none");
 			}
 		})
@@ -118,7 +134,7 @@
 		</div>
 		<br><br>
 		</div>
-		<div id="Entrepreneur-targetGroup">
+		<div id="Entrepreneur-targetGroup" style="display:none">
 			<div class="form-group form-group-lg">
 				<label class="control-label col-xs-offset-3 col-xs-4" style="font-size: 18px;">Target Group: Entrepreneur</label>
 				<hr>

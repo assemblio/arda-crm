@@ -24,12 +24,7 @@
   //draw pie chart 
   function drawChart(title, containerId, results, isCurrency) {
     var chartTypeSelected = $('input[name=rb1]:checked', '#chart-type-form').val();
-      console.log(chartTypeSelected);
       var dateRadioSelected = $('input[name=rb2]:checked', '#service-types-form').val();
-      console.log(dateRadioSelected);
-      var faceToFaceRadio = checkRadioButtons("#face-to-face-meeting");
-      var emailRadio = checkRadioButtons("#e-mails");
-      var phoneCallsRadio = checkRadioButtons("#phone-calls");
       var company = $('#company-name').val();
       var customerFirstName = $('#customer-first-name').val();
       var customerLastName = $('#customer-last-name').val();
@@ -38,21 +33,52 @@
       var to_date = $('#toDate').val();
        
 
-        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&email=" + emailRadio + "&phoneCall=" + phoneCallsRadio + "&f2f=" + faceToFaceRadio;
+        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+
         $.get(url, function(result){
           var dataTable = new google.visualization.DataTable();
           dataTable.addColumn('string', 'Service Type');
           dataTable.addColumn('number', 'Service Fee');
+
           for(var idx in result){
             var type = result[idx]['serviceType'];
             if (containerId === "pieValueChart") {
-              var sum = result[idx]['valueOfService'];
+                var sum = result[idx]['valueOfService']; 
             } else{
-              var sum = result[idx]['countServices']
+                var sum = result[idx]['countServices']
             }
             type = type.toString();
-            dataTable.addRow([type, sum]); 
+            dataTable.addRow([type, sum]);
           }
+
+
+          var rowInds = dataTable.getNumberOfRows();
+          for (var i = 0; i < rowInds; i++) {
+            console.log(i);
+          }
+
+          var options = {
+            title: title
+          };
+          var formatter = new google.visualization.NumberFormat({
+                  fractionDigits: 2,
+                  prefix: '€ '
+          });
+
+          /*if(isCurrency == true){
+            formatter.format(dataTable, 1);
+          }
+
+          if(checkRadioButtons('#phone-calls') == null){
+            dataTable.removeRow(0);
+          }
+          if(checkRadioButtons('#e-mails') == null){
+            dataTable.removeRow(1);
+          }
+          if(checkRadioButtons('#face-to-face-meeting') == null){
+            dataTable.removeRow(2);
+          }*/
+
           var options = {
             title: title
           };
@@ -92,9 +118,7 @@
 
     $('#filterButton').click(function(){
       var chartTypeSelected = $('input[name=rb1]:checked', '#chart-type-form').val();
-      console.log(chartTypeSelected);
       var dateRadioSelected = $('input[name=rb2]:checked', '#service-types-form').val();
-      console.log(dateRadioSelected);
       var faceToFaceRadio = checkRadioButtons("#face-to-face-meeting");
       var emailRadio = checkRadioButtons("#e-mails");
       var phoneCallsRadio = checkRadioButtons("#phone-calls");
@@ -108,9 +132,7 @@
 
         url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&email=" + emailRadio + "&phoneCall=" + phoneCallsRadio + "&f2f=" + faceToFaceRadio;
 
-        console.log(url);
         $.get(url, function(result){
-          console.log(result);
           drawValuePieChart(result);
           drawCountPieChart(result);
         });
@@ -231,7 +253,7 @@
       Service Types
     </li>
     <li class="cbp-spmenu-vertical-item-child" id="service-types" style="display:none;">
-    
+      
       <input type="checkbox" id="phone-calls" name="cc" value="phone-call" class="service-types-checkbox" checked />
       <label for="phone-calls"><span></span>Phone Calls</label>
       <br>
@@ -242,7 +264,6 @@
 
       <input type="checkbox" id="face-to-face-meeting" name="cc" value="face-to-face-meeting" class="service-types-checkbox" checked />
       <label for="face-to-face-meeting"><span></span>Face-To-Face</label>
-
     </li>
 
     <li class="cbp-spmenu-vertical-item-parent" id="dates">

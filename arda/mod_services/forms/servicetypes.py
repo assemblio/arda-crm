@@ -1,6 +1,7 @@
 from flask_wtf import Form
-from wtforms import StringField, SelectField, IntegerField, TextAreaField
+from wtforms import StringField, SelectField, IntegerField, TextAreaField, SelectMultipleField, widgets
 from arda import mongo
+from checkboxwidgets import MultiCheckboxField
 
 
 class ServiceTypes(Form):
@@ -9,10 +10,19 @@ class ServiceTypes(Form):
     service_fee = StringField("Service Fee")
     service_date = StringField("Schedule")
     provided_service = SelectField("Provided Service")
+    provided_services_check = MultiCheckboxField("Provided Service")
     contact_via = SelectField("Contacted via")
 
     def __init__(self, *args, **kwargs):
         # pre-populate provided service Selectfield from database
+        self.provided_services_check.kwargs['choices'] = [
+            (
+                item['_id']['serviceType'],
+                item['_id']['serviceType']
+            )
+            for item in retrieve_all_service_types()
+        ]
+
         self.provided_service.kwargs['choices'] = [
             (
                 item['_id']['serviceType'],
