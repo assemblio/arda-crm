@@ -190,19 +190,19 @@
           <input type="text" class="form-control" id='company' name='company' placeholder="Company">
         </div>
         <div class="col-xs-2">
-          <button type="button" class="btn btn-success" id="searchCustomer">Search</button>
+          <button type="button" class="btn btn-info" id="searchCustomer">Search</button>
         </div>
       </form>
     </div>
     <br><br></br>
       {% if results|length > 0 %}
-      <div class="panel panel-info ">
+      <div class="panel panel-danger">
         <!-- Default panel contents -->
-        <div class="table-responsive">
+        <div class="panel-body table-responsive">
           <!-- Table -->
           <table id="results-table" class="table table-striped table-condensed">
             <thead >
-              <tr class="danger">
+              <tr class="info">
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Job Title</th>
@@ -273,7 +273,8 @@
               </tr>
               {% endfor %}
             </tbody>
-          </table>
+          </table><br>
+          <a download="Customers.xls" class="btn btn-sm btn-success pull-right" href="#" onclick="return ExcellentExport.excel(this, 'results-table', 'Customers');">Export to Excel</a>
         </div>
       </div>
       {% endif %}
@@ -295,20 +296,20 @@
 	          <input type="text" class="form-control service-date-picker" id='to' name='to' placeholder="to date">
 	        </div>
 	        <div class="col-xs-2">
-	          <button type="button" class="btn btn-success" id="searchService">Search</button>
+	          <button type="button" class="btn btn-info" id="searchService">Search</button>
 	        </div>
 	      </form>
 		</div>
 		 <br></br><br>
-      <div class="panel panel-info ">
+      <div class="panel panel-danger">
       <!-- Default panel contents -->
-      <div class="table-responsive">
+      <div class="panel-body table-responsive">
         <!-- Table -->
         
 
-        <table class="table table-striped table-condensed table-result">
+        <table id="services" class="table table-striped table-condensed table-result">
           <thead >
-            <tr class="danger">
+            <tr class="info">
               <th>First Name</th>
               <th>Last Name</th>
               <th>Service Type</th>
@@ -360,7 +361,8 @@
 	            {% endfor %}
 	            {% endif %}
          	</tbody>
-        </table>
+        </table><br>
+        <a download="Services.xls" class="btn btn-sm btn-success pull-right" href="#" onclick="return ExcellentExport.excel(this, 'services', 'Services');">Export to Excel</a>
       </div>
     </div>
   </div>
