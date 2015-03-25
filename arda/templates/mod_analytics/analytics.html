@@ -23,81 +23,55 @@
   }
   //draw pie chart 
   function drawChart(title, containerId, results, isCurrency) {
-    var chartTypeSelected = $('input[name=rb1]:checked', '#chart-type-form').val();
-      var dateRadioSelected = $('input[name=rb2]:checked', '#service-types-form').val();
-      var company = $('#company-name').val();
-      var customerFirstName = $('#customer-first-name').val();
-      var customerLastName = $('#customer-last-name').val();
-      var region = $('#region-select').val();
-      var from_date = $('#fromDate').val();
-      var to_date = $('#toDate').val();
-       
+        var dataTable = new google.visualization.DataTable()
+        dataTable.addColumn('string', 'Service Type');
+        dataTable.addColumn('number', 'Service Fee');
 
-        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
-
-        $.get(url, function(result){
-          var dataTable = new google.visualization.DataTable()
-          dataTable.addColumn('string', 'Service Type');
-          dataTable.addColumn('number', 'Service Fee');
-
-          for(var idx in result){
-            var type = result[idx]['serviceType'];
-            if (containerId === "pieValueChart") {
-                var sum = result[idx]['valueOfService']; 
-            } else{
-                var sum = result[idx]['countServices']
-            }
-            type = type.toString();
-            dataTable.addRow([type, sum]);
+        for(var idx in results){
+          var type = results[idx]['serviceType'];
+          if (containerId === "pieValueChart") {
+              var sum = results[idx]['valueOfService']; 
+          } else{
+              var sum = results[idx]['countServices']
           }
+          type = type.toString();
+          dataTable.addRow([type, sum]);
+        }
 
 
-          var options = {
-            title: title
-          };
-          var formatter = new google.visualization.NumberFormat({
-                  fractionDigits: 2,
-                  prefix: '€ '
-          });
-          var maxrows = dataTable.getNumberOfRows();
+        var options = {
+          title: title
+        };
+        var formatter = new google.visualization.NumberFormat({
+                fractionDigits: 2,
+                prefix: '€ '
+        });
 
-            for (var y = 0; y < maxrows; y++) {
-              console.log(dataTable.getValue(y,0));
-              if(checkRadioButtons('#phone-calls') == null){
-                if (dataTable.getValue(y, 0) == 'Phone Call') {
-                    dataTable.removeRow(y);
-                }
-              }
-              else if(checkRadioButtons('#e-mails') == null) {
-                if (dataTable.getValue(y, 0) == 'E-mail') {
-                  dataTable.removeRow(y);
-                }
-              }
-              else if(checkRadioButtons('#face-to-face-meeting') == null){
-                if (dataTable.getValue(y, 0) == 'Face-To-Face meeting') {
-                  dataTable.removeRow(y);
-                }
-              }
-            }
-
-          if(isCurrency == true){
-            formatter.format(dataTable, 1);
+        if(checkRadioButtons('#phone-calls') == null){
+          var phoneCallRowID = dataTable.getFilteredRows([{column: 0, value: 'Phone Call'}]);
+          if(phoneCallRowID != []){
+            dataTable.removeRow(phoneCallRowID[0]);
           }
-
-          
-          /*
-          if(checkRadioButtons('#e-mails') == null){
-            dataTable.removeRow(1);
+        }
+        if(checkRadioButtons('#e-mails') == null){
+          var emailRowID = dataTable.getFilteredRows([{column: 0, value: 'E-mail'}]);
+          if(emailRowID != []) {
+            dataTable.removeRow(emailRowID[0]);
           }
+        }
+        if(checkRadioButtons('#face-to-face-meeting') == null){
+          var f2fRowID = dataTable.getFilteredRows([{column: 0, value: 'Face-to-Face meeting'}]);
+          if(f2fRowID != []) {
+            dataTable.removeRow(f2fRowID[0]);
+          }
+        }
 
-          if(checkRadioButtons('#face-to-face-meeting') == null){
-            dataTable.removeRow(2);
-          }*/
-          
+        if(isCurrency == true){
+          formatter.format(dataTable, 1);
+        }
 
-          var chart = new google.visualization.PieChart(document.getElementById(containerId));
-          chart.draw(dataTable, options);
-        })
+        var chart = new google.visualization.PieChart(document.getElementById(containerId));
+        chart.draw(dataTable, options);
   };
 
   //load document 
@@ -105,20 +79,14 @@
     disableTextboxes();
     $('#fromDate').hide();
     $('#toDate').hide();
-    drawValuePieChart(service_result);
-    drawCountPieChart(service_result);
+    var region = $('#region-select').val();
 
-   
+    var url = "{{ url_for('api.search_service_analytics') }}" + "?region=" + region;
 
-    /*if($('#line-chart').is(':checked')){
-      var chartType = $('#line-chart').val();
-      console.log(chartType)
-    }
-    else{
-      console.log("Is Not checked")
-    }
-
-    console.log(chartType);*/
+    $.get(url, function(service_result){
+      drawValuePieChart(service_result);
+      drawCountPieChart(service_result);
+    })
 
     $('#filterButton').click(function(){
       var chartTypeSelected = $('input[name=rb1]:checked', '#chart-type-form').val();
@@ -130,11 +98,25 @@
       var customerFirstName = $('#customer-first-name').val();
       var customerLastName = $('#customer-last-name').val();
       var region = $('#region-select').val();
-      var from_date = $('#fromDate').val();
-      var to_date = $('#toDate').val();
        
+      var date = new Date();
+      var date_now =  date.getDate() + "-" + (date.getMonth() + 1) + "-" + (date.getYear() + 1900);
+      var last_seven_days = (date.getDate() - 7) + "-" + (date.getMonth() + 1) + "-" + (date.getYear() + 1900);
+      var last_thirty_days = date.getDate() + "-" + date.getMonth() + "-" + (date.getYear() + 1900);
+      var url = "";
 
-        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&email=" + emailRadio + "&phoneCall=" + phoneCallsRadio + "&f2f=" + faceToFaceRadio;
+      if(dateRadioSelected == "no-limit"){
+        url = "{{ url_for('api.search_service_analytics') }}" + "?region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+      } else if (dateRadioSelected == "last-seven") {
+        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + last_seven_days + "&to=" + date_now + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+      } else if (dateRadioSelected == "last-thirty") {
+        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + last_thirty_days.toString() + "&to=" + date_now + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+      } else if (dateRadioSelected == "data-range"){
+        var from_date = $('#fromDate').val();
+        var to_date = $('#toDate').val();
+        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+      }
+
 
         $.get(url, function(result){
           drawValuePieChart(result);
