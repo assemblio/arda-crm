@@ -59,24 +59,40 @@
                   fractionDigits: 2,
                   prefix: '€ '
           });
+          var maxrows = dataTable.getNumberOfRows();
 
-          
+            for (var y = 0; y < maxrows; y++) {
+              console.log(dataTable.getValue(y,0));
+              if(checkRadioButtons('#phone-calls') == null){
+                if (dataTable.getValue(y, 0) == 'Phone Call') {
+                    dataTable.removeRow(y);
+                }
+              }
+              else if(checkRadioButtons('#e-mails') == null) {
+                if (dataTable.getValue(y, 0) == 'E-mail') {
+                  dataTable.removeRow(y);
+                }
+              }
+              else if(checkRadioButtons('#face-to-face-meeting') == null){
+                if (dataTable.getValue(y, 0) == 'Face-To-Face meeting') {
+                  dataTable.removeRow(y);
+                }
+              }
+            }
 
           if(isCurrency == true){
             formatter.format(dataTable, 1);
           }
 
-          if(checkRadioButtons('#phone-calls') == null){
-            dataTable.removeRow(rowInds[i]);
-          }
           
+          /*
           if(checkRadioButtons('#e-mails') == null){
-            dataTable.removeRow(rowInds[i]);
+            dataTable.removeRow(1);
           }
 
           if(checkRadioButtons('#face-to-face-meeting') == null){
             dataTable.removeRow(2);
-          }
+          }*/
           
 
           var chart = new google.visualization.PieChart(document.getElementById(containerId));
