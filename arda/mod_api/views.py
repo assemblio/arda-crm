@@ -84,7 +84,7 @@ def search():
     if company:
         match_field['company.slug'] = slugify(company)
     if customer_type:
-        match_field['costumer_type'] = customer_type
+        match_field['costumer_type.target_group'] = customer_type
 
     match = {
         "$match": match_field
@@ -94,6 +94,7 @@ def search():
         "$group": {
             "_id": {
                 "_id": "$_id",
+                "target_group": "$costumer_type.target_group",
                 "first_name": "$first_name.value",
                 "last_name": "$last_name.value",
                 "job_title": "$job_title",
@@ -113,6 +114,7 @@ def search():
     project = {
         "$project": {
             "_id": 0,
+            'target_group': '$_id.target_group',
             "_id": "$_id._id",
             "first_name": "$_id.first_name",
             "last_name": "$_id.last_name",
