@@ -55,4 +55,3 @@ class Customers(db.Document):
     email = db.StringField()
     website = db.StringField()
     provided_services = db.ListField()
-
