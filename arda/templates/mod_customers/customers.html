@@ -278,6 +278,60 @@
         </div>
       </div>
       {% endif %}
+                            <div class="pagination">
+			                    <ul class="pagination pull-right">
+			                        <li><a href="#" class="fa fa-angle-left"></a></li>
+			                        		{%- for page in pagination.iter_pages() %}
+									            {% if page %}
+
+									                {% if page != pagination.page %}
+			                        					<li><a href="{{url_for('customers.customers')}}?page={{ page }}">{{ page }}</a></li>
+			                        				{% else %}
+			                        					<li>{{ page }}</li>
+			                        				{% endif %}
+									            {% endif %}
+									        {%- endfor %}
+			                        <li><a href="#" class="fa fa-angle-right"></a></li>
+			                    </ul>
+			                </div>
+                            <table class="table table-hover">
+							  <tr class="info">
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Main Phone</th>
+                                <th>E-mail</th>
+                                <th>Services</th>
+                                <th>Operations</th>
+                              </tr>
+							  {% for customer in pagination.items %}
+							  <tr>
+							   <td>{{customer['first_name']['value']}}</td>
+                                <td>{{customer['last_name']['value']}}</td>
+                                <td>{{customer['job_title']}}</td>
+                                <td>{{customer['company']['name']}}</td>
+                                <td>{{customer['phone']['main_phone']}}</td>
+                                <td>{{customer['email']}}</td>
+							  </tr>
+							  {% endfor %}
+							</table>
+                            <div class="pagination">
+			                    <ul class="pagination pull-right">
+			                        <li><a href="#" class="fa fa-angle-left"></a></li>
+			                        		{%- for page in pagination.iter_pages() %}
+									            {% if page %}
+
+									                {% if page != pagination.page %}
+			                        					<li><a href="{{url_for('customers.customers')}}?page={{ page }}">{{ page }}</a></li>
+			                        				{% else %}
+			                        					<li>{{ page }}</li>
+			                        				{% endif %}
+									            {% endif %}
+									        {%- endfor %}
+			                        <li><a href="#" class="fa fa-angle-right"></a></li>
+			                    </ul>
+			                </div>
       <br><br>
       </br>
       <p>All Services provided by <strong>ARDA</strong></p>

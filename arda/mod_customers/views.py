@@ -8,6 +8,7 @@ from slugify import slugify
 from bson import ObjectId
 from flask.ext.security import login_user, login_required, logout_user, current_user
 from arda.mod_services.forms.servicetypes import ServiceTypes
+from arda.mod_customers.models.model import Customers
 
 mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
 
@@ -15,11 +16,19 @@ mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
 @mod_customers.route('', methods=['GET'])
 @login_required
 def customers():
+    if not request.args.get('page'):
+        page = 1
+    else:
+        page = int(request.args.get('page'))
+    print page
     form = ServiceTypes()
     customers = mongo.db.customers.find({})
+    customers_pagi = Customers.objects.all()
+    pagination = customers_pagi.paginate(page=page, per_page=10)
+
     response = build_customers_cursor(customers)
     services = retrieve_all_services()
-    return render_template('mod_customers/customers.html', result_services=services, form=form, results=response)
+    return render_template('mod_customers/customers.html', pagination=pagination, result_services=services, form=form, results=response)
 
 
 @mod_customers.route('/create', methods=['GET', 'POST'])
