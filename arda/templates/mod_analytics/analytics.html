@@ -22,6 +22,75 @@
     var title = "Number of all provided services based on service type";
     drawChart(title, "pieCountChart", result, false);
   }
+
+    function drawContractValueChart(title, resultJson, containerDivId, isCurrency) {
+      var data = google.visualization.arrayToDataTable([
+          ['Muaji'],
+          ["January"],
+          ["February"],
+          ["March"],
+          ["April"],
+          ["May"],
+          ["June"],
+          ["July"],
+          ["August"],
+          ["September"],
+          ["October"],
+          ["November"],
+          ["December"]
+        ]);
+
+        var currentServiceType = "";
+        var columnIndex = 0;
+        var columnLenght = 0;
+
+        for (var key in resultJson ){
+          if (resultJson[key].serviceType != currentServiceType){
+            data.addColumn('number', resultJson[key].serviceType, resultJson[key].serviceType);
+            currentServiceType = resultJson[key].serviceType;
+            columnLenght = columnLenght + 1;
+            columnIndex = columnIndex + 1;
+          }
+          data.setCell(resultJson[key].month-1, columnIndex, resultJson[key].sumOfService);
+        }
+
+        $('input[type=checkbox]').each(function() {
+          if (checkRadioButtons($(this)) == null) {
+            var id = data.getColumnIndex($(this).val());
+            if(id > 0){
+              columnLenght = columnLenght - 1;
+              data.removeColumn(id);
+            }
+          }
+        });
+
+
+        if(isCurrency == true){
+          // Formater for column cells to display numbers as currency
+          var formatter = new google.visualization.NumberFormat({
+                  fractionDigits: 2,
+                  prefix: '€ '
+          });
+
+          for(var i=1; i <= columnLenght; i++){
+            formatter.format(data, i);
+          }
+        }
+
+        var options = {
+          'title': title,
+          'vAxis': {
+            'title': "Vlera"
+          },
+          'hAxis': {
+            'title': "Muaji"
+          }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById(containerDivId));
+
+        chart.draw(data, options);
+    };
   //draw pie chart 
   function drawChart(title, containerId, results, isCurrency) {
         var dataTable = new google.visualization.DataTable()
@@ -39,7 +108,6 @@
           dataTable.addRow([type, sum]);
         }
 
-
         var options = {
           title: title
         };
@@ -49,8 +117,6 @@
         });
 
         $('input[type=checkbox]').each(function(){
-          var valueOfcheckbox = $(this).val();
-          console.log(valueOfcheckbox);
           if (checkRadioButtons($(this)) == null) {
             var value = dataTable.getFilteredRows([{column: 0, value: $(this).val()}]);
             if(value != []){
@@ -58,30 +124,6 @@
             }
           }
         });
-
-        /*if(checkRadioButtons('#provided_services_check-0') == null){
-          var value1 = checkRadioButtons('#provided_services_check-0');
-          console.log(value1);
-          var phoneCallRowID = dataTable.getFilteredRows([{column: 0, value: checkRadioButtons('#provided_services_check-0')}]);
-          if(phoneCallRowID != []){
-            dataTable.removeRow(phoneCallRowID[0]);
-          }
-        }
-        if(checkRadioButtons('#provided_services_check-1') == null){
-          var value1 = checkRadioButtons('#provided_services_check-1');
-          var emailRowID = dataTable.getFilteredRows([{column: 0, value: checkRadioButtons('#provided_services_check-1')}]);
-          if(emailRowID != []) {
-            dataTable.removeRow(emailRowID[0]);
-          }
-        }
-
-        if(checkRadioButtons('#provided_services_check-2') == null){
-          var value2 = checkRadioButtons('#provided_services_check-2');
-          var f2fRowID = dataTable.getFilteredRows([{column: 0, value: checkRadioButtons('#provided_services_check-2')}]);
-          if(f2fRowID != []) {
-            dataTable.removeRow(f2fRowID[0]);
-          }
-        }*/
 
         if(isCurrency == true){
           formatter.format(dataTable, 1);
@@ -94,7 +136,6 @@
   //load document 
   $(document).ready(function() {
     $('input[type=checkbox]').each(function(){
-        //console.log($(this).val());
         $(this).prop("checked", true);
     })
     //$('#provided_services_check-1').prop("checked", true);
@@ -106,6 +147,7 @@
 
     var url = "{{ url_for('api.search_service_analytics') }}" + "?region=" + region;
 
+
     $.get(url, function(service_result){
       drawValuePieChart(service_result);
       drawCountPieChart(service_result);
@@ -113,10 +155,7 @@
 
     $('#filterButton').click(function(){
       var chartTypeSelected = $('input[name=rb1]:checked', '#chart-type-form').val();
-      var dateRadioSelected = $('input[name=rb2]:checked', '#service-types-form').val();
-      var faceToFaceRadio = checkRadioButtons("#face-to-face-meeting");
-      var emailRadio = checkRadioButtons("#e-mails");
-      var phoneCallsRadio = checkRadioButtons("#phone-calls");
+      var dateRadioSelected = $('input[name=rb2]:checked', '#date-range-form').val();
       var company = $('#company-name').val();
       var customerFirstName = $('#customer-first-name').val();
       var customerLastName = $('#customer-last-name').val();
@@ -128,37 +167,61 @@
       var last_thirty_days = date.getDate() + "-" + date.getMonth() + "-" + (date.getYear() + 1900);
       var url = "";
 
-      if(dateRadioSelected == "no-limit"){
-        url = "{{ url_for('api.search_service_analytics') }}" + "?region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
-      } else if (dateRadioSelected == "last-seven") {
-        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + last_seven_days + "&to=" + date_now + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
-      } else if (dateRadioSelected == "last-thirty") {
-        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + last_thirty_days.toString() + "&to=" + date_now + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
-      } else if (dateRadioSelected == "data-range"){
-        var from_date = $('#fromDate').val();
-        var to_date = $('#toDate').val();
-        url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
-      }
-
+      if (chartTypeSelected == "pie-chart") {
+        if(dateRadioSelected == "no-limit"){
+          url = "{{ url_for('api.search_service_analytics') }}" + "?region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+        } else if (dateRadioSelected == "last-seven") {
+          url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + last_seven_days + "&to=" + date_now + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+        } else if (dateRadioSelected == "last-thirty") {
+          url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + last_thirty_days.toString() + "&to=" + date_now + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+        } else if (dateRadioSelected == "data-range"){
+          var from_date = $('#fromDate').val();
+          var to_date = $('#toDate').val();
+          url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+        }
 
         $.get(url, function(result){
-          drawValuePieChart(result);
-          drawCountPieChart(result);
+            drawValuePieChart(result);
+            drawCountPieChart(result);
+          });
+
+        $('#lineValueChart').css("display", "none");
+        $('#pieValueChart').css("display", "block");
+        $('#pieCountChart').css("display", "block");
+      } else {
+        var year = $('#year').val();
+        var url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+
+        $.get(url, function(resultJson){
+          drawContractValueChart("Line Chart", resultJson, "lineValueChart", true);
         });
-      });
-      
-      $('.date-picker').datepicker({
+
+        $('#lineValueChart').css("display", "block");
+        $('#pieValueChart').css("display", "none");
+        $('#pieCountChart').css("display", "none");
+      }
+    });
+    
+    $('.date-picker').datepicker({
         autoclose: true,
         todayHighlight: true,
         format: 'dd-mm-yyyy',
     });
 
-      $('.date-picker-month-year').datepicker({
+    $('.date-picker-month-year').datepicker({
         autoclose: true,
         todayHighlight: true,
         format: 'mm-yyyy',
         viewMode: "months", 
         minViewMode: "months"
+      });
+
+    $('.date-picker-year').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy',
+        viewMode: "years", 
+        minViewMode: "years"
       });
   });
 
@@ -285,7 +348,7 @@ function checkCheckBoxes(id){
       Dates
     </li>
     <li class="cbp-spmenu-vertical-item-child pie-chart-dates" id="pie-chart-dates" style="display:none;">
-    <form id="service-types-form">
+    <form id="date-range-form">
       <input type="radio" id="no-limit" name="rb2" value="no-limit" class="date-radio" checked />
       <label for="no-limit"><span></span>No Limit</label>
       <br>
@@ -308,7 +371,7 @@ function checkCheckBoxes(id){
       </form>
     </li>
     <li class="cbp-spmenu-vertical-item-child line-chart-dates" id="line-chart-dates" style="padding-right:30px;padding-left: 30px;display:none;">
-        <input type="text" id="month-year" name="month-year" class="form-control date-picker-month-year" placeholder="Month">
+        <input type="text" id="year" name="year" class="form-control date-picker-year" placeholder="Year">
       <br>
     </li>
     <li style="border-bottom-width:0px;padding-right:30px;padding-left:30px;">
@@ -321,7 +384,7 @@ function checkCheckBoxes(id){
   <div id="container" align="center">
     <div id="pieValueChart" style="width: 750px; height: 400px;"></div>
     <div id="pieCountChart" style="width: 750px; height: 400px;"></div>
-    <div id="lineValueChart" style="width: 750px; height: 400px;"></div>
+    <div id="lineValueChart" style=" margin: -50px 0 0 50px; width: 1050px; height: 650px;"></div>
     <div id="lineCountChart" style="width: 750px; height: 400px;"></div>
   </div>
 

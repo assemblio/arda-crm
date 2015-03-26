@@ -1,7 +1,7 @@
 from flask import Blueprint, request, Response
 from flask.ext.security import login_required
 from arda import mongo
-from bson import json_util
+from bson import json_util, SON
 from datetime import datetime
 from slugify import slugify
 
@@ -177,11 +177,11 @@ def search_service():
     group = {
         "$group": {
             "_id": {
-            	'_id': '$_id',
-            	"company": {
-            		'name': '$company.name',
-            		'slug': '$company.slug'
-            	},
+                '_id': '$_id',
+                "company": {
+                    'name': '$company.name',
+                    'slug': '$company.slug'
+                },
                 "firstName": "$first_name.value",
                 "lastName": "$last_name.value",
                 "serviceType": "$provided_services.provided_service.value",
@@ -199,8 +199,8 @@ def search_service():
             "_id": 0,
             '_id': '$_id._id',
             'company': {
-            	"name": "$_id.company.name",
-            	"slug": "$_id.company.slug"
+                "name": "$_id.company.name",
+                "slug": "$_id.company.slug"
             },
             "first_name": "$_id.firstName",
             "last_name": "$_id.lastName",
@@ -289,6 +289,82 @@ def search_service_analytics():
     }
 
     pipeline = [unwind, match, group, project]
+
+    json_obj = mongo.db.customers.aggregate(pipeline)
+
+    resp = Response(
+        response=json_util.dumps(json_obj['result']),
+        mimetype='application/json'
+    )
+
+    return resp
+
+@mod_api.route('/services-LineChart', methods=['GET'])
+@login_required
+def search_service_analytics_linechart():
+    if len(request.args) > 0:
+        region = request.args.get('region')
+        f_name = request.args.get('customerFname')
+        l_name = request.args.get('customerLname')
+        company = request.args.get('company')
+
+    match_fields = {}
+
+    if region:
+        match_fields['region'] = region
+
+    if company:
+        match_fields['company.slug'] = slugify(company)
+
+    if f_name:
+        match_fields['first_name.slug'] = slugify(f_name)
+
+    if l_name:
+        match_fields['last_name.slug'] = slugify(l_name)
+
+    match = {
+        "$match": match_fields
+    }
+
+    unwind = {
+        "$unwind": "$provided_services"
+    }
+
+    group = {
+        "$group": {
+            '_id': {
+                'serviceType': "$provided_services.provided_service.value",
+                'month': {
+                    '$month': "$provided_services.service_date"
+                }
+            },
+            "sumOfService": {
+                "$sum": "$provided_services.service_fee"
+            },
+            "countServices": {
+                "$sum": 1
+            }
+        },
+    }
+
+    project = {
+        "$project": {
+            "serviceType": "$_id.serviceType",
+            "month": "$_id.month",
+            "sumOfService": "$sumOfService",
+            "countServices": "$countServices",
+            "_id": 0
+        }
+    }
+
+    sort = {
+        '$sort':
+            SON([
+                ('serviceType', 1),
+                ('month', 1)])
+    }
+
+    pipeline = [unwind, match, group, project, sort]
 
     json_obj = mongo.db.customers.aggregate(pipeline)
 
