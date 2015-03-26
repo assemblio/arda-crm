@@ -65,7 +65,7 @@ h6 {
 }
 
 .bg-darkest-gray {
-    background-color: #0D4F8B;
+    background-color: #238E68;
 }
 
 .btn-primary {
@@ -171,7 +171,11 @@ fieldset[disabled] .btn-xl.active {
 
 .navbar-default {
     border-color: transparent;
+<<<<<<< HEAD
+    background-color: #238E68;
+=======
     background-color: #FFF;
+>>>>>>> 77819c4dd2152fc0e5d144ad865f2741d05a2a99
 }
 
 .navbar-default .navbar-brand {
@@ -253,8 +257,13 @@ fieldset[disabled] .btn-xl.active {
     }
 
     .navbar-default.navbar-shrink {
+<<<<<<< HEAD
+        padding: 10px 0;
+        background-color: #238E68;
+=======
         padding: 10px 0 0 0;
         background-color: #F2F2F2;
+>>>>>>> 77819c4dd2152fc0e5d144ad865f2741d05a2a99
     }
 
     .navbar-default.navbar-shrink .navbar-brand {

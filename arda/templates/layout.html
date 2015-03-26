@@ -80,9 +80,9 @@
                     <span class="icon-bar"></span>
                 </button>
                 {% if current_user.is_authenticated() %}
-                    <a class="navbar-brand" href="{{url_for('home_page.home_page')}}">{{ session.settings.site_navbar_title }}</a>
+                    <a class="navbar-brand" href="{{url_for('home_page.home_page')}}"><i class="glyphicon glyphicon-home"></i>{{ session.settings.site_navbar_title }}</a>
                 {% else %}
-                    <a class="navbar-brand" href="{{url_for('customers.customers')}}">{{ session.settings.site_navbar_title }}</a>
+                    <a class="navbar-brand" href="{{url_for('customers.customers')}}"><i class="glyphicon glyphicon-home"></i>{{ session.settings.site_navbar_title }}</a>
                 {% endif %}
             </div>
 
