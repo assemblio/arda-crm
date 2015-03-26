@@ -75,7 +75,7 @@ def search():
         l_name = request.args.get('lastName')
         company = request.args.get('company')
         customer_type = request.args.get('customer_type')
-
+        print customer_type
     match_field = {}
     if f_name:
         match_field['first_name.slug'] = slugify(f_name)
@@ -84,7 +84,7 @@ def search():
     if company:
         match_field['company.slug'] = slugify(company)
     if customer_type:
-        match_field['costumer_type.target_group'] = customer_type
+        match_field['customer_type.target_group'] = customer_type
 
     match = {
         "$match": match_field
