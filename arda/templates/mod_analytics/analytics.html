@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% set active_page = url_for('analytics.analytics') %}
 {% block body %}
 
 <link rel="stylesheet" href="{{ url_for('static', filename='analytics-controls/analytics-controls.css') }}" />
@@ -199,7 +200,7 @@ function checkCheckBoxes(id){
 </script>
 
 <!-- body has the class "cbp-spmenu-push" -->
-<nav style="margin-top:48px;" class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+<nav style="margin-top:42px;" class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
   <ul>
     <li id="menuTitle" class="cbp-spmenu-title"><b>Filters<b>
       <span id="showLeft" class="showLeft">&laquo;<span>
