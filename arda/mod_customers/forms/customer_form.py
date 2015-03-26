@@ -1,8 +1,19 @@
+# -*- coding: ascii -*-
 from flask_wtf import Form
 from wtforms import SelectField, TextField, RadioField, HiddenField
 
 
 class CustomerForm(Form):
+
+    municipalities = [
+        'Deqan', 'Gjakove', 'Gllogoc', 'Gjilan', 'Dragash', 'Istog', 'Kaqanik',
+        'Kline', 'Fushe Kosove', 'Kamenice', 'Mitrovice', 'Leposaviq', 'Lipjan',
+        'Novoberde', 'Obilic', 'Rahovec', 'Peje', 'Podujeve', 'Prizren', 'Skenderaj',
+        'Shtime', 'Shterpce', 'Suhareke', 'Ferizaj', 'Viti', 'Vushtrri', 'Zubin Potok',
+        'Zveqan', 'Malisheve', 'Hani i Elezit', 'Mamushe', 'Junik', 'Prishtina',
+        'Kllokoti', 'Graqanice', 'Ranillug', 'Partesh', ' Mitrovica Veriore',
+    ]
+    municipality = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities])
 
     company_name = TextField("Customer")
     first_name = TextField("Costumer First Name")
