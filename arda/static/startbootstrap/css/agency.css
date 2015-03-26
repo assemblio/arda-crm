@@ -65,7 +65,7 @@ h6 {
 }
 
 .bg-darkest-gray {
-    background-color: #0D4F8B;
+    background-color: #238E68;
 }
 
 .btn-primary {
@@ -171,7 +171,7 @@ fieldset[disabled] .btn-xl.active {
 
 .navbar-default {
     border-color: transparent;
-    background-color: #0D4F8B;
+    background-color: #238E68;
 }
 
 .navbar-default .navbar-brand {
@@ -253,7 +253,7 @@ fieldset[disabled] .btn-xl.active {
 
     .navbar-default.navbar-shrink {
         padding: 10px 0;
-        background-color: #0D4F8B;
+        background-color: #238E68;
     }
 
     .navbar-default.navbar-shrink .navbar-brand {
