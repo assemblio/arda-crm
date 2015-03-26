@@ -68,6 +68,9 @@
     <!-- Navigation -->
         <nav class="navbar navbar-default navbar-fixed-top  navbar-shrink">
         <div class="container">
+        <div id="left-icon" style="height:100px; width:150px; float:left;">
+            <a href="{{url_for('home_page.home_page')}}"><img src="{{ url_for('static', filename='startbootstrap/img/arda-logo.png') }}" width="150" height="100" alt="arda"></a>
+        </div>
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -84,7 +87,7 @@
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top:50px;">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="hidden">
                         <a href="#page-top"></a>
@@ -119,6 +122,9 @@
             </div>
             <!-- /.navbar-collapse -->
         </div>
+            
+        </div>
+    <div id="navbar-line" class="navbar-line" style="height:3px; width: 100%; background-color:#00427A; margin-top:5px;">
         <!-- /.container-fluid -->
     </nav>
 {% block body %}

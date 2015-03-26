@@ -1,22 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
     <!-- Header -->
-    <header style="padding: 100px 0 0 0; background-image: url('{{ session.settings.landingpage_banner_image_url }}');">
-        <div class="container">
-            <div class="intro-text">
-                <div class="intro-heading">
-                    {{ session.settings.site_title }}
-                </div>
-                <div class="intro-lead-in">
-                    {{ session.settings.site_tagline }}
-                </div>
-
-                <!--
-                <a href="#services" class="page-scroll btn btn-xl">Get Started</a>
-                -->
-            </div>
-        </div>
-    </header>
+   
 
     <!-- Portfolio Grid Section -->
     {% if session.settings.portfolio != None and session.settings.portfolio|length > 0 %}
