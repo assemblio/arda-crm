@@ -48,24 +48,40 @@
                 prefix: '€ '
         });
 
-        if(checkRadioButtons('#phone-calls') == null){
-          var phoneCallRowID = dataTable.getFilteredRows([{column: 0, value: 'Phone Call'}]);
+        $('input[type=checkbox]').each(function(){
+          var valueOfcheckbox = $(this).val();
+          console.log(valueOfcheckbox);
+          if (checkRadioButtons($(this)) == null) {
+            var value = dataTable.getFilteredRows([{column: 0, value: $(this).val()}]);
+            if(value != []){
+              dataTable.removeRow(value[0]);
+            }
+          }
+        });
+
+        /*if(checkRadioButtons('#provided_services_check-0') == null){
+          var value1 = checkRadioButtons('#provided_services_check-0');
+          console.log(value1);
+          var phoneCallRowID = dataTable.getFilteredRows([{column: 0, value: checkRadioButtons('#provided_services_check-0')}]);
           if(phoneCallRowID != []){
             dataTable.removeRow(phoneCallRowID[0]);
           }
         }
-        if(checkRadioButtons('#e-mails') == null){
-          var emailRowID = dataTable.getFilteredRows([{column: 0, value: 'E-mail'}]);
+        if(checkRadioButtons('#provided_services_check-1') == null){
+          var value1 = checkRadioButtons('#provided_services_check-1');
+          var emailRowID = dataTable.getFilteredRows([{column: 0, value: checkRadioButtons('#provided_services_check-1')}]);
           if(emailRowID != []) {
             dataTable.removeRow(emailRowID[0]);
           }
         }
-        if(checkRadioButtons('#face-to-face-meeting') == null){
-          var f2fRowID = dataTable.getFilteredRows([{column: 0, value: 'Face-to-Face meeting'}]);
+
+        if(checkRadioButtons('#provided_services_check-2') == null){
+          var value2 = checkRadioButtons('#provided_services_check-2');
+          var f2fRowID = dataTable.getFilteredRows([{column: 0, value: checkRadioButtons('#provided_services_check-2')}]);
           if(f2fRowID != []) {
             dataTable.removeRow(f2fRowID[0]);
           }
-        }
+        }*/
 
         if(isCurrency == true){
           formatter.format(dataTable, 1);
@@ -77,9 +93,15 @@
 
   //load document 
   $(document).ready(function() {
+    $('input[type=checkbox]').each(function(){
+        //console.log($(this).val());
+        $(this).prop("checked", true);
+    })
+    //$('#provided_services_check-1').prop("checked", true);
     disableTextboxes();
     $('#fromDate').hide();
     $('#toDate').hide();
+
     var region = $('#region-select').val();
 
     var url = "{{ url_for('api.search_service_analytics') }}" + "?region=" + region;
@@ -250,17 +272,13 @@ function checkCheckBoxes(id){
     <li class="cbp-spmenu-vertical-item-parent" id="service-types">
       Service Types
     </li>
-    <li class="cbp-spmenu-vertical-item-child" id="service-types" style="display:none;">
-      <input type="checkbox" id="phone-calls" name="cc" value="phone-call" class="service-types-checkbox" checked />
-      <label for="phone-calls"><span></span>Phone Calls</label>
-      <br>
-
-      <input type="checkbox" id="e-mails" name="cc" value="e-mail" class="e-mails" class="service-types-checkbox" checked />
-      <label for="e-mails"><span></span>E-mails</label>
-      <br>
-
-      <input type="checkbox" id="face-to-face-meeting" name="cc" value="face-to-face-meeting" class="service-types-checkbox" checked />
-      <label for="face-to-face-meeting"><span></span>Face-To-Face</label>
+    <li id="service-types" class="cbp-spmenu-vertical-item-child" style="display:none;">
+      <div id="services">
+        {% for subfield in form.provided_services_check %}
+                  {{ subfield }}
+                  {{ subfield.label }}<br>
+          {% endfor %}
+      </div>
     </li>
 
     <li class="cbp-spmenu-vertical-item-parent" id="dates">
@@ -306,6 +324,7 @@ function checkCheckBoxes(id){
     <div id="lineValueChart" style="width: 750px; height: 400px;"></div>
     <div id="lineCountChart" style="width: 750px; height: 400px;"></div>
   </div>
+
 </section>
 
     
