@@ -6,12 +6,23 @@
 		if (target_group_type1 == "Entrepreneur"){
 				$('#Entrepreneur-targetGroup').css("display", "block");
 				$('#NGO-targetGroup').css("display", "none");
+				$('#investorTargetGroup').css("display", "none");
+				$('#municipalityTargetGroup').css("display", "none");
 		} else if (target_group_type1 == "Non-Governmental Organisation") {
 			$('#NGO-targetGroup').css("display", "block");
 			$('#Entrepreneur-targetGroup').css("display", "none");
-		} else {
+			$('#investorTargetGroup').css("display", "none");
+			$('#municipalityTargetGroup').css("display", "none");
+		}else if (target_group_type == "Investor") {
+				$('#NGO-targetGroup').css("display", "none");
+				$('#Entrepreneur-targetGroup').css("display", "none");
+				$('#investorTargetGroup').css("display", "block");
+				$('#municipalityTargetGroup').css("display", "none");
+		}else {
 			$('#NGO-targetGroup').css("display", "none");
+			$('#investorTargetGroup').css("display", "none");
 			$('#Entrepreneur-targetGroup').css("display", "none");
+			$('#municipalityTargetGroup').css("display", "block");
 		}
 
 		$('#customer_type').change(function(){
@@ -19,13 +30,25 @@
 			if (target_group_type == "Entrepreneur"){
 				$('#Entrepreneur-targetGroup').css("display", "block");
 				$('#NGO-targetGroup').css("display", "none");
+				$('#investorTargetGroup').css("display", "none");
+				$('#municipalityTargetGroup').css("display", "none");
 			} else if (target_group_type == "Non-Governmental Organisation") {
 				$('#NGO-targetGroup').css("display", "block");
 				$('#Entrepreneur-targetGroup').css("display", "none");
-			}
-			else {
+				$('#investorTargetGroup').css("display", "none");
+				$('#municipalityTargetGroup').css("display", "none");
+			}else if (target_group_type == "Investor") {
 				$('#NGO-targetGroup').css("display", "none");
 				$('#Entrepreneur-targetGroup').css("display", "none");
+				$('#municipalityTargetGroup').css("display", "none");
+				$('#investorTargetGroup').css("display", "block");
+			}
+			else {
+				$('#municipalityTargetGroup').css("display", "block");
+				$('#NGO-targetGroup').css("display", "none");
+				$('#Entrepreneur-targetGroup').css("display", "none");
+				$('#investorTargetGroup').css("display", "none");
+
 			}
 		});
 		$(".checkeme").children().each(function() {
@@ -297,6 +320,96 @@
 				<div class="form-group form-group-sm">
 					<div class="col-xs-6">{{form.donors.label(class="pull-right")}}</div>
 					<div class="col-xs-6">{{form.donors(class="form-control")}}</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="col-xs-12" align="center" id="investorTargetGroup" style="display:none">
+			<div class="form-group form-group-lg">
+				<label class="control-label" style="font-size: 18px;">Target Group: Investor</label>
+				<hr>
+			</div><br>
+			<div class="form-group col-xs-6">
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.country.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.country(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.business.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.business(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.business_number.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.business_number(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.interest.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.interest(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.investor_industry.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.investor_industry(class="form-control")}}</div>
+				</div>
+				</div>
+				<div class="form-group col-xs-6">
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.industry_of_interest.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.industry_of_interest(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.investor_size.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.investor_size(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.foundation_year_investor.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.foundation_year_investor(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.description_investor.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.description_investor(class="form-control")}}</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="col-xs-12" align="center" id="municipalityTargetGroup" style="display:none">
+			<div class="form-group form-group-lg">
+				<label class="control-label" style="font-size: 18px;">Target Group: Municipality</label>
+				<hr>
+			</div><br>
+			<div class="form-group col-xs-6">
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.municipality_name.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.municipality_name(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.department.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.department(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.offering.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.offering(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.industries.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.industries(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.modules.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.modules(class="form-control")}}</div>
+				</div>
+				</div>
+				<div class="form-group col-xs-6">
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.infrastructure_available.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.infrastructure_available(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.investment_incentives.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.investment_incentives(class="form-control")}}</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<div class="col-xs-6">{{form.description.label(class="pull-right")}}</div>
+					<div class="col-xs-6">{{form.description(class="form-control")}}</div>
 				</div>
 			</div>
 		</div>

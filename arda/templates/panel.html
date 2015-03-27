@@ -33,7 +33,7 @@
 		<div class="row col-xs-3 portfolio-item">
 			<a href="{{url_for('admin.settings')}}" class="portfolio-link">
 			    
-			    <img src="{{ url_for('static', filename='startbootstrap/img/gearturning.png') }}" width="230" height="160">
+			    <img src="{{ url_for('static', filename='startbootstrap/img/gearturning.png') }}" width="160" height="160">
 			    <p class="text-muted">Settings</p>
 			</a>
 		</div>
@@ -41,13 +41,14 @@
 		<div class="row col-xs-3 portfolio-item">
 			<a href="{{url_for('admin.users')}}" class="portfolio-link">
 			    
-			    <img src="{{ url_for('static', filename='startbootstrap/img/users.png') }}" width="230" height="160">
+			    <img src="{{ url_for('static', filename='startbootstrap/img/users.png') }}" width="200" height="160">
 			    <p class="text-muted">Users Managment</p>
 			</a>
 		</div>
 		{% endif %}
 	</div>
-	<br></br><br>
+	
 </div>
 </section>
+<br><br><br><br>
 {% endblock %}

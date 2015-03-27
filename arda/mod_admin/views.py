@@ -102,7 +102,7 @@ def edit_user(user_id):
     elif request.method == "POST":
         if current_user.has_role('Admin'):
             user_form = UserForm(request.form)
-
+            print user_form
             mongo.db.users.update(
                 {'_id': ObjectId(user_id)},
                 {

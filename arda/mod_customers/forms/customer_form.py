@@ -26,6 +26,7 @@ class CustomerForm(Form):
     choices = [(x, x) for x in arda_regions]
 
     region = SelectField("Region", choices=choices)
+
     company_name = TextField("Customer")
     first_name = TextField("Costumer First Name")
     last_name = TextField("Costumer Last Name")
@@ -83,8 +84,39 @@ class CustomerForm(Form):
     )
     business_description = TextAreaField("Business Description")
 
-    #if the Target Group is Municipality
+    #Target Group: Investor
+    country = TextField("Country")
+    business = TextField("Business")
+    business_number = TextField("Business Number")
+    interest = TextField("Interest")
+    investor_industry = TextField("Industry")
+    industry_of_interest = TextField("Industry of interest")
+    investor_size = TextField("Size")
+    foundation_year_investor = TextField("Foundation year")
+    description_investor = TextField("Description of Business")
 
+    department_choices = [
+    	'Department of finance',
+    	'Department for Economic Development',
+    	'Department for Education',
+    	'Department for Health',
+    	'Department for Culture and Sport',
+    	'Department for Infrastructure',
+    	'Department for Public Services',
+    	'General Department of Cadaster',
+    	'Department of Administration',
+		'Department of Inspections',
+		'Department of Agriculture'
+    ]
+    #Target Group: Municipality
+    municipality_name = TextField("Municipality Name")
+    department = SelectField("Department", choices=[(x, x) for x in department_choices])
+    offering = TextField("Offering")
+    industries = TextField("Industries")
+    modules = TextField("Modules")
+    infrastructure_available = TextField("Infrastructure available")
+    investment_incentives = TextField("Investment Incentives")
+    description = TextField("Description")
 
     #if the Target Group is NGO
     ngo_registration_number_ngo = TextField("Registration Number")
