@@ -96,7 +96,7 @@ class CustomerForm(Form):
     description_investor = TextField("Description of Business")
 
     department_choices = [
-    	'Department of finance',
+    	'Department of Finance',
     	'Department for Economic Development',
     	'Department for Education',
     	'Department for Health',

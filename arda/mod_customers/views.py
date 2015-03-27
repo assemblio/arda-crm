@@ -221,12 +221,31 @@ def build_save_costumers_document():
             'main_activities': costumer['main_activities'],
             'donors': costumer['donors']
         }
-    else:
-        #Investor and Municipality fields not avaliable yet
-        json_obj['customer_type']={
-            'target_group': costumer['customer_type']
+    elif costumer['customer_type'] == "Investor":
+        json_obj['customer_type'] = {
+            'target_group': costumer['customer_type'],
+            'country': costumer['country'],
+			'business': costumer['business'],
+			'business_number': costumer['business_number'],
+			'interest': costumer['interest'],
+			'investor_industry': costumer['investor_industry'],
+			'industry_of_interest': costumer['industry_of_interest'],
+			'investor_size': costumer['investor_size'],
+			'foundation_year_investor': costumer['foundation_year_investor'],
+			'description_investor': costumer['description_investor']
         }
-
+    else:
+    	json_obj['customer_type'] = {
+    		'target_group': costumer['customer_type'],
+            'municipality_name': costumer['municipality_name'],
+			'department': costumer['department'],
+			'offering': costumer['offering'],
+			'industries': costumer['industries'],
+			'modules': costumer['modules'],
+			'infrastructure_available': costumer['infrastructure_available'],
+			'investment_incentives': costumer['investment_incentives'],
+			'description': costumer['description']
+        }
     mongo.db.customers.insert(json_obj)
 
 
@@ -305,10 +324,30 @@ def edit_costumers_document(customer_id):
             'main_activities': costumer['main_activities'],
             'donors': costumer['donors']
         }
-    else:
-        #Investor and Municipality fields not avaliable yet
+    elif costumer['customer_type'] == "Investor":
         json_obj['customer_type'] = {
-            'target_group': costumer['customer_type']
+            'target_group': costumer['customer_type'],
+            'country': costumer['country'],
+			'business': costumer['business'],
+			'business_number': costumer['business_number'],
+			'interest': costumer['interest'],
+			'investor_industry': costumer['investor_industry'],
+			'industry_of_interest': costumer['industry_of_interest'],
+			'investor_size': costumer['investor_size'],
+			'foundation_year_investor': costumer['foundation_year_investor'],
+			'description_investor': costumer['description_investor']
+        }
+    else:
+    	json_obj['customer_type'] = {
+    		'target_group': costumer['customer_type'],
+            'municipality_name': costumer['municipality_name'],
+			'department': costumer['department'],
+			'offering': costumer['offering'],
+			'industries': costumer['industries'],
+			'modules': costumer['modules'],
+			'infrastructure_available': costumer['infrastructure_available'],
+			'investment_incentives': costumer['investment_incentives'],
+			'description': costumer['description']
         }
 
     mongo.db.customers.update(
