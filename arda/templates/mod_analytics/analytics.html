@@ -157,14 +157,6 @@
       drawValuePieChart(service_result);
       drawCountPieChart(service_result);
     });
-    var date = new Date();
-    var year = date.getYear() + 1900;
-    var urlLineChart = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=" + year;
-
-    $.get(urlLineChart, function(resultJson){
-      drawContractValueChart("Incomes based on services fee", resultJson, "lineValueChart", true);
-      drawContractValueChart("Number of all provided services based on service type", resultJson, "lineCountChart", false);
-    });
 
     $('#filterButton').click(function(){
       var chartTypeSelected = $('input[name=rb1]:checked', '#chart-type-form').val();
@@ -197,6 +189,11 @@
             drawValuePieChart(result);
             drawCountPieChart(result);
           });
+
+        $('#pieValueChart').css('display', "block");
+        $('#pieCountChart').css('display', "block");
+        $('#lineValueChart').css('display', "none");
+        $('#lineCountChart').css('display', "none");
       } else {
         var year = $('#year').val();
         var url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
@@ -205,6 +202,11 @@
           drawContractValueChart("Incomes based on services fee", resultJson, "lineValueChart", true);
           drawContractValueChart("Number of all provided services based on service type", resultJson, "lineCountChart", false);
         });
+
+        $('#pieValueChart').css('display', "none");
+        $('#pieCountChart').css('display', "none");
+        $('#lineValueChart').css('display', "block");
+        $('#lineCountChart').css('display', "block");
       }
     });
     
@@ -390,8 +392,8 @@ function checkCheckBoxes(id){
   <div id="container" align="center">
     <div id="pieValueChart" style="width: 750px; height: 400px;"></div>
     <div id="pieCountChart" style="width: 750px; height: 400px;"></div>
-    <div id="lineValueChart" style=" margin: -50px 0 0 50px; width: 950px; height: 650px;"></div>
-    <div id="lineCountChart" style=" margin: -50px 0 0 50px; width: 950px; height: 650px;"></div>
+    <div id="lineValueChart" style="display:none; margin: -50px 0 0 50px; width: 950px; height: 650px;"></div>
+    <div id="lineCountChart" style="display:none; margin: -50px 0 0 50px; width: 950px; height: 650px;"></div>
   </div>
 
 </section>
