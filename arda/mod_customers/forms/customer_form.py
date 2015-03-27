@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from flask_wtf import Form
 from wtforms import SelectField, TextField, RadioField, HiddenField, TextAreaField
 
@@ -5,15 +6,21 @@ from wtforms import SelectField, TextField, RadioField, HiddenField, TextAreaFie
 class CustomerForm(Form):
 
     municipalities = [
-        'Deqan', 'Gjakove', 'Gllogoc', 'Gjilan', 'Dragash', 'Istog', 'Kaqanik',
-        'Kline', 'Fushe Kosove', 'Kamenice', 'Mitrovice', 'Leposaviq', 'Lipjan',
-        'Novoberde', 'Obilic', 'Rahovec', 'Peje', 'Podujeve', 'Prizren', 'Skenderaj',
-        'Shtime', 'Shterpce', 'Suhareke', 'Ferizaj', 'Viti', 'Vushtrri', 'Zubin Potok',
-        'Zveqan', 'Malisheve', 'Hani i Elezit', 'Mamushe', 'Junik', 'Prishtina',
-        'Kllokoti', 'Graqanice', 'Ranillug', 'Partesh', ' Mitrovica Veriore',
+    	'Prishtine', 'Drenas', 'Fushe Kosove', 'Obilliq', 'Podujeve',
+    	'Shtime', 'Gracanice', 'Lipjan',
+    	'Vushtrri', 'Leposavic', ' Mitrovice', 'Skenderaj',
+    	'Istog', 'Kline',' Peja', 'Junik', 'Decan', 'Gjakova',
+    	'Prizren', 'Dragash', 'Suhareka', 'Dragash', 'Mamusha', 'Rahovec',
+        'Ferizaj', 'Gjilan', 'Viti', 'Novoberde', 'Kamenice', 'Hani Elezit', 'Kacanik',
+        'Shterpce', 'Ranillug', 'Kllokot', 'Partesh'
     ]
 
-    municipality = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[0:11]])
+    municipality = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities])
+    municipality_region_central = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[0:8]])
+    municipality_region_north = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[8:12]])
+    municipality_region_west = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[12:18]])
+    municipality_region_south = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[18:24]])
+    municipality_region_east = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[24:34]])
 
     company_name = TextField("Customer")
     first_name = TextField("Costumer First Name")
@@ -29,7 +36,6 @@ class CustomerForm(Form):
     customer_type = SelectField(
         "Costumer Type",
         choices=[
-            ('All', 'All'),
             ('Entrepreneur', 'Entrepreneur'),
             ('Non-Governmental Organisation', 'Non-Governmental Organisation'),
             ('Investor', 'Investor'),
