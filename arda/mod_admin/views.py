@@ -164,6 +164,7 @@ def settings():
         settings_doc = mongo.db.settings.find_one({'_id': 0})
         portfolio = []
         #retireve types in order to manage in settings page
+
         service_type = retrieve_all_service_types()
         contact_via_types = retrieve_all_contact_types()
 
@@ -195,6 +196,7 @@ def settings():
             session['settings'] = settings_form.data
         else:
             return redirect(url_for('customers.customers'))
+    type_id='5509cb3b484d3f17a2409cea'
     portfolio_form = PortfolioForm()
     return render_template(
         'mod_admin/settings.html',
@@ -202,7 +204,8 @@ def settings():
         pf_form=portfolio_form,
         portfolio=portfolio,
         service_type=service_type,
-        contact_via_types=contact_via_types
+        contact_via_types=contact_via_types,
+        type_id=type_id
     )
 
 
@@ -357,6 +360,15 @@ def retrieve_all_service_types():
                     "description": "$serviceTypes.description"
                 }
             }
+        },
+        {
+        	"$project": {
+        		"_id": 0,
+        		"_id":"$_id._id",
+        		"serviceId": "$_id.serviceId",
+				"serviceType": "$_id.serviceType",
+				"description": "$_id.description",
+        	}
         }
     ])
     return json_result['result']
@@ -374,6 +386,15 @@ def retrieve_all_contact_types():
                     "description": "$contactVia.description"
                 }
             }
+        },
+        {
+        	"$project": {
+        		"_id": 0,
+        		"_id":"$_id._id",
+        		"contactId": "$_id.contactId",
+				"contactType": "$_id.contactType",
+				"description": "$_id.description",
+        	}
         }
     ])
     return json_result['result']

@@ -197,7 +197,7 @@
 					<div class="form-group">
 						<div class="form-group">
 							<p align="center">If you want to add Service Provided Types fill the fields below:</p>
-							<form class="form-horizontal" method="post" action="{{url_for('admin.add_service_type', type_id=service_type[0]['_id']['_id'])}}">
+							<form class="form-horizontal" method="post" action="{{url_for('admin.add_service_type', type_id=type_id)}}">
 							    <div class="col-xs-2">
 							        <label for="serviceType" class="control-label pull-right">Service Type:</label>
 							    </div>
@@ -217,7 +217,7 @@
 						</div>
 					</div>
 					<br><br></br>
-					{% if service_type|length %}
+					{% if service_type|length > 0%}
 			      	<div class="panel panel-info ">
 				        <!-- Default panel contents -->
 				        <div class="table-responsive">
@@ -233,10 +233,10 @@
 				            {% for result in service_type %}
 				            <tbody id="user-list">			              
 				              <tr align="center">
-				                <td>{{result['_id']['serviceType']}}</td>
-				                <td>{{result['_id']['description']}}</td>			                
+				                <td>{{result['serviceType']}}</td>
+				                <td>{{result['description']}}</td>			                
 				                <td>
-				                  <form action="{{url_for('admin.delete_service_type', type_id=result['_id']['serviceId'])}}" method="get">
+				                  <form action="{{url_for('admin.delete_service_type', type_id=result['serviceId'])}}" method="get">
 	      								<button type="submit" class="btn btn-default btn-sm">
 	      									<span class="glyphicon glyphicon-remove"></span>
 	      								</button>
@@ -257,7 +257,7 @@
 					<div class="form-group">
 						<div class="form-group">
 							<p align="center">Manage types of contacting manners</p>
-							<form class="form-horizontal" method="post" action="{{url_for('admin.add_contact_type', type_id=contact_via_types[0]['_id']['_id'])}}">
+							<form class="form-horizontal" method="post" action="{{url_for('admin.add_contact_type', type_id=type_id)}}">
 							    <div class="col-xs-2">
 							        <label for="contactVia" class="control-label pull-right">Contact Via:</label>
 							    </div>
@@ -293,10 +293,10 @@
 				            {% for contact in contact_via_types %}
 				            <tbody id="user-list">			              
 				              <tr align="center">
-				                <td>{{contact['_id']['contactType']}}</td>
-				                <td>{{contact['_id']['description']}}</td>		                
+				                <td>{{contact['contactType']}}</td>
+				                <td>{{contact['description']}}</td>		                
 				                <td>
-				                  <form action="{{url_for('admin.delete_contact_type', type_id=contact['_id']['contactId'])}}" method="get">
+				                  <form action="{{url_for('admin.delete_contact_type', type_id=contact['contactId'])}}" method="get">
 	      								<button type="submit" class="btn btn-default btn-sm">
 	      									<span class="glyphicon glyphicon-remove"></span>
 	      								</button>
