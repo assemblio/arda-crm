@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, \
 
 from arda import mongo, utils
 from bson import ObjectId
-from flask.ext.security import current_user
+from flask.ext.security import current_user, login_required
 mod_home_page = Blueprint('home_page', __name__)
 
 
@@ -19,6 +19,13 @@ def home_page():
     else:
         session['settings'] = settings_doc
     return render_template('index.html')
+
+
+@mod_home_page.route('/panel', methods=['GET'])
+@login_required
+def panel():
+	return render_template('panel.html')
+
 
 
 def create_services():

@@ -29,7 +29,7 @@ def login():
             login_user(user_doc)
             current_app.logger.info("User '%s' logged in." % email)
 
-            return redirect(url_for('customers.customers'))
+            return redirect(url_for('home_page.panel'))
     # If invalid username
     except DoesNotExist:
         error = 'Invalid username'

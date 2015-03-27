@@ -1,6 +1,5 @@
-# -*- coding: ascii -*-
 from flask_wtf import Form
-from wtforms import SelectField, TextField, RadioField, HiddenField
+from wtforms import SelectField, TextField, RadioField, HiddenField, TextAreaField
 
 
 class CustomerForm(Form):
@@ -13,7 +12,8 @@ class CustomerForm(Form):
         'Zveqan', 'Malisheve', 'Hani i Elezit', 'Mamushe', 'Junik', 'Prishtina',
         'Kllokoti', 'Graqanice', 'Ranillug', 'Partesh', ' Mitrovica Veriore',
     ]
-    municipality = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities])
+
+    municipality = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[0:11]])
 
     company_name = TextField("Customer")
     first_name = TextField("Costumer First Name")
@@ -25,15 +25,17 @@ class CustomerForm(Form):
     fax = TextField("Fax")
     email = TextField("Email")
     website = TextField("Website")
+    customer_address = TextAreaField('Customer Adderess')
     customer_type = SelectField(
         "Costumer Type",
-    	choices=[
+        choices=[
+            ('All', 'All'),
             ('Entrepreneur', 'Entrepreneur'),
             ('Non-Governmental Organisation', 'Non-Governmental Organisation'),
             ('Investor', 'Investor'),
             ('Municipality', 'Municipality')
-         ]
-     )
+        ]
+    )
 
 
     #if Target Group is Business/Entrepreneur
@@ -69,7 +71,7 @@ class CustomerForm(Form):
         ],
         default='Yes'
     )
-    business_description = TextField("Business Description")
+    business_description = TextAreaField("Business Description")
 
     #if the Target Group is Municipality
 
@@ -81,7 +83,7 @@ class CustomerForm(Form):
     sector_ngo = TextField("Sector")
     founding_year_ngo = TextField("Founding Year")
     number_of_staff_ngo = TextField("Number of Staff")
-    description_of_ngo = TextField("Description")
+    description_of_ngo = TextAreaField("Description")
     main_activities = TextField("Main Activities")
     web_site = TextField("Web Site")
     donors = TextField("Donors")
