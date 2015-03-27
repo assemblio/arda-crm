@@ -1,5 +1,14 @@
 {% extends 'layout.html' %}
 {% block body %}
+<script type="text/javascript">
+	$(document).ready(function(){
+		{% if current_user.has_role('Admin') %}
+			$('#first-setting').css('margin-left', '-50px');
+		{% else %}
+			$('#first-setting').css('margin-left', '100px');
+		{% endif %}
+	})
+</script>
 <section id="portfolio">
 <div id="container" align="center"  style="padding:50px">
     <div class="col-xs-12">
@@ -7,7 +16,7 @@
         <hr>
     </div>
 	<div class="col-xs-12" align="center">
-		<div class="row col-xs-3 portfolio-item">
+		<div id="first-setting" class="row col-xs-3 portfolio-item">
 			<a href="{{url_for('customers.customers')}}" class="portfolio-link">
 			    
 			    <img src="{{ url_for('static', filename='startbootstrap/img/shares.png') }}" width="230" height="160">
