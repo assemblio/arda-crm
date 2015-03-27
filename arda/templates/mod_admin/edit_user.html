@@ -8,15 +8,31 @@ $(document).ready(function(){
 	        $(this).addClass("active");
 	    }
 	});
-	{% if display_pass_field %}
-		$('.pass-div').css('display','none');
-	{% endif %}
+
+  $('.passform').formValidation({
+      framework: 'bootstrap',
+      icon: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+          password: {
+              validators: {
+                  notEmpty: {
+                      message: "Password field can't be empty!"
+                  }
+              }
+          }
+      }
+  });
+
 });
 
 </script>
 <section>
 	<div class="container">
-		<form method="post" action="{{action}}" class="form-horizontal">
+		<form method="post" action="{{action}}" class="form-horizontal passform">
 			<div class="form-group">
 	            {{ form.first_name.label(class_="control-label col-xs-4") }}
 	            <div class="col-xs-3">

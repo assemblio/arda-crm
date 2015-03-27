@@ -22,6 +22,10 @@ class CustomerForm(Form):
     municipality_region_south = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[18:24]])
     municipality_region_east = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[24:34]])
 
+    arda_regions = ['North', 'East', 'West', 'South', 'Center']
+    choices = [(x, x) for x in arda_regions]
+
+    region = SelectField("Region", choices=choices)
     company_name = TextField("Customer")
     first_name = TextField("Costumer First Name")
     last_name = TextField("Costumer Last Name")

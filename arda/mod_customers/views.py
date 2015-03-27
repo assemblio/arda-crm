@@ -158,7 +158,6 @@ def build_save_costumers_document():
         	'slug': slugify(costumer['last_name'])
         }, 
         'job_title': costumer['job_title'],
-        'region':  current_user['region'],
         'phone': {
             'main_phone': costumer['main_phone'],
             'work_phone': costumer['work_phone'],
@@ -187,6 +186,12 @@ def build_save_costumers_document():
         'website': costumer['website'],
         'provided_services': []
     }
+
+    if current_user['region'] != "All":
+    	json_obj['region'] = current_user['region']
+    else:
+    	json_obj['region'] = costumer['region']
+
 
     if costumer['customer_type'] == "Entrepreneur":
         json_obj['customer_type'] = {
@@ -221,6 +226,7 @@ def build_save_costumers_document():
         json_obj['customer_type']={
             'target_group': costumer['customer_type']
         }
+
     mongo.db.customers.insert(json_obj)
 
 

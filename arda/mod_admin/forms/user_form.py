@@ -4,7 +4,7 @@ from wtforms import RadioField, TextField, PasswordField, SelectField
 
 class UserForm(Form):
 
-    arda_regions = ['All','North', 'East', 'West', 'South', 'Centre']
+    arda_regions = ['All','North', 'East', 'West', 'South', 'Center']
     choices = [(x, x) for x in arda_regions]
 
     region = SelectField("Region", choices=choices)

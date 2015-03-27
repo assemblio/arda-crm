@@ -11,7 +11,7 @@ from arda.mod_admin.models.user_model import Users, Role
 from flask.ext.security import login_user, login_required, logout_user, current_user
 from arda import user_datastore
 from slugify import slugify
-
+from arda import bcrypt
 
 mod_admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -37,7 +37,7 @@ def create_user():
     Create user
     '''
     user_form = UserForm()
-    from arda import bcrypt
+    
     # If we do a get request, we are just requesting the page.
     if request.method == "GET":
         if current_user.has_role('Admin'):
@@ -82,23 +82,23 @@ def edit_user(user_id):
     if request.method == "GET":
         if current_user.has_role('Admin'):
             user_doc = mongo.db.users.find_one({'_id': ObjectId(user_id)})
-
             # Populate the user form of the user we are editing.
             user_form = UserForm()
             user_form.first_name.data = user_doc['first_name']
             user_form.last_name.data = user_doc['last_name']
             user_form.email.data = user_doc['email']
             user_form.role.data = user_doc['role']
+            user_form.region.data = user_doc['region']
+            user_form.password.data = user_doc['password']
 
             return render_template(
                 'mod_admin/edit_user.html',
                 form=user_form,
                 action=url_for('admin.edit_user',
-                user_id=user_doc['_id']),
-                display_pass_field=True
+                user_id=user_doc['_id'])
             )
         else:
-            return redirect(url_for('customers.customers'))
+            return redirect(url_for('home_page.panel'))
     elif request.method == "POST":
         if current_user.has_role('Admin'):
             user_form = UserForm(request.form)
@@ -109,6 +109,8 @@ def edit_user(user_id):
                     '$set': {
                         'first_name': user_form.first_name.data,
                         'last_name': user_form.last_name.data,
+                        'password': bcrypt.generate_password_hash(user_form.password.data, rounds=12),
+                        'region': user_form.region.data,
                         'email': user_form.email.data,
                         'role': user_form.role.data
                     }
@@ -117,7 +119,7 @@ def edit_user(user_id):
 
             return redirect(url_for('admin.users'))
         else:
-            return redirect(url_for('customers.customers'))
+            return redirect(url_for('home_page.panel'))
 
 
 @mod_admin.route('/users/delete/<user_id>', methods=['GET'])
@@ -139,11 +141,14 @@ def change_password():
     new_password = bcrypt.generate_password_hash(request.form['newPassword'], rounds=12)
 
     if not bcrypt.check_password_hash(user["password"], old_password):
-        error = "Error!Password didn't change!"
+        error = "Current password wrong!Password didn't change!"
         users = mongo.db.users.find({})
         json_obj = build_contacts_cursor(users)
+        if current_user.has_role('Admin'):
+            return render_template('mod_admin/users.html', message=error, results=json_obj['results'])
+        else:
+           return redirect(url_for(services.company_services))
 
-        return render_template('mod_admin/users.html', message=error, results=json_obj['results'])
     else:
         mongo.db.users.update(
             {'_id': ObjectId(current_user.id)},

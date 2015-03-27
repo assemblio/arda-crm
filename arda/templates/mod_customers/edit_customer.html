@@ -61,30 +61,41 @@
 				<div class="col-xs-6">{{form.customer_type.label(class="pull-right")}}</div>
 				<div class="col-xs-6">{{form.customer_type(class="form-control")}}</div>
 			</div>
+			{% if current_user.region == "Center" %}
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.municipality_region_central.label(class="pull-right")}}</div>
 				<div class="col-xs-6">{{form.municipality_region_central(class="form-control")}}</div>
 			</div>
+			{% elif current_user.region == "North" %}
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.municipality_region_north.label(class="pull-right")}}</div>
 				<div class="col-xs-6">{{form.municipality_region_north(class="form-control")}}</div>
 			</div>
+			{% elif current_user.region == "West" %}
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.municipality_region_west.label(class="pull-right")}}</div>
 				<div class="col-xs-6">{{form.municipality_region_west(class="form-control")}}</div>
 			</div>
+			{% elif current_user.region == "South" %}
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.municipality_region_south.label(class="pull-right")}}</div>
 				<div class="col-xs-6">{{form.municipality_region_south(class="form-control")}}</div>
 			</div>
-			<div class="form-group form-group-sm">
+			{% elif current_user.region == "East" %}
+			<div class="form-group form-group-sm">				
 				<div class="col-xs-6">{{form.municipality_region_east.label(class="pull-right")}}</div>
 				<div class="col-xs-6">{{form.municipality_region_east(class="form-control")}}</div>
+			</div>
+			{% else %}
+			<div class="form-group form-group-sm">
+				<div class="col-xs-6">{{form.region.label(class="pull-right")}}</div>
+				<div class="col-xs-6">{{form.region(class="form-control")}}</div>
 			</div>
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.municipality.label(class="pull-right")}}</div>
 				<div class="col-xs-6">{{form.municipality(class="form-control")}}</div>
 			</div>
+			{% endif %}
 			<div class="form-group form-group-sm">
 				<div class="col-xs-6">{{form.customer_address.label(class="pull-right")}}</div>
 				<div class="col-xs-6">{{form.customer_address(class="form-control")}}</div>
