@@ -6,37 +6,38 @@
         <h4 class="section-heading pull-left">Dashboard</h4><p>Wellcome, Endrit</p>
         <hr>
     </div>
-	
-	<div class="row col-xs-3 portfolio-item">
-		<a href="{{url_for('customers.customers')}}" class="portfolio-link">
-		    
-		    <img src="{{ url_for('static', filename='startbootstrap/img/shares.png') }}" width="230" height="160">
-		    <p class="text-muted">Customers</p>
-		</a>
+	<div class="col-xs-12" align="center">
+		<div class="row col-xs-3 portfolio-item">
+			<a href="{{url_for('customers.customers')}}" class="portfolio-link">
+			    
+			    <img src="{{ url_for('static', filename='startbootstrap/img/shares.png') }}" width="230" height="160">
+			    <p class="text-muted">Customers</p>
+			</a>
+		</div>
+		<div class="row col-xs-3 portfolio-item">
+			<a href="{{url_for('analytics.analytics')}}" class="portfolio-link">
+			    
+			    <img src="{{ url_for('static', filename='startbootstrap/img/businessman.png') }}" width="230" height="160">
+			    <p class="text-muted">Analytics</p>
+			</a>
+		</div>
+		<div class="row col-xs-3 portfolio-item">
+			<a href="{{url_for('admin.settings')}}" class="portfolio-link">
+			    
+			    <img src="{{ url_for('static', filename='startbootstrap/img/gearturning.png') }}" width="230" height="160">
+			    <p class="text-muted">Settings</p>
+			</a>
+		</div>
+		 {% if current_user.has_role('Admin') %}
+		<div class="row col-xs-3 portfolio-item">
+			<a href="{{url_for('admin.users')}}" class="portfolio-link">
+			    
+			    <img src="{{ url_for('static', filename='startbootstrap/img/users.png') }}" width="230" height="160">
+			    <p class="text-muted">Users Managment</p>
+			</a>
+		</div>
+		{% endif %}
 	</div>
-	<div class="row col-xs-3 portfolio-item">
-		<a href="{{url_for('analytics.analytics')}}" class="portfolio-link">
-		    
-		    <img src="{{ url_for('static', filename='startbootstrap/img/businessman.png') }}" width="230" height="160">
-		    <p class="text-muted">Analytics</p>
-		</a>
-	</div>
-	<div class="row col-xs-3 portfolio-item">
-		<a href="{{url_for('admin.settings')}}" class="portfolio-link">
-		    
-		    <img src="{{ url_for('static', filename='startbootstrap/img/gearturning.png') }}" width="230" height="160">
-		    <p class="text-muted">Settings</p>
-		</a>
-	</div>
-	 {% if current_user.has_role('Admin') %}
-	<div class="row col-xs-3 portfolio-item">
-		<a href="{{url_for('admin.users')}}" class="portfolio-link">
-		    
-		    <img src="{{ url_for('static', filename='startbootstrap/img/users.png') }}" width="230" height="160">
-		    <p class="text-muted">Users Managment</p>
-		</a>
-	</div>
-	{% endif %}
 	<br></br><br>
 </div>
 </section>
