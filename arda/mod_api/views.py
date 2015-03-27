@@ -4,6 +4,7 @@ from arda import mongo
 from bson import json_util, SON
 from datetime import datetime
 from slugify import slugify
+from datetime import datetime
 
 mod_api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -308,6 +309,7 @@ def search_service_analytics_linechart():
         f_name = request.args.get('customerFname')
         l_name = request.args.get('customerLname')
         company = request.args.get('company')
+        year = request.args.get('year')
 
     match_fields = {}
 
@@ -323,7 +325,17 @@ def search_service_analytics_linechart():
     if l_name:
         match_fields['last_name.slug'] = slugify(l_name)
 
+    if year:
+        start_date = "01-01-" + year
+        end_date = "31-12-" + year
+
+        match_fields['provided_services.service_date'] = {
+            '$gte': datetime.strptime(start_date, "%d-%m-%Y"),
+            '$lte': datetime.strptime(end_date, "%d-%m-%Y")
+        }
+
     match = {
+
         "$match": match_fields
     }
 
