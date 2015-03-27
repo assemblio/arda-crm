@@ -51,7 +51,12 @@
             columnLenght = columnLenght + 1;
             columnIndex = columnIndex + 1;
           }
-          data.setCell(resultJson[key].month-1, columnIndex, resultJson[key].sumOfService);
+
+          if( containerDivId == "lineValueChart"){
+            data.setCell(resultJson[key].month-1, columnIndex, resultJson[key].sumOfService);
+          } else {
+            data.setCell(resultJson[key].month-1, columnIndex, resultJson[key].countServices);
+          }
         }
 
         $('input[type=checkbox]').each(function() {
@@ -80,10 +85,10 @@
         var options = {
           'title': title,
           'vAxis': {
-            'title': "Vlera"
+            'title': "Value"
           },
           'hAxis': {
-            'title': "Muaji"
+            'title': "Months"
           }
         };
 
@@ -151,7 +156,15 @@
     $.get(url, function(service_result){
       drawValuePieChart(service_result);
       drawCountPieChart(service_result);
-    })
+    });
+    var date = new Date();
+    var year = date.getYear() + 1900;
+    var urlLineChart = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=" + year;
+
+    $.get(urlLineChart, function(resultJson){
+      drawContractValueChart("Incomes based on services fee", resultJson, "lineValueChart", true);
+      drawContractValueChart("Number of all provided services based on service type", resultJson, "lineCountChart", false);
+    });
 
     $('#filterButton').click(function(){
       var chartTypeSelected = $('input[name=rb1]:checked', '#chart-type-form').val();
@@ -184,21 +197,14 @@
             drawValuePieChart(result);
             drawCountPieChart(result);
           });
-
-        $('#lineValueChart').css("display", "none");
-        $('#pieValueChart').css("display", "block");
-        $('#pieCountChart').css("display", "block");
       } else {
         var year = $('#year').val();
-        var url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+        var url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
 
         $.get(url, function(resultJson){
-          drawContractValueChart("Line Chart", resultJson, "lineValueChart", true);
+          drawContractValueChart("Incomes based on services fee", resultJson, "lineValueChart", true);
+          drawContractValueChart("Number of all provided services based on service type", resultJson, "lineCountChart", false);
         });
-
-        $('#lineValueChart').css("display", "block");
-        $('#pieValueChart').css("display", "none");
-        $('#pieCountChart').css("display", "none");
       }
     });
     

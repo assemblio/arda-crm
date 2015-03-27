@@ -68,14 +68,14 @@
     <!-- Navigation -->
         <nav class="navbar navbar-default navbar-fixed-top  navbar-shrink">
         <div class="container">
-        <div id="left-icon" style="height:100px; width:150px; float:left;">
+        <div id="left-icon" style="margin: -18px; 0 0 -15; height:100px; width:150px; float:left;">
         {% if current_user.is_authenticated() %}
             <a href="{{url_for('home_page.panel')}}">
-           		<img src="{{ url_for('static', filename='startbootstrap/img/arda-logo.png') }}" width="150" height="100" alt="arda">
+           		<img src="{{ url_for('static', filename='startbootstrap/img/arda-logo.png') }}" width="170" height="110" alt="arda">
             </a>
             {% else %}
         	 <a href="{{url_for('home_page.home_page')}}">
-        	 <img src="{{ url_for('static', filename='startbootstrap/img/arda-logo.png') }}" width="150" height="100" alt="arda">
+        	 <img src="{{ url_for('static', filename='startbootstrap/img/arda-logo.png') }}" width="170" height="110" alt="arda">
        	{% endif %}
         </div>
             <!-- Brand and toggle get grouped for better mobile display -->
