@@ -91,21 +91,44 @@ def add_service(company_name, customer_id):
 def edit_service(company_name, customer_id, service_id):
     if request.method == "GET":
         form = ServiceTypes()
-        service_doc = mongo.db.customers.find_one(
-            {
-                "provided_services": {
-                    '$all': [
-                            { "$elemMatch" : {"serviceId": ObjectId(service_id)} }
-                          ] 
-                }
-                       
-            } )
-
-        form.provided_service.data = service_doc['provided_services'][0]['provided_service']['value']
-        form.description.data = service_doc['provided_services'][0]['description']
-        form.service_fee.data = service_doc['provided_services'][0]['service_fee']
-        form.service_date.data = datetime.strftime(service_doc['provided_services'][0]['service_date'], '%d/%m/%Y')
-        form.contact_via.data = service_doc['provided_services'][0]['contactVia']
+        service_doc = mongo.db.customers.aggregate([        
+	        {
+	            "$unwind": "$provided_services"
+	        },
+	        {
+	            "$match": {'provided_services.serviceId': ObjectId(service_id)}
+	        },
+	        {
+	            "$group": {
+	                "_id": {
+	                    "service": {
+	                        'serviceId': '$provided_services.serviceId',
+	                        'contactVia': '$provided_services.contactVia',
+	                        "type": "$provided_services.provided_service.value",
+	                        "description": "$provided_services.description",
+	                        "fee": "$provided_services.service_fee",
+	                        "date": "$provided_services.service_date"
+	                    }
+	                }
+	            }
+	        },
+	        {
+	            "$project": {
+	                "_id": 0,
+	                'serviceId': '$_id.service.serviceId',
+	                'contactVia': '$_id.service.contactVia',
+	                "type": "$_id.service.type",
+	                "description": "$_id.service.description",
+	                "fee": "$_id.service.fee",
+	                "date": "$_id.service.date"
+	            }
+	        }
+	    ])
+        form.provided_service.data = service_doc['result'][0]['type']
+        form.description.data = service_doc['result'][0]['description']
+        form.service_fee.data = service_doc['result'][0]['fee']
+        form.service_date.data = datetime.strftime(service_doc['result'][0]['date'], '%d/%m/%Y')
+        form.contact_via.data = service_doc['result'][0]['contactVia']
         text = "Edit Service"
         action = url_for('services.edit_service', company_name=company_name, customer_id=customer_id, service_id=service_id)
         return render_template(
