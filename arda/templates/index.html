@@ -1,40 +1,35 @@
 {% extends "layout.html" %}
 {% block body %}
     <!-- Header -->
-   
-
-    <!-- Portfolio Grid Section -->
-    
-    <section id="portfolio" class="bg-light-gray">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 text-center">
-                    <h2 class="section-heading"></h2>
-                    <h2 class="section-subheading text-muted">ASSOCIATION OF REGIONAL DEVELOPMENT AGENCIES</h2>
-                </div>
-            </div><hr>
-            {% if session.settings.portfolio != None and session.settings.portfolio|length > 0 %}
-            
-            {% for item in session.settings.portfolio %}
-            <div class="row col-xs-3 portfolio-item">
-                <a href="#portfolioModal{{ loop.index }}" class="portfolio-link" data-toggle="modal">
-                    <div class="portfolio-hover">
-                        <div class="portfolio-hover-content">
-                            <i class="fa fa-plus fa-3x"></i>
-                        </div>
-                    </div>
-                    <img src="{{ item.image_url }}" class="img-responsive" alt="">
-                </a>
-                <div class="portfolio-caption">
-                    <h4>{{ item.title }}</h4>
-                    <p class="text-muted">{{ item.subtitle }}</p>
-                </div>
-            </div>
-            {% endfor %}
-           
-        </div>
-    </section>            
-    
+<section id="portfolio" class="bg-light-gray">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<h2 class="section-heading">ARDA</h2>
+				<h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+			</div>
+		</div>
+		{% if session.settings.portfolio != None and session.settings.portfolio|length > 0 %}
+		<div class="row">
+			 {% for item in session.settings.portfolio %}
+			<div class="col-md-4 col-sm-6 portfolio-item">
+				<a href="#portfolioModal{{ loop.index }}" class="portfolio-link" data-toggle="modal">
+					<div class="portfolio-hover">
+						<div class="portfolio-hover-content">
+							<i class="fa fa-plus fa-3x"></i>
+						</div>
+					</div>
+					<img src="{{ item.image_url }}" class="img-responsive" alt="">
+				</a>
+				<div class="portfolio-caption">
+					<h4>{{ item.title }}</h4>
+					<p class="text-muted">{{ item.subtitle }}</p>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>
 
     <!-- Portfolio Modals -->
     {% for item in session.settings.portfolio %}
