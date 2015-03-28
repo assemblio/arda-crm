@@ -93,9 +93,29 @@ def edit_customer(customer_id):
             form.main_activities.data = customer_doc['customer_type']['main_activities']
             form.donors.data = customer_doc['customer_type']['donors']
 
+        elif customer_doc['customer_type']['target_group'] == "Investor":
+            form.customer_type.data = customer_doc['customer_type']['target_group']
+            form.country.data = customer_doc['customer_type']['country']
+            form.business.data = customer_doc['customer_type']['business']
+            form.business_number.data = customer_doc['customer_type']['business_number']
+            form.interest.data = customer_doc['customer_type']['interest']
+            form.investor_industry.data = customer_doc['customer_type']['investor_industry']
+            form.industry_of_interest.data = customer_doc['customer_type']['industry_of_interest']
+            form.investor_size.data = customer_doc['customer_type']['investor_size']
+            form.foundation_year_investor.data = customer_doc['customer_type']['foundation_year_investor']
+            form.description_investor.data = customer_doc['customer_type']['description_investor']
+
         else:
             form.customer_type.data = customer_doc['customer_type']['target_group']
-
+            form.municipality_name.data = customer_doc['customer_type']['municipality_name']
+            form.department.data = customer_doc['customer_type']['department']
+            form.offering.data = customer_doc['customer_type']['offering']
+            form.industries.data = customer_doc['customer_type']['industries']
+            form.modules.data = customer_doc['customer_type']['modules']
+            form.infrastructure_available.data = customer_doc['customer_type']['infrastructure_available']
+            form.investment_incentives.data = customer_doc['customer_type']['investment_incentives']
+            form.description.data = customer_doc['customer_type']['description']
+            
         form.bill_add1.data = customer_doc['address']['billing']['bill_add1']
         form.bill_add2.data = customer_doc['address']['billing']['bill_add2']
         form.bill_city.data = customer_doc['address']['billing']['bill_city']
