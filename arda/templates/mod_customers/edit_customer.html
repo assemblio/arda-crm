@@ -1,57 +1,95 @@
 {% extends "layout.html" %}
 {% block body %}
 <script type="text/javascript">
-	$(document).ready(function(){
-		var target_group_type1 = $('#customer_type').val();
-		if (target_group_type1 == "Entrepreneur"){
-				$('#Entrepreneur-targetGroup').css("display", "block");
-				$('#NGO-targetGroup').css("display", "none");
-				$('#investorTargetGroup').css("display", "none");
-				$('#municipalityTargetGroup').css("display", "none");
-		} else if (target_group_type1 == "Non-Governmental Organisation") {
-			$('#NGO-targetGroup').css("display", "block");
-			$('#Entrepreneur-targetGroup').css("display", "none");
-			$('#investorTargetGroup').css("display", "none");
-			$('#municipalityTargetGroup').css("display", "none");
-		}else if (target_group_type1 == "Investor") {
-				$('#NGO-targetGroup').css("display", "none");
-				$('#Entrepreneur-targetGroup').css("display", "none");
-				$('#investorTargetGroup').css("display", "block");
-				$('#municipalityTargetGroup').css("display", "none");
-		}else {
-			$('#NGO-targetGroup').css("display", "none");
-			$('#investorTargetGroup').css("display", "none");
-			$('#Entrepreneur-targetGroup').css("display", "none");
-			$('#municipalityTargetGroup').css("display", "block");
-		}
+    $(document).ready(function(){
+        $('#region-north').css('display', "block");
 
-		$('#customer_type').change(function(){
-			var target_group_type = $('#customer_type').val();
-			if (target_group_type == "Entrepreneur"){
-				$('#Entrepreneur-targetGroup').css("display", "block");
-				$('#NGO-targetGroup').css("display", "none");
-				$('#investorTargetGroup').css("display", "none");
-				$('#municipalityTargetGroup').css("display", "none");
-			} else if(target_group_type == "Non-Governmental Organisation") {
-				$('#NGO-targetGroup').css("display", "block");
-				$('#Entrepreneur-targetGroup').css("display", "none");
-				$('#investorTargetGroup').css("display", "none");
-				$('#municipalityTargetGroup').css("display", "none");
-			}else if(target_group_type == "Investor") {
-				$('#NGO-targetGroup').css("display", "none");
-				$('#Entrepreneur-targetGroup').css("display", "none");
-				$('#municipalityTargetGroup').css("display", "none");
-				$('#investorTargetGroup').css("display", "block");
-			}
-			else {
-				$('#municipalityTargetGroup').css("display", "block");
-				$('#NGO-targetGroup').css("display", "none");
-				$('#Entrepreneur-targetGroup').css("display", "none");
-				$('#investorTargetGroup').css("display", "none");
+        $('#region').change(function(){
+            var region = $('#region').val();
+            
+            if(region == "East"){
+                $('#region-east').css('display', "block");
+                $('#region-west').css('display', "none");
+                $('#region-south').css('display', "none");
+                $('#region-north').css('display', "none");
+                $('#region-central').css('display', "none");
+            } else if (region == "West"){
+                $('#region-east').css('display', "none");
+                $('#region-west').css('display', "block");
+                $('#region-south').css('display', "none");
+                $('#region-north').css('display', "none");
+                $('#region-central').css('display', "none");
+            } else if (region == "South") {
+                $('#region-east').css('display', "none");
+                $('#region-west').css('display', "none");
+                $('#region-south').css('display', "block");
+                $('#region-north').css('display', "none");
+                $('#region-central').css('display', "none");
+            } else if (region == "Center") {
+                $('#region-east').css('display', "none");
+                $('#region-west').css('display', "none");
+                $('#region-south').css('display', "none");
+                $('#region-north').css('display', "none");
+                $('#region-central').css('display', "block");
+            } else if (region == "North") {
+                $('#region-east').css('display', "none");
+                $('#region-west').css('display', "none");
+                $('#region-south').css('display', "none");
+                $('#region-north').css('display', "block");
+                $('#region-central').css('display', "none");
+            } 
+        });
 
-			}
-		});
-		$(".checkeme").children().each(function() {
+        var target_group_type1 = $('#customer_type').val();
+        if (target_group_type1 == "Entrepreneur"){
+                $('#Entrepreneur-targetGroup').css("display", "block");
+                $('#NGO-targetGroup').css("display", "none");
+                $('#investorTargetGroup').css("display", "none");
+                $('#municipalityTargetGroup').css("display", "none");
+        } else if (target_group_type1 == "Non-Governmental Organisation") {
+            $('#NGO-targetGroup').css("display", "block");
+            $('#Entrepreneur-targetGroup').css("display", "none");
+            $('#investorTargetGroup').css("display", "none");
+            $('#municipalityTargetGroup').css("display", "none");
+        }else if (target_group_type1 == "Investor") {
+                $('#NGO-targetGroup').css("display", "none");
+                $('#Entrepreneur-targetGroup').css("display", "none");
+                $('#investorTargetGroup').css("display", "block");
+                $('#municipalityTargetGroup').css("display", "none");
+        }else {
+            $('#NGO-targetGroup').css("display", "none");
+            $('#investorTargetGroup').css("display", "none");
+            $('#Entrepreneur-targetGroup').css("display", "none");
+            $('#municipalityTargetGroup').css("display", "block");
+        }
+
+        $('#customer_type').change(function(){
+            var target_group_type = $('#customer_type').val();
+            if (target_group_type == "Entrepreneur"){
+                $('#Entrepreneur-targetGroup').css("display", "block");
+                $('#NGO-targetGroup').css("display", "none");
+                $('#investorTargetGroup').css("display", "none");
+                $('#municipalityTargetGroup').css("display", "none");
+            } else if(target_group_type == "Non-Governmental Organisation") {
+                $('#NGO-targetGroup').css("display", "block");
+                $('#Entrepreneur-targetGroup').css("display", "none");
+                $('#investorTargetGroup').css("display", "none");
+                $('#municipalityTargetGroup').css("display", "none");
+            }else if(target_group_type == "Investor") {
+                $('#NGO-targetGroup').css("display", "none");
+                $('#Entrepreneur-targetGroup').css("display", "none");
+                $('#municipalityTargetGroup').css("display", "none");
+                $('#investorTargetGroup').css("display", "block");
+            }
+            else {
+                $('#municipalityTargetGroup').css("display", "block");
+                $('#NGO-targetGroup').css("display", "none");
+                $('#Entrepreneur-targetGroup').css("display", "none");
+                $('#investorTargetGroup').css("display", "none");
+
+            }
+        });
+        $(".checkeme").children().each(function() {
 
             var attr = $(this).children().first().attr('checked');
             if (typeof attr !== typeof undefined && attr !== false) {
@@ -59,365 +97,381 @@
                 
             }
         });
-	})
+    })
 </script>
 <section>
 <div class="container " align="center">
-	<h4>{{text}}</h4>
-	<br>
-	</br>
-	<form class="form-horizontal" action="{{action}}" method="post">
-		<div class="form-group col-xs-6">
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.company_name.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.company_name(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.first_name.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.first_name(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.last_name.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.last_name(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.customer_type.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.customer_type(class="form-control")}}</div>
-			</div>
-			{% if current_user.region == "Center" %}
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.municipality_region_central.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.municipality_region_central(class="form-control")}}</div>
-			</div>
-			{% elif current_user.region == "North" %}
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.municipality_region_north.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.municipality_region_north(class="form-control")}}</div>
-			</div>
-			{% elif current_user.region == "West" %}
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.municipality_region_west.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.municipality_region_west(class="form-control")}}</div>
-			</div>
-			{% elif current_user.region == "South" %}
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.municipality_region_south.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.municipality_region_south(class="form-control")}}</div>
-			</div>
-			{% elif current_user.region == "East" %}
-			<div class="form-group form-group-sm">				
-				<div class="col-xs-6">{{form.municipality_region_east.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.municipality_region_east(class="form-control")}}</div>
-			</div>
-			{% else %}
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.region.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.region(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.municipality.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.municipality(class="form-control")}}</div>
-			</div>
-			{% endif %}
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.customer_address.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.customer_address(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.main_phone.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.main_phone(class="form-control")}}</div>
-			</div>
-		</div>
-		<div class="form-group col-xs-6">
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.work_phone.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.work_phone(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.mobile.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.mobile(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.fax.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.fax(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.email.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.email(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.website.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.website(class="form-control")}}</div>
-			</div>
-		</div>
-		<br></br>
-		<div id="address-details" style="display:none">
-		<div class="form-group form-group-lg">
-			<label class="control-label col-xs-offset-4 col-xs-3" style="font-size: 18px;">Address Details</label>
-			<hr>
-		</div><br>
-		<div class="form-group col-xs-6" style="display:none">
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.bill_add1.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.bill_add1(class="form-control", placeholder="Address 1")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-offset-6 col-xs-6">{{form.bill_add2(class="form-control", placeholder="Address 2")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-offset-6 col-xs-6">{{form.bill_city(class="form-control", placeholder="City")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-offset-6 col-xs-6">{{form.bill_state(class="form-control", placeholder="State")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-offset-6 col-xs-6">{{form.bill_postal_code(class="form-control", placeholder="Postal Code")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-offset-6 col-xs-6">{{form.bill_country(class="form-control", placeholder="Country")}}</div>
-			</div>
-		</div>
-		<div class="form-group col-xs-6">
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.ship_add1.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.ship_add1(class="form-control", placeholder="Address 1")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-offset-6 col-xs-6">{{form.ship_add2(class="form-control", placeholder="Address 2")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-offset-6 col-xs-6">{{form.ship_city(class="form-control", placeholder="City")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-offset-6 col-xs-6">{{form.ship_state(class="form-control", placeholder="State")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-offset-6 col-xs-6">{{form.ship_postal_code(class="form-control", placeholder="Postal Code")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-offset-6 col-xs-6">{{form.ship_country(class="form-control", placeholder="Country")}}</div>
-			</div>
-		</div>
-		
-		</div>
-		<br></br><br>
-		<div class="col-xs-12" id="Entrepreneur-targetGroup" align="center" style="display:none">
-			<div class="form-group form-group-lg">
-				<label class="control-label" style="font-size: 18px;">Target Group: Entrepreneur</label>
-				<hr>
-			</div><br>
-			<div class="form-group col-xs-6">
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.business_name.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.business_name(class="form-control")}}</div>
-			</div>
-			
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.fiscal_number.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.fiscal_number(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.legal_entity_types.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.legal_entity_types(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.industry.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.industry(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.main_activity.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.main_activity(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.vat.label(class="pull-right")}}</div>
-				<div class="btn-group col-xs-6 roles role checkeme" data-toggle="buttons">
-	                {% for subfield in form.vat %}
-	                    <div class="btn btn-default col-xs-12">
-	                        {{ subfield }}
-	                        {{ subfield.label }}
-	                    </div>
-	                {% endfor %}
-	            </div>
-			</div>
-			</div>
-			<div class="form-group col-xs-6">
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.founding_year.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.founding_year(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.number_of_employees.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.number_of_employees(class="form-control")}}</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.size_category.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.size_category(class="form-control")}}</div>
-			</div>
-			
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">
-				{{form.investment.label(class="pull-right")}}</div>
-				<div class="btn-group col-xs-6 roles role checkeme" data-toggle="buttons">
-	                {% for subfield in form.investment %}
-	                    <div class="btn btn-default col-xs-12">
-	                        {{ subfield }}
-	                        {{ subfield.label }}
-	                    </div>
-	                {% endfor %}
-	            </div>
-			</div>
-			<div class="form-group form-group-sm">
-				<div class="col-xs-6">{{form.business_description.label(class="pull-right")}}</div>
-				<div class="col-xs-6">{{form.business_description(rows=50, class="form-control", cols=100)}}</div>
-			</div>
-		</div>
-		</div>
-		<br>
-		<div class="col-xs-12" align="center" id="NGO-targetGroup" style="display:none">
-			<div class="form-group form-group-lg">
-				<label class="control-label" style="font-size: 18px;">Target Group: Non-Governmental Organisations</label>
-				<hr>
-			</div><br>
-			<div class="form-group col-xs-6">
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.ngo_registration_number_ngo.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.ngo_registration_number_ngo(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.vat_number_ngo.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.vat_number_ngo(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.fiscal_number_ngo.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.fiscal_number_ngo(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.sector_ngo.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.sector_ngo(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.founding_year_ngo.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.founding_year_ngo(class="form-control")}}</div>
-				</div>
-				</div>
-				<div class="form-group col-xs-6">
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.number_of_staff_ngo.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.number_of_staff_ngo(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.description_of_ngo.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.description_of_ngo(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.main_activities.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.main_activities(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.web_site.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.web_site(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.donors.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.donors(class="form-control")}}</div>
-				</div>
-			</div>
-		</div>
-		<br>
-		<div class="col-xs-12" align="center" id="investorTargetGroup" style="display:none">
-			<div class="form-group form-group-lg">
-				<label class="control-label" style="font-size: 18px;">Target Group: Investor</label>
-				<hr>
-			</div><br>
-			<div class="form-group col-xs-6">
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.country.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.country(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.business.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.business(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.business_number.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.business_number(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.interest.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.interest(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.investor_industry.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.investor_industry(class="form-control")}}</div>
-				</div>
-				</div>
-				<div class="form-group col-xs-6">
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.industry_of_interest.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.industry_of_interest(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.investor_size.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.investor_size(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.foundation_year_investor.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.foundation_year_investor(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.description_investor.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.description_investor(class="form-control")}}</div>
-				</div>
-			</div>
-		</div>
-		<br>
-		<div class="col-xs-12" align="center" id="municipalityTargetGroup" style="display:none">
-			<div class="form-group form-group-lg">
-				<label class="control-label" style="font-size: 18px;">Target Group: Municipality</label>
-				<hr>
-			</div><br>
-			<div class="form-group col-xs-6">
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.municipality_name.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.municipality_name(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.department.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.department(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.offering.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.offering(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.industries.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.industries(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.modules.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.modules(class="form-control")}}</div>
-				</div>
-				</div>
-				<div class="form-group col-xs-6">
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.infrastructure_available.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.infrastructure_available(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.investment_incentives.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.investment_incentives(class="form-control")}}</div>
-				</div>
-				<div class="form-group form-group-sm">
-					<div class="col-xs-6">{{form.description.label(class="pull-right")}}</div>
-					<div class="col-xs-6">{{form.description(class="form-control")}}</div>
-				</div>
-			</div>
-		</div>
-		<br></br>
-		<div class="form-group col-xs-12">
-			<button class="btn btn-primary col-xs-offset-1" type="submit">{{text}}</button>
-		</div>
-	</form>
+    <h4>{{text}}</h4>
+    <br>
+    </br>
+    <form class="form-horizontal" action="{{action}}" method="post">
+        <div class="form-group col-xs-6">
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.company_name.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.company_name(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.first_name.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.first_name(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.last_name.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.last_name(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.customer_type.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.customer_type(class="form-control")}}</div>
+            </div>
+            {% if current_user.region == "Center" %}
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.municipality_region_central.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.municipality_region_central(class="form-control")}}</div>
+            </div>
+            {% elif current_user.region == "North" %}
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.municipality_region_north.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.municipality_region_north(class="form-control")}}</div>
+            </div>
+            {% elif current_user.region == "West" %}
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.municipality_region_west.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.municipality_region_west(class="form-control")}}</div>
+            </div>
+            {% elif current_user.region == "South" %}
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.municipality_region_south.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.municipality_region_south(class="form-control")}}</div>
+            </div>
+            {% elif current_user.region == "East" %}
+            <div class="form-group form-group-sm">              
+                <div class="col-xs-6">{{form.municipality_region_east.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.municipality_region_east(class="form-control")}}</div>
+            </div>
+            {% else %}
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.region.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.region(class="form-control")}}</div>
+            </div>
+            <div id="region-north" style="display:none" class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.municipality_region_north.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.municipality_region_north(class="form-control")}}</div>
+            </div>
+            <div id="region-central" style="display:none" class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.municipality_region_central.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.municipality_region_central(class="form-control")}}</div>
+            </div>
+            <div id="region-south" style="display:none" class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.municipality_region_south.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.municipality_region_south(class="form-control")}}</div>
+            </div>
+            <div id="region-west" style="display:none" class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.municipality_region_west.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.municipality_region_west(class="form-control")}}</div>
+            </div>
+            <div id="region-east" style="display:none" class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.municipality_region_east.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.municipality_region_east(class="form-control")}}</div>
+            </div>
+            {% endif %}
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.customer_address.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.customer_address(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.main_phone.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.main_phone(class="form-control")}}</div>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.work_phone.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.work_phone(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.mobile.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.mobile(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.fax.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.fax(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.email.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.email(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.website.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.website(class="form-control")}}</div>
+            </div>
+        </div>
+        <br></br>
+        <div id="address-details" style="display:none">
+        <div class="form-group form-group-lg">
+            <label class="control-label col-xs-offset-4 col-xs-3" style="font-size: 18px;">Address Details</label>
+            <hr>
+        </div><br>
+        <div class="form-group col-xs-6" style="display:none">
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.bill_add1.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.bill_add1(class="form-control", placeholder="Address 1")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-offset-6 col-xs-6">{{form.bill_add2(class="form-control", placeholder="Address 2")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-offset-6 col-xs-6">{{form.bill_city(class="form-control", placeholder="City")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-offset-6 col-xs-6">{{form.bill_state(class="form-control", placeholder="State")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-offset-6 col-xs-6">{{form.bill_postal_code(class="form-control", placeholder="Postal Code")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-offset-6 col-xs-6">{{form.bill_country(class="form-control", placeholder="Country")}}</div>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.ship_add1.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.ship_add1(class="form-control", placeholder="Address 1")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-offset-6 col-xs-6">{{form.ship_add2(class="form-control", placeholder="Address 2")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-offset-6 col-xs-6">{{form.ship_city(class="form-control", placeholder="City")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-offset-6 col-xs-6">{{form.ship_state(class="form-control", placeholder="State")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-offset-6 col-xs-6">{{form.ship_postal_code(class="form-control", placeholder="Postal Code")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-offset-6 col-xs-6">{{form.ship_country(class="form-control", placeholder="Country")}}</div>
+            </div>
+        </div>
+        
+        </div>
+        <br></br><br>
+        <div class="col-xs-12" id="Entrepreneur-targetGroup" align="center" style="display:none">
+            <div class="form-group form-group-lg">
+                <label class="control-label" style="font-size: 18px;">Target Group: Entrepreneur</label>
+                <hr>
+            </div><br>
+            <div class="form-group col-xs-6">
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.business_name.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.business_name(class="form-control")}}</div>
+            </div>
+            
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.fiscal_number.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.fiscal_number(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.legal_entity_types.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.legal_entity_types(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.industry.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.industry(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.main_activity.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.main_activity(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.vat.label(class="pull-right")}}</div>
+                <div class="btn-group col-xs-6 roles role checkeme" data-toggle="buttons">
+                    {% for subfield in form.vat %}
+                        <div class="btn btn-default col-xs-12">
+                            {{ subfield }}
+                            {{ subfield.label }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            </div>
+            <div class="form-group col-xs-6">
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.founding_year.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.founding_year(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.number_of_employees.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.number_of_employees(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.size_category.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.size_category(class="form-control")}}</div>
+            </div>
+            
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">
+                {{form.investment.label(class="pull-right")}}</div>
+                <div class="btn-group col-xs-6 roles role checkeme" data-toggle="buttons">
+                    {% for subfield in form.investment %}
+                        <div class="btn btn-default col-xs-12">
+                            {{ subfield }}
+                            {{ subfield.label }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.business_description.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.business_description(rows=50, class="form-control", cols=100)}}</div>
+            </div>
+        </div>
+        </div>
+        <br>
+        <div class="col-xs-12" align="center" id="NGO-targetGroup" style="display:none">
+            <div class="form-group form-group-lg">
+                <label class="control-label" style="font-size: 18px;">Target Group: Non-Governmental Organisations</label>
+                <hr>
+            </div><br>
+            <div class="form-group col-xs-6">
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.ngo_registration_number_ngo.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.ngo_registration_number_ngo(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.vat_number_ngo.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.vat_number_ngo(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.fiscal_number_ngo.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.fiscal_number_ngo(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.sector_ngo.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.sector_ngo(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.founding_year_ngo.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.founding_year_ngo(class="form-control")}}</div>
+                </div>
+                </div>
+                <div class="form-group col-xs-6">
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.number_of_staff_ngo.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.number_of_staff_ngo(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.description_of_ngo.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.description_of_ngo(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.main_activities.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.main_activities(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.web_site.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.web_site(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.donors.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.donors(class="form-control")}}</div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="col-xs-12" align="center" id="investorTargetGroup" style="display:none">
+            <div class="form-group form-group-lg">
+                <label class="control-label" style="font-size: 18px;">Target Group: Investor</label>
+                <hr>
+            </div><br>
+            <div class="form-group col-xs-6">
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.country.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.country(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.business.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.business(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.business_number.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.business_number(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.interest.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.interest(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.investor_industry.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.investor_industry(class="form-control")}}</div>
+                </div>
+                </div>
+                <div class="form-group col-xs-6">
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.industry_of_interest.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.industry_of_interest(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.investor_size.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.investor_size(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.foundation_year_investor.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.foundation_year_investor(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.description_investor.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.description_investor(class="form-control")}}</div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="col-xs-12" align="center" id="municipalityTargetGroup" style="display:none">
+            <div class="form-group form-group-lg">
+                <label class="control-label" style="font-size: 18px;">Target Group: Municipality</label>
+                <hr>
+            </div><br>
+            <div class="form-group col-xs-6">
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.municipality_name.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.municipality_name(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.department.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.department(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.offering.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.offering(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.industries.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.industries(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.modules.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.modules(class="form-control")}}</div>
+                </div>
+                </div>
+                <div class="form-group col-xs-6">
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.infrastructure_available.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.infrastructure_available(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.investment_incentives.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.investment_incentives(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.description.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.description(class="form-control")}}</div>
+                </div>
+            </div>
+        </div>
+        <br></br>
+        <div class="form-group col-xs-12">
+            <button class="btn btn-primary col-xs-offset-1" type="submit">{{text}}</button>
+        </div>
+    </form>
 </div>
 </section>
 {% endblock %}

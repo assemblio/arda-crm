@@ -198,6 +198,11 @@
         var year = $('#year').val();
         var url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
 
+
+        if (year == ""){
+          url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=2015&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+        }
+        
         $.get(url, function(resultJson){
           drawContractValueChart("Incomes based on services fee", resultJson, "lineValueChart", true);
           drawContractValueChart("Number of all provided services based on service type", resultJson, "lineCountChart", false);
