@@ -183,7 +183,6 @@ def settings():
         settings_form.site_title.data = settings_doc['site_title']
         settings_form.site_tagline.data = settings_doc['site_tagline']
         settings_form.site_navbar_title.data = settings_doc['site_navbar_title']
-        settings_form.landingpage_banner_image_url.data = settings_doc['landingpage_banner_image_url']
         settings_form.web_url.data = settings_doc['web_url']
         settings_form.fb_url.data = settings_doc['fb_url']
         settings_form.tw_url.data = settings_doc['tw_url']
