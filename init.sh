@@ -1,8 +1,8 @@
 source ./venv/bin/activate
 
-if [ "$#" -ne 3 ]
+if [ "$#" -ne 2 ]
 then
     echo "Invalid number of parameters."
 else
-    python create_user.py "--username $1 --password $2 --role $3"
+    python init.py "--username $1 --password $2"
 fi
