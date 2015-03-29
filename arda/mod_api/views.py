@@ -242,7 +242,8 @@ def search_service_analytics():
     match_fields = {}
 
     if region:
-        match_fields['region'] = region
+        if region != "All":
+            match_fields['region'] = region
 
     if f_name:
         match_fields['first_name.slug'] = slugify(f_name)
@@ -314,7 +315,8 @@ def search_service_analytics_linechart():
     match_fields = {}
 
     if region:
-        match_fields['region'] = region
+        if region != "All":
+            match_fields['region'] = region
 
     if company:
         match_fields['company.slug'] = slugify(company)
