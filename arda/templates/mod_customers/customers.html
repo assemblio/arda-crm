@@ -74,8 +74,8 @@
                 $("#customers-list").append("<tr>" +
                     "<td>"+result[index]["first_name"]+"</td>"+
                     "<td>"+result[index]["last_name"]+"</td>"+
-                    "<td>"+result[index]["job_title"]+"</td>"+
                     "<td>"+result[index]['company']['name']+"</td>"+
+                    "<td>"+result[index]["target_group"]+"</td>"+
                     "<td>"+result[index]['phone']['main_phone']+"</td>"+
                     "<td>"+result[index]["email"]+"</td>"+
                     "<td>"+
@@ -206,8 +206,8 @@
               <tr class="info">
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Target Group</th>
                 <th>Customer</th>
+                <th>Target Group</th>
                 <th>Main Phone</th>
                 <th>E-mail</th>
                 <th><i>Services<i></th>
@@ -219,8 +219,9 @@
               <tr align="center">
                 <td>{{customer['first_name']['value']}}</td>
                 <td>{{customer['last_name']['value']}}</td>
-                <td>{{customer['customer_type']['target_group']}}</td>
                 <td>{{customer['company']['name']}}</td>
+
+                <td>{{customer['customer_type']['target_group']}}</td>
                 <td>{{customer['phone']['main_phone']}}</td>
                 <td>{{customer['email']}}</td>
                 <td>

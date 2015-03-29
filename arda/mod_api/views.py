@@ -99,7 +99,7 @@ def search():
                 "target_group": "$costumer_type.target_group",
                 "first_name": "$first_name.value",
                 "last_name": "$last_name.value",
-                "job_title": "$job_title",
+                "target_group": "$customer_type.target_group",
                 "company": {
                     "name": "$company.name",
                     "slug": "$company.slug",
@@ -120,7 +120,7 @@ def search():
             "_id": "$_id._id",
             "first_name": "$_id.first_name",
             "last_name": "$_id.last_name",
-            "job_title": "$_id.job_title",
+            "target_group": "$_id.target_group",
             "company": {
                 "name": "$_id.company.name",
                 "slug": "$_id.company.slug"
@@ -136,7 +136,7 @@ def search():
     pipeline = [match, group, project]
 
     json_obj = mongo.db.customers.aggregate(pipeline)
-    print json_obj
+
     resp = Response(
         response=json_util.dumps(json_obj['result']),
         mimetype='application/json'
