@@ -47,7 +47,7 @@ class Customers(db.Document):
     company = db.EmbeddedDocumentField(Company)
     first_name = db.EmbeddedDocumentField(First_Name)
     last_name = db.EmbeddedDocumentField(Last_Name)
-    costumer_type = db.EmbeddedDocumentField(Costumer_Type)
+    customer_type = db.EmbeddedDocumentField(Costumer_Type)
     job_title = db.StringField()
     region = db.StringField()
     phone = db.EmbeddedDocumentField(Phone)

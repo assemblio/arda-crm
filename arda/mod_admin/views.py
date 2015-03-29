@@ -223,7 +223,6 @@ def settings_portfolio_update():
         portfolio_data['id'] = utils.get_doc_id()
 
         mongo.db.settings.update({'_id': 0}, {'$push': {'portfolio': portfolio_data}})
-
         session['settings']['portfolio'] = portfolio_data
 
         return redirect(url_for('admin.settings'))

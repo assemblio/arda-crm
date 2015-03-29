@@ -2569,7 +2569,7 @@ fieldset[disabled] .form-control {
   opacity: 1;
 }
 textarea.form-control {
-  height: auto;
+	height: auto;
 }
 input[type="search"] {
   -webkit-appearance: none;
@@ -2689,7 +2689,7 @@ select.input-sm {
 }
 textarea.input-sm,
 select[multiple].input-sm {
-  height: auto;
+	height: auto;
 }
 .form-group-sm .form-control {
   height: 30px;
@@ -2704,8 +2704,8 @@ select.form-group-sm .form-control {
 }
 textarea.form-group-sm .form-control,
 select[multiple].form-group-sm .form-control {
-  height: auto;
-}
+	height: auto;
+ }
 .form-group-sm .form-control-static {
   height: 30px;
   padding: 5px 10px;
