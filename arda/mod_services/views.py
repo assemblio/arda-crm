@@ -9,6 +9,7 @@ mod_services = Blueprint('services', __name__, url_prefix='/services')
 
 
 @mod_services.route('/<string:company_name>', methods=['GET'])
+@login_required
 def company_services(company_name):
     if current_user.region != 'All':
         query = {
@@ -32,6 +33,7 @@ def company_services(company_name):
 
 
 @mod_services.route('/<string:company_name>/<string:customer_id>', methods=['GET'])
+@login_required
 def customer_services(company_name, customer_id):
 
     if current_user.region != 'All':
@@ -58,6 +60,7 @@ def customer_services(company_name, customer_id):
 
 
 @mod_services.route('/create/<company_name>/<customer_id>', methods=['GET', 'POST'])
+@login_required
 def add_service(company_name, customer_id):
     if request.method == "GET":
         action = url_for('services.add_service', company_name=company_name, customer_id=customer_id)
@@ -101,6 +104,7 @@ def add_service(company_name, customer_id):
         )
 
 @mod_services.route('/edit/<company_name>/<customer_id>/<string:service_id>', methods=['GET', 'POST'])
+@login_required
 def edit_service(company_name, customer_id, service_id):
     if request.method == "GET":
         form = ServiceTypes()
@@ -184,6 +188,7 @@ def edit_service(company_name, customer_id, service_id):
         )
 
 @mod_services.route('/delete/<string:company_name>/<string:customer_id>/<string:service_id>', methods=['GET'])
+@login_required
 def delete_service(company_name, customer_id, service_id):
 
     mongo.db.customers.update(

@@ -146,6 +146,7 @@ def search():
 
 
 @mod_api.route('/search/service', methods=['GET'])
+@login_required
 def search_service():
 
     if len(request.args) > 0:
