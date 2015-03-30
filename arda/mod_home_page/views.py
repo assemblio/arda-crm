@@ -27,7 +27,6 @@ def panel():
 	return render_template('panel.html')
 
 
-
 def create_services():
     #Create initial service types for customers
     doc_id = utils.get_doc_id()
