@@ -1,8 +1,7 @@
 {% extends 'layout.html' %}
 {% block body %}
-
 <section id="portfolio">
-	<div class="container">
+	<div class="container" align="center">
 		<div class="row">
 			<div class="col-lg-12 text-center">
 				<p><strong>Welcome</strong>, {{ current_user.first_name }}</p>
@@ -11,7 +10,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<div  class="col-md-3 col-sm-6 portfolio-item" align="center">
+			<div class="col-md-3 col-sm-6 portfolio-item" align="center">
 				<a href="{{url_for('customers.customers')}}" class="portfolio-link">
 				    
 				    <img src="{{ url_for('static', filename='startbootstrap/img/shares.png') }}" width="230" height="160">
@@ -38,7 +37,8 @@
 					</div>
 				</a>
 			</div>
-			{% if current_user.has_role('Admin') %}
+
+			{% if not current_user.has_role('Admin') %}
 			<div class="col-md-3 col-sm-6 portfolio-item" align="center">
 				<a href="{{url_for('admin.users')}}" class="portfolio-link">
 			    
