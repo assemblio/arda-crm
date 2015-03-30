@@ -15,6 +15,8 @@ class Users(db.Document, UserMixin):
     password = db.StringField(default=True)
     roles = db.ListField(db.ReferenceField(Role), default=[])
     role = db.StringField()
+    active = db.BooleanField(default=True)
+
 
     def is_authenticated(self):
         return True

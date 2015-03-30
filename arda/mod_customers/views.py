@@ -51,7 +51,6 @@ def create_customer():
         return redirect(url_for('customers.customers'))
 
 
-
 @mod_customers.route('/edit/customer/<customer_id>', methods=['GET', 'POST'])
 @login_required
 def edit_customer(customer_id):
@@ -119,7 +118,7 @@ def edit_customer(customer_id):
             form.infrastructure_available.data = customer_doc['customer_type']['infrastructure_available']
             form.investment_incentives.data = customer_doc['customer_type']['investment_incentives']
             form.description.data = customer_doc['customer_type']['description']
-            
+
         form.bill_add1.data = customer_doc['address']['billing']['bill_add1']
         form.bill_add2.data = customer_doc['address']['billing']['bill_add2']
         form.bill_city.data = customer_doc['address']['billing']['bill_city']
@@ -175,13 +174,13 @@ def build_save_costumers_document():
             'slug': slugify(costumer['company_name'])
         },
         'first_name': {
-        	'value': costumer['first_name'],
-        	'slug': slugify(costumer['first_name']),
+            'value': costumer['first_name'],
+            'slug': slugify(costumer['first_name']),
         },
         'last_name': {
-        	'value': costumer['last_name'],
-        	'slug': slugify(costumer['last_name'])
-        }, 
+            'value': costumer['last_name'],
+            'slug': slugify(costumer['last_name'])
+        },
         'job_title': costumer['job_title'],
         'phone': {
             'main_phone': costumer['main_phone'],
@@ -213,9 +212,9 @@ def build_save_costumers_document():
     }
 
     if current_user['region'] != "All":
-    	json_obj['region'] = current_user['region']
+        json_obj['region'] = current_user['region']
     else:
-    	json_obj['region'] = costumer['region']
+        json_obj['region'] = costumer['region']
 
 
     if costumer['customer_type'] == "Entrepreneur":
@@ -250,26 +249,26 @@ def build_save_costumers_document():
         json_obj['customer_type'] = {
             'target_group': costumer['customer_type'],
             'country': costumer['country'],
-			'business': costumer['business'],
-			'business_number': costumer['business_number'],
-			'interest': costumer['interest'],
-			'investor_industry': costumer['investor_industry'],
-			'industry_of_interest': costumer['industry_of_interest'],
-			'investor_size': costumer['investor_size'],
-			'foundation_year_investor': costumer['foundation_year_investor'],
-			'description_investor': costumer['description_investor']
+            'business': costumer['business'],
+            'business_number': costumer['business_number'],
+            'interest': costumer['interest'],
+            'investor_industry': costumer['investor_industry'],
+            'industry_of_interest': costumer['industry_of_interest'],
+            'investor_size': costumer['investor_size'],
+            'foundation_year_investor': costumer['foundation_year_investor'],
+            'description_investor': costumer['description_investor']
         }
     else:
-    	json_obj['customer_type'] = {
-    		'target_group': costumer['customer_type'],
+        json_obj['customer_type'] = {
+            'target_group': costumer['customer_type'],
             'municipality_name': costumer['municipality_name'],
-			'department': costumer['department'],
-			'offering': costumer['offering'],
-			'industries': costumer['industries'],
-			'modules': costumer['modules'],
-			'infrastructure_available': costumer['infrastructure_available'],
-			'investment_incentives': costumer['investment_incentives'],
-			'description': costumer['description']
+            'department': costumer['department'],
+            'offering': costumer['offering'],
+            'industries': costumer['industries'],
+            'modules': costumer['modules'],
+            'infrastructure_available': costumer['infrastructure_available'],
+            'investment_incentives': costumer['investment_incentives'],
+            'description': costumer['description']
         }
     mongo.db.customers.insert(json_obj)
 
@@ -353,33 +352,32 @@ def edit_costumers_document(customer_id):
         json_obj['customer_type'] = {
             'target_group': costumer['customer_type'],
             'country': costumer['country'],
-			'business': costumer['business'],
-			'business_number': costumer['business_number'],
-			'interest': costumer['interest'],
-			'investor_industry': costumer['investor_industry'],
-			'industry_of_interest': costumer['industry_of_interest'],
-			'investor_size': costumer['investor_size'],
-			'foundation_year_investor': costumer['foundation_year_investor'],
-			'description_investor': costumer['description_investor']
+            'business': costumer['business'],
+            'business_number': costumer['business_number'],
+            'interest': costumer['interest'],
+            'investor_industry': costumer['investor_industry'],
+            'industry_of_interest': costumer['industry_of_interest'],
+            'investor_size': costumer['investor_size'],
+            'foundation_year_investor': costumer['foundation_year_investor'],
+            'description_investor': costumer['description_investor']
         }
     else:
-    	json_obj['customer_type'] = {
-    		'target_group': costumer['customer_type'],
+        json_obj['customer_type'] = {
+            'target_group': costumer['customer_type'],
             'municipality_name': costumer['municipality_name'],
-			'department': costumer['department'],
-			'offering': costumer['offering'],
-			'industries': costumer['industries'],
-			'modules': costumer['modules'],
-			'infrastructure_available': costumer['infrastructure_available'],
-			'investment_incentives': costumer['investment_incentives'],
-			'description': costumer['description']
+            'department': costumer['department'],
+            'offering': costumer['offering'],
+            'industries': costumer['industries'],
+            'modules': costumer['modules'],
+            'infrastructure_available': costumer['infrastructure_available'],
+            'investment_incentives': costumer['investment_incentives'],
+            'description': costumer['description']
         }
 
     mongo.db.customers.update(
         {'_id': ObjectId(customer_id)},
         {
             "$set": json_obj
-                
         }
     )
 
