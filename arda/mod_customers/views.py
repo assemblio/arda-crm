@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template, \
+from flask import Blueprint, send_file, render_template, \
                   session, redirect, url_for, current_app, request
 from flask.ext.security import login_required
-from arda import mongo, utils
+import os
+from arda import mongo
+import xlsxwriter
 import json
 from forms.customer_form import CustomerForm
 from slugify import slugify
@@ -32,6 +34,7 @@ def customers():
 
 
 @mod_customers.route('/create', methods=['GET', 'POST'])
+@login_required
 def create_customer():
     form = CustomerForm()
 
@@ -50,6 +53,7 @@ def create_customer():
 
 
 @mod_customers.route('/edit/customer/<customer_id>', methods=['GET', 'POST'])
+@login_required
 def edit_customer(customer_id):
 
     form = CustomerForm()
@@ -142,6 +146,7 @@ def edit_customer(customer_id):
         return redirect(url_for('customers.customers'))
 
 @mod_customers.route('/delete/<customer_id>', methods=['GET'])
+@login_required
 def delete_customer(customer_id):
     mongo.db.customers.remove({'_id': ObjectId(customer_id)})
 
@@ -434,3 +439,62 @@ def retrieve_all_services():
         }
     ])
     return json_obj['result']
+
+
+def createReport():
+    fn = 'report-customers.xlsx'
+    workbook = xlsxwriter.Workbook(fn)
+    worksheet = workbook.add_worksheet()
+    bold = workbook.add_format({'bold': True})
+
+    worksheet.set_column('A:A', 20)
+    worksheet.set_column('B:B', 20)
+    worksheet.set_column('C:C', 20)
+    worksheet.set_column('D:D', 20)
+    worksheet.set_column('E:E', 20)
+    worksheet.set_column('F:F', 20)
+
+    worksheet.write('A1', 'Company', bold)
+    worksheet.write('B1', 'First Name', bold)
+    worksheet.write('C1', 'Last Name', bold)
+    worksheet.write('D1', 'Target Group', bold)
+    worksheet.write('E1', 'Main Phone', bold)
+    worksheet.write('F1', 'E-mail', bold)
+
+    region = current_user.region
+
+    if region != "All":
+        customers = mongo.db.customers.find({"region": region})
+    else:
+        customers = mongo.db.customers.find({})
+
+    response = build_customers_cursor(customers)
+
+    print response['results']
+    i = 1
+    for customer in response['results']:
+        company = customer['company']['name']
+        first_name = customer['first_name']['value']
+        last_name = customer['last_name']['value']
+        target_group = customer['customer_type']['target_group']
+        phone = customer['phone']['main_phone']
+        email = customer['email']
+
+        worksheet.write(i, 0, company)
+        worksheet.write(i, 1, first_name)
+        worksheet.write(i, 2, last_name)
+        worksheet.write(i, 3, target_group)
+        worksheet.write(i, 4, phone)
+        worksheet.write(i, 5, email)
+        i = i + 1
+
+    workbook.close()
+    return fn
+
+
+@mod_customers.route('/getXLS', methods=['POST', 'GET'])
+@login_required
+def getXls():
+    fn = createReport()
+    path = os.path.join('/home/vullkan/Desktop/dev/arda-crm', fn)
+    return send_file(path, mimetype='application/vnd.ms-excel')
