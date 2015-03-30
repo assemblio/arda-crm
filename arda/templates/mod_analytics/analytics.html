@@ -183,7 +183,7 @@
             'title': "Value"
           },
           'hAxis': {
-            'title': "Months"
+            'title': "Days"
           }
         };
 
@@ -327,8 +327,14 @@
 
           console.log(url);
           $.get(url, function(resultJson){
-            drawMonthLineChart("Incomes based on services fee", resultJson, "lineValueChartMonth", true);
-            drawMonthLineChart("Number of all provided services based on service type", resultJson, "lineCountChartMonth", false);
+            var monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"];
+            if (year == ""){
+              year = "2015"
+            }
+            var titleLineValue = "Incomes based on services fee, " + monthArray[month-1] + ", " + year; 
+            var titleLineCount = "Number of all provided services based on service type, " + monthArray[month-1] + ",  " + year; 
+            drawMonthLineChart(titleLineValue, resultJson, "lineValueChartMonth", true);
+            drawMonthLineChart(titleLineCount, resultJson, "lineCountChartMonth", false);
           });
 
           $('#pieValueChart').css('display', "none");
@@ -533,7 +539,6 @@ function checkCheckBoxes(id){
     </li>
   </ul>
 </nav>
-
 <section id="portofolio">
   <div id="container" align="center">
     <div id="pieValueChart" style="width: 750px; height: 400px;"></div>
@@ -543,7 +548,6 @@ function checkCheckBoxes(id){
     <div id="lineValueChartMonth" style="display:none; margin: -50px 0 0 50px; width: 950px; height: 650px;"></div>
     <div id="lineCountChartMonth" style="display:none; margin: -50px 0 0 50px; width: 950px; height: 650px;"></div>
   </div>
-
 </section>
 
     
