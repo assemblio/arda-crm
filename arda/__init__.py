@@ -87,7 +87,7 @@ def load_config(app):
 
     app.config['SERVER_PORT'] = config.get('Application', 'SERVER_PORT')
     app.config['MONGO_DBNAME'] = config.get('Mongo', 'DB_NAME')
-
+    app.config['SECURITY_LOGIN_USER_TEMPLATE'] = 'index.html'
     # Config MONGODB
     app.config['MONGODB_SETTINGS'] = {
         'db': config.get('MONGODB_SETTINGS', 'MONGODB_DATABASE'),

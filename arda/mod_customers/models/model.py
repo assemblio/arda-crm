@@ -73,6 +73,7 @@ class Customer_Type(db.EmbeddedDocument):
     country = db.StringField()
     business = db.StringField()
     business_number = db.StringField()
+    business_description = db.StringField()
     interest = db.StringField()
     investor_industry = db.StringField()
     industry_of_interest = db.StringField()

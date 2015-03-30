@@ -85,8 +85,8 @@ def search():
     if company:
         match_field['company.slug'] = slugify(company)
     if customer_type:
-    	if customer_type != "All":
-        	match_field['customer_type.target_group'] = customer_type
+        if customer_type != "All":
+            match_field['customer_type.target_group'] = customer_type
 
     match = {
         "$match": match_field
