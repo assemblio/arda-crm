@@ -12,6 +12,9 @@ from flask.ext.security import login_user, login_required, logout_user, current_
 from arda.mod_services.forms.servicetypes import ServiceTypes
 from arda.mod_customers.models.model import Customers
 
+import time
+import datetime
+
 mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
 
 
@@ -449,8 +452,10 @@ def retrieve_all_services(region):
     return json_obj['result']
 
 
-def createReport():
-    fn = 'report-customers.xlsx'
+def create_customer_report():
+    ts = get_timestamp()
+    fn = '%s/All Customers (As of %s).xlsx' % (current_app.config['EXCEL_DOC_DIR'], ts)
+
     workbook = xlsxwriter.Workbook(fn)
     worksheet = workbook.add_worksheet()
     bold = workbook.add_format({'bold': True})
@@ -500,16 +505,18 @@ def createReport():
     return fn
 
 
-@mod_customers.route('/getXLS', methods=['POST', 'GET'])
+@mod_customers.route('/export-customers', methods=['POST', 'GET'])
 @login_required
-def getXls():
-    fn = createReport()
-    path = os.path.join('/home/vullkan/Desktop/dev/arda-crm', fn)
+def export_customers():
+    fn = create_customer_report()
+    path = os.path.join(current_app.config['EXCEL_DOC_DIR'], fn)
     return send_file(path, mimetype='application/vnd.ms-excel')
 
 
 def create_report_services():
-    fn = 'report-services.xlsx'
+    ts = get_timestamp()
+    fn =  '%s/All Services (As of %s).xlsx' % (current_app.config['EXCEL_DOC_DIR'], ts)
+
     workbook = xlsxwriter.Workbook(fn)
     worksheet = workbook.add_worksheet()
     bold = workbook.add_format({'bold': True})
@@ -562,9 +569,15 @@ def create_report_services():
     return fn
 
 
-@mod_customers.route('/getXlsServices', methods=['POST', 'GET'])
+def get_timestamp():
+    ts = time.time()
+    timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+    return timestamp
+
+@mod_customers.route('/export-services', methods=['POST', 'GET'])
 @login_required
-def getXlsServices():
+def export_services():
     fn = create_report_services()
-    path = os.path.join('/home/vullkan/Desktop/dev/arda-crm', fn)
+    path = os.path.join(current_app.config['EXCEL_DOC_DIR'], fn)
     return send_file(path, mimetype='application/vnd.ms-excel')

@@ -276,23 +276,26 @@
               </tr>
               {% endfor %}
             </tbody>
-          </table><br>
+          </table>
+          <br>
+          <a download="Customers.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'results-table', 'Customers');">Export Current View</a>
+          <a download="All Customers.xls" href="{{url_for('customers.export_customers')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
+          <br>
           <div class="pagination">
             <ul class="pagination">
                 <li><a href="#" class="fa fa-angle-left"></a></li>
                 {% for page in pagination.iter_pages() %}
                   {% if page %}
                     {% if page != pagination.page %}
-                        <li><a href="{{url_for('customers.customers')}}?page={{ page }}">{{ page }}</a>
+                        <li>
+                          <a href="{{url_for('customers.customers')}}?page={{ page }}">{{ page }}</a>
                         </li>
                     {% endif %}
                   {% endif %}
                 {% endfor %}
                 <li><a href="#" class="fa fa-angle-right"></a></li>
             </ul>
-        </div>
-          <a download="Customers.xls" class="btn btn-sm btn-success pull-right" href="#" onclick="return ExcellentExport.excel(this, 'results-table', 'Customers');">Export to Excel</a>
-          <a download="customers-report.xls" href="{{url_for('customers.getXls')}}" style="margin-right:2px;" class="btn btn-sm btn-success pull-right">Export All</a>
+          </div>
         </div>
       </div>
 
@@ -384,8 +387,8 @@
 	            {% endif %}
          	</tbody>
         </table><br>
-        <a download="Services.xls" class="btn btn-sm btn-success pull-right" href="#" onclick="return ExcellentExport.excel(this, 'services', 'Services');">Export to Excel</a>
-        <a download="report-services.xls" href="{{url_for('customers.getXlsServices')}}" style="margin-right:2px;" class="btn btn-sm btn-success pull-right">Export All</a>
+        <a download="Services.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'services', 'Services');">Export Current View</a>
+        <a download="All Services.xls" href="{{url_for('customers.export_services')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
       </div>
     </div>
   </div>
