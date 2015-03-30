@@ -199,7 +199,7 @@ def settings():
             # Update session with new settings data.
             session['settings'] = settings_form.data
         else:
-            return redirect(url_for('customers.customers'))
+            return redirect(url_for('home_page.panel'))
     type_id='5509cb3b484d3f17a2409cea'
     portfolio_form = PortfolioForm()
     return render_template(

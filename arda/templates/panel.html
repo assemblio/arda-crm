@@ -38,7 +38,7 @@
 				</a>
 			</div>
 
-			{% if not current_user.has_role('Admin') %}
+			{% if current_user.has_role('Admin') %}
 			<div class="col-md-3 col-sm-6 portfolio-item" align="center">
 				<a href="{{url_for('admin.users')}}" class="portfolio-link">
 			    
