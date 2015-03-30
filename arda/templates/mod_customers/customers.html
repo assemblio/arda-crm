@@ -278,9 +278,6 @@
             </tbody>
           </table>
           <br>
-          <a download="Customers.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'results-table', 'Customers');">Export Current View</a>
-          <a download="All Customers.xls" href="{{url_for('customers.export_customers')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
-          <br>
           <div class="pagination">
             <ul class="pagination">
                 <li><a href="#" class="fa fa-angle-left"></a></li>
@@ -296,6 +293,9 @@
                 <li><a href="#" class="fa fa-angle-right"></a></li>
             </ul>
           </div>
+          <br>
+          <a download="Customers.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'results-table', 'Customers');">Export Current View</a>
+          <a download="All Customers.xls" href="{{url_for('customers.export_customers')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
         </div>
       </div>
 
@@ -386,7 +386,8 @@
 	            {% endfor %}
 	            {% endif %}
          	</tbody>
-        </table><br>
+        </table>
+        <br>
         <div class="pagination">
             <ul class="pagination">
                 <li><a href="#" class="fa fa-angle-left"></a></li>
@@ -401,6 +402,7 @@
                 <li><a href="#" class="fa fa-angle-right"></a></li>
             </ul>
         </div>
+        <br>
         <a download="Services.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'services', 'Services');">Export Current View</a>
         <a download="All Services.xls" href="{{url_for('customers.export_services')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
       </div>
