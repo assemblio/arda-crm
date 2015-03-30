@@ -291,8 +291,8 @@
                 <li><a href="#" class="fa fa-angle-right"></a></li>
             </ul>
         </div>
-          <a download="Customers.xls" class="btn btn-sm btn-success pull-right" href="#" onclick="return ExcellentExport.excel(this, 'results-table', 'Customers');">Export to Excel</a>
-          <a download="customers-report.xls" href="{{url_for('customers.getXls')}}" style="margin-right:2px;" class="btn btn-sm btn-success pull-right">Export All</a>
+          {#<a download="Customers.xls" class="btn btn-sm btn-success pull-right" href="#" onclick="return ExcellentExport.excel(this, 'results-table', 'Customers');">Export to Excel</a>
+          <a download="customers-report.xls" href="{{url_for('customers.getXls')}}" style="margin-right:2px;" class="btn btn-sm btn-success pull-right">Export All</a>#}
         </div>
       </div>
 
@@ -342,9 +342,9 @@
             </tr>
           </thead>
          	<tbody>
-         	{% if result_services is defined and result_services|length > 0 %}
+         	{% if result_services is defined and result_services.items|length > 0 %}
           <tbody id="service-list">
-            {% for service in result_services %}
+            {% for service in result_services.items %}
 	            <tr align="center">
                 <td>{{service["company"]['name']}}</td>
 	              <td>{{service['customer']['firstName']}}</td>
@@ -384,8 +384,22 @@
 	            {% endif %}
          	</tbody>
         </table><br>
-        <a download="Services.xls" class="btn btn-sm btn-success pull-right" href="#" onclick="return ExcellentExport.excel(this, 'services', 'Services');">Export to Excel</a>
-        <a download="report-services.xls" href="{{url_for('customers.getXlsServices')}}" style="margin-right:2px;" class="btn btn-sm btn-success pull-right">Export All</a>
+        <div class="pagination">
+            <ul class="pagination">
+                <li><a href="#" class="fa fa-angle-left"></a></li>
+                {% for page in result_services.iter_pages() %}
+                  {% if page %}
+                    {% if page != result_services.page %}
+                        <li><a href="{{url_for('customers.customers')}}?faqe={{ page }}">{{ page }}</a>
+                        </li>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+                <li><a href="#" class="fa fa-angle-right"></a></li>
+            </ul>
+        </div>
+        {#<a download="Services.xls" class="btn btn-sm btn-success pull-right" href="#" onclick="return ExcellentExport.excel(this, 'services', 'Services');">Export to Excel</a>
+        <a download="report-services.xls" href="{{url_for('customers.getXlsServices')}}" style="margin-right:2px;" class="btn btn-sm btn-success pull-right">Export All</a>#}
       </div>
     </div>
   </div>
