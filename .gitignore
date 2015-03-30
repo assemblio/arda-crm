@@ -1,4 +1,4 @@
-.xlsx
+*.xlsx
 venv
 .cfg~
 .html~

@@ -11,7 +11,7 @@ from bson import ObjectId
 from flask.ext.security import login_user, login_required, logout_user, current_user
 from arda.mod_services.forms.servicetypes import ServiceTypes
 from arda.mod_customers.models.model import Customers
-
+from flask.ext.mongoengine import DoesNotExist, Pagination
 import time
 import datetime
 
@@ -25,15 +25,40 @@ def customers():
         page = 1
     else:
         page = int(request.args.get('page'))
+
+    if not request.args.get('faqe'):
+        faqe = 1
+    else:
+        faqe = int(request.args.get('faqe'))
     form = ServiceTypes()
     customers = mongo.db.customers.find({})
-    customers_pagi = Customers.objects.all()
-    pagination = customers_pagi.paginate(page=page, per_page=10)
+
+    if current_user.region != 'All':
+        try:
+            customers_pagi = Customers.objects(region=current_user.region)
+            pagination = customers_pagi.paginate(page=page, per_page=10)
+
+        except DoesNotExist:
+
+            pagination = None
+    else:
+        customers_pagi = Customers.objects.all()
+        pagination = customers_pagi.paginate(page=page, per_page=10)
 
     response = build_customers_cursor(customers)
     region = current_user.region
     services = retrieve_all_services(region)
-    return render_template('mod_customers/customers.html', pagination=pagination, result_services=services, form=form, results=response)
+
+    pagination_services = Pagination(services,page=faqe,per_page=10)
+
+    return render_template(
+        'mod_customers/customers.html',
+        pagination=pagination,
+        result_services=pagination_services,
+        form=form,
+        results=response
+    )
+
 
 
 @mod_customers.route('/create', methods=['GET', 'POST'])
@@ -61,7 +86,7 @@ def edit_customer(customer_id):
     form = CustomerForm()
     if request.method == "GET":
         customer_doc = mongo.db.customers.find_one({'_id': ObjectId(customer_id)})
-        print customer_doc['customer_type']['target_group']
+
         form.company_name.data = customer_doc['company']['name']
         form.first_name.data = customer_doc['first_name']['value']
         form.last_name.data = customer_doc['last_name']['value']
@@ -169,7 +194,7 @@ def build_save_costumers_document():
 
     customer_form = CustomerForm(request.form)
     costumer = customer_form.data
-    print costumer
+
     json_obj = {}
     json_obj = {
         'company': {
@@ -483,7 +508,6 @@ def create_customer_report():
 
     response = build_customers_cursor(customers)
 
-    print response['results']
     i = 1
     for customer in response['results']:
         company = customer['company']['name']

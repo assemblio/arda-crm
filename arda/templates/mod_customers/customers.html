@@ -345,9 +345,9 @@
             </tr>
           </thead>
          	<tbody>
-         	{% if result_services is defined and result_services|length > 0 %}
+         	{% if result_services is defined and result_services.items|length > 0 %}
           <tbody id="service-list">
-            {% for service in result_services %}
+            {% for service in result_services.items %}
 	            <tr align="center">
                 <td>{{service["company"]['name']}}</td>
 	              <td>{{service['customer']['firstName']}}</td>
@@ -387,6 +387,20 @@
 	            {% endif %}
          	</tbody>
         </table><br>
+        <div class="pagination">
+            <ul class="pagination">
+                <li><a href="#" class="fa fa-angle-left"></a></li>
+                {% for page in result_services.iter_pages() %}
+                  {% if page %}
+                    {% if page != result_services.page %}
+                        <li><a href="{{url_for('customers.customers')}}?faqe={{ page }}">{{ page }}</a>
+                        </li>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+                <li><a href="#" class="fa fa-angle-right"></a></li>
+            </ul>
+        </div>
         <a download="Services.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'services', 'Services');">Export Current View</a>
         <a download="All Services.xls" href="{{url_for('customers.export_services')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
       </div>

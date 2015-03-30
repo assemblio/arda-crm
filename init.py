@@ -6,6 +6,7 @@ from flask.ext.bcrypt import Bcrypt
 from bson import ObjectId
 # Create MongoDB instance
 db = MongoEngine()
+db.connect('arda')
 bcrypt = Bcrypt()
 user_datastore = MongoEngineUserDatastore(db, Users, Role)
 
@@ -47,6 +48,59 @@ def create_user(user_datastore, username, password):
             user_datastore.add_role_to_user(user, role)
 
 
+def create_initial_service():
+
+    class Servicetypes(db.Document):
+        id = db.StringField()
+        serviceTypes = db.ListField()
+        contactVia = db.ListField()
+
+
+    Servicetypes(
+        id = ObjectId('5509cb3b484d3f17a2409cea'),
+        serviceTypes=[{
+            "type": {
+                "name": "Phone Call",
+                "slug": "phone-call"
+            },
+            'serviceId': ObjectId(),
+            "description": "Phone Call Service"
+        },
+        {
+            "type": {
+                "name": "E-mail",
+                "slug": "e-mail"
+            },
+            'serviceId': ObjectId(),
+            "description": "E-mail Service"
+        },
+        {
+            "type": {
+                "name": "Face-to-Face meeting",
+                "slug": "face-to-face-meeting"
+            },
+            'serviceId': ObjectId(),
+            "description": "Face-to-Face Service"
+        }],
+        contactVia = [{
+            "type": {
+                "name": "1",
+                "slug": "1"
+            },
+            'contactId': ObjectId(),
+            "description": "this one contact manner"
+        },
+        {
+            "type": {
+                "name": "2",
+                "slug": "2"
+            },
+            'contactId': ObjectId(),
+            "description": "this another contact manner"
+        }]
+
+        ).save()
+
 # Run the app
 if __name__ == '__main__':
 
@@ -59,89 +113,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     username = args.username
     password = args.password
-    create_user(username, password)
-
-
-def create_initial_service():
-
-    class Type(db.EmbeddedDocument):
-        name = db.StringField()
-        slug = db.StringField()
-
-    class Services(db.EmbeddedDocument):
-        type = db.EmbeddedDocumentField(Type)
-        description = db.StringField()
-        serviceId = db.StringField()
-
-    class Contact(db.EmbeddedDocument):
-        type = db.EmbeddedDocumentField(Type)
-        description = db.StringField()
-        contactId = db.StringField()
-
-    class ServiceTypes(db.Document):
-        id = db.StringField()
-        serviceTypes = db.ListField(Services)
-        contactVia = db.ListField(Contact)
-
-    '''
-    initial_services = [
-        {
-            "type": {
-                "name": "Phone Call",
-                "slug": "phone-call"
-            },
-            'serviceId': ObjectId(utils.get_doc_id()),
-            "description": "Phone Call Service"
-        },
-        {
-            "type": {
-                "name": "E-mail",
-                "slug": "e-mail"
-            },
-            'serviceId': ObjectId(utils.get_doc_id()),
-            "description": "E-mail Service"
-        },
-        {
-            "type": {
-                "name": "Face-to-Face meeting",
-                "slug": "face-to-face-meeting"
-            },
-            'serviceId': ObjectId(utils.get_doc_id()),
-            "description": "Face-to-Face Service"
-        }
-    ]
-    initial_contact_manner = [
-        {
-            "type": {
-                "name": "1",
-                "slug": "1"
-            },
-            'contactId': ObjectId(utils.get_doc_id()),
-            "description": "this one contact manner"
-        },
-        {
-            "type": {
-                "name": "2",
-                "slug": "2"
-            },
-            'contactId': ObjectId(utils.get_doc_id()),
-            "description": "this another contact manner"
-        }
-    ]
-    mongo.db.servicetypes.update(
-        {'_id': ObjectId('5509cb3b484d3f17a2409cea')},
-        {
-            '$setOnInsert': {
-                "serviceTypes": initial_services,
-                "contactVia": initial_contact_manner
-            }
-        },
-        True
-    )
-
-        TODO:
-            1) Create 'Regular' and 'Admin' roles.
-            2) Create Admin user based on args.username and args.password.
-            3) Create Services.
-            4) Create Contacted Via.
-    '''
+    create_user(user_datastore, username, password)
+    create_initial_service()

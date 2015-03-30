@@ -89,7 +89,7 @@ def load_config(app):
     app.config['EXCEL_DOC_DIR'] = config.get('Application', 'EXCEL_DOC_DIR')
 
     app.config['MONGO_DBNAME'] = config.get('Mongo', 'DB_NAME')
-
+    app.config['SECURITY_LOGIN_USER_TEMPLATE'] = 'index.html'
     # Config MONGODB
     app.config['MONGODB_SETTINGS'] = {
         'db': config.get('MONGODB_SETTINGS', 'MONGODB_DATABASE'),
