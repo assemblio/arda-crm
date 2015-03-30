@@ -23,7 +23,10 @@ def users():
     List users
     '''
     if current_user.has_role('Admin'):
-        users = mongo.db.users.find({})
+        if current_user.region != 'All':
+            users = mongo.db.users.find({'region': current_user.region})
+        else:
+            users = mongo.db.users.find({})
         json_obj = build_contacts_cursor(users)
         return render_template('mod_admin/users.html', results=json_obj['results'])
     else:
@@ -37,7 +40,6 @@ def create_user():
     Create user
     '''
     user_form = UserForm()
-    
     # If we do a get request, we are just requesting the page.
     if request.method == "GET":
         if current_user.has_role('Admin'):
@@ -55,7 +57,7 @@ def create_user():
             user_form = UserForm(request.form)
             user_data = user_form.data
             user = Users(
-            	region=user_data['region'],
+                region=user_data['region'],
                 last_name=user_data['last_name'],
                 first_name=user_data['first_name'],
                 email=user_data['email'],
@@ -368,13 +370,13 @@ def retrieve_all_service_types():
             }
         },
         {
-        	"$project": {
-        		"_id": 0,
-        		"_id":"$_id._id",
-        		"serviceId": "$_id.serviceId",
-				"serviceType": "$_id.serviceType",
-				"description": "$_id.description",
-        	}
+            "$project": {
+                "_id": 0,
+                "_id":"$_id._id",
+                "serviceId": "$_id.serviceId",
+                "serviceType": "$_id.serviceType",
+                "description": "$_id.description",
+            }
         }
     ])
     return json_result['result']
@@ -394,13 +396,13 @@ def retrieve_all_contact_types():
             }
         },
         {
-        	"$project": {
-        		"_id": 0,
-        		"_id":"$_id._id",
-        		"contactId": "$_id.contactId",
-				"contactType": "$_id.contactType",
-				"description": "$_id.description",
-        	}
+            "$project": {
+                "_id": 0,
+                "_id":"$_id._id",
+                "contactId": "$_id.contactId",
+                "contactType": "$_id.contactType",
+                "description": "$_id.description",
+            }
         }
     ])
     return json_result['result']

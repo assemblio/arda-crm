@@ -412,9 +412,17 @@ def edit_costumers_document(customer_id):
 
 def retrieve_all_services(region):
 
-    unwind = {
-            "$unwind": "$provided_services"
+    if region != 'All':
+        match = {
+            '$match': {'region': region}
         }
+    else:
+        match = {
+            '$match': {}
+        }
+    unwind = {
+        "$unwind": "$provided_services"
+    }
 
     group = {
         "$group": {
@@ -464,15 +472,8 @@ def retrieve_all_services(region):
             }
         }
     }
-    if region != 'All':
-        match = {
-            'region': region
-        }
-        pipeline = [unwind, match, group, project]
-    else:
-        match = {}
-        pipeline = [unwind, group, project]
 
+    pipeline = [unwind, match, group, project]
     json_obj = mongo.db.customers.aggregate(pipeline)
     return json_obj['result']
 

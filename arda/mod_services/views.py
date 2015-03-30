@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, request, url_for
-
+from flask.ext.security import login_required, current_user
 from arda import mongo, utils
 from bson import ObjectId
 from datetime import datetime
@@ -10,9 +10,15 @@ mod_services = Blueprint('services', __name__, url_prefix='/services')
 
 @mod_services.route('/<string:company_name>', methods=['GET'])
 def company_services(company_name):
-    query = {
-        'company.slug': company_name
-    }
+    if current_user.region != 'All':
+        query = {
+            'company.slug': company_name,
+            'region': current_user.region
+        }
+    else:
+        query = {
+            'company.slug': company_name
+        }
 
     services = get_services_for_given_company(query)
 
@@ -28,10 +34,17 @@ def company_services(company_name):
 @mod_services.route('/<string:company_name>/<string:customer_id>', methods=['GET'])
 def customer_services(company_name, customer_id):
 
-    query = {
-        'company.slug': company_name,
-        '_id': ObjectId(customer_id)
-    }
+    if current_user.region != 'All':
+        query = {
+            'company.slug': company_name,
+            '_id': ObjectId(customer_id),
+            'region': current_user.region
+        }
+    else:
+        query = {
+            'company.slug': company_name,
+            '_id': ObjectId(customer_id)
+        }
 
     customer = get_services_for_given_company(query)
     form = ServiceTypes()
@@ -91,39 +104,39 @@ def add_service(company_name, customer_id):
 def edit_service(company_name, customer_id, service_id):
     if request.method == "GET":
         form = ServiceTypes()
-        service_doc = mongo.db.customers.aggregate([        
-	        {
-	            "$unwind": "$provided_services"
-	        },
-	        {
-	            "$match": {'provided_services.serviceId': ObjectId(service_id)}
-	        },
-	        {
-	            "$group": {
-	                "_id": {
-	                    "service": {
-	                        'serviceId': '$provided_services.serviceId',
-	                        'contactVia': '$provided_services.contactVia',
-	                        "type": "$provided_services.provided_service.value",
-	                        "description": "$provided_services.description",
-	                        "fee": "$provided_services.service_fee",
-	                        "date": "$provided_services.service_date"
-	                    }
-	                }
-	            }
-	        },
-	        {
-	            "$project": {
-	                "_id": 0,
-	                'serviceId': '$_id.service.serviceId',
-	                'contactVia': '$_id.service.contactVia',
-	                "type": "$_id.service.type",
-	                "description": "$_id.service.description",
-	                "fee": "$_id.service.fee",
-	                "date": "$_id.service.date"
-	            }
-	        }
-	    ])
+        service_doc = mongo.db.customers.aggregate([
+            {
+                "$unwind": "$provided_services"
+            },
+            {
+                "$match": {'provided_services.serviceId': ObjectId(service_id)}
+            },
+            {
+                "$group": {
+                    "_id": {
+                        "service": {
+                            'serviceId': '$provided_services.serviceId',
+                            'contactVia': '$provided_services.contactVia',
+                            "type": "$provided_services.provided_service.value",
+                            "description": "$provided_services.description",
+                            "fee": "$provided_services.service_fee",
+                            "date": "$provided_services.service_date"
+                        }
+                    }
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    'serviceId': '$_id.service.serviceId',
+                    'contactVia': '$_id.service.contactVia',
+                    "type": "$_id.service.type",
+                    "description": "$_id.service.description",
+                    "fee": "$_id.service.fee",
+                    "date": "$_id.service.date"
+                }
+            }
+        ])
         form.provided_service.data = service_doc['result'][0]['type']
         form.description.data = service_doc['result'][0]['description']
         form.service_fee.data = service_doc['result'][0]['fee']
