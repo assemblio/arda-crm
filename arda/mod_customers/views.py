@@ -22,14 +22,14 @@ def customers():
         page = 1
     else:
         page = int(request.args.get('page'))
-    print page
     form = ServiceTypes()
     customers = mongo.db.customers.find({})
     customers_pagi = Customers.objects.all()
     pagination = customers_pagi.paginate(page=page, per_page=10)
 
     response = build_customers_cursor(customers)
-    services = retrieve_all_services()
+    region = current_user.region
+    services = retrieve_all_services(region)
     return render_template('mod_customers/customers.html', pagination=pagination, result_services=services, form=form, results=response)
 
 
@@ -382,60 +382,70 @@ def edit_costumers_document(customer_id):
     )
 
 
-def retrieve_all_services():
+def retrieve_all_services(region):
 
-    json_obj = mongo.db.customers.aggregate([
-        {
+    unwind = {
             "$unwind": "$provided_services"
-        },
-        {
-            "$group": {
-                "_id": {
-                    '_id': '$_id',
-                    "company": {
-                        "name": "$company.name",
-                        "slug": "$company.slug",
-                    },
-                    "customer": {
-                        "firstName": "$first_name.value",
-                        "lastName": "$last_name.value",
-                        "customerId": "$_id"
-                    },
-                    "service": {
-                        'serviceId': '$provided_services.serviceId',
-                        'contactVia': '$provided_services.contactVia',
-                        "type": "$provided_services.provided_service.value",
-                        "description": "$provided_services.description",
-                        "fee": "$provided_services.service_fee",
-                        "date": "$provided_services.service_date"
-                    }
-                }
-            }
-        },
-        {
-            "$project": {
-                "_id": 0,
+        }
+
+    group = {
+        "$group": {
+            "_id": {
+                '_id': '$_id',
                 "company": {
-                    "name": "$_id.company.name",
-                    "slug": "$_id.company.slug",
+                    "name": "$company.name",
+                    "slug": "$company.slug",
                 },
                 "customer": {
-                    "_id": "$_id._id",
-                    "firstName": "$_id.customer.firstName",
-                    "lastName": "$_id.customer.lastName",
-                    "customerId": "$_id.customer.customerId",
+                    "firstName": "$first_name.value",
+                    "lastName": "$last_name.value",
+                    "customerId": "$_id"
                 },
                 "service": {
-                    'serviceId': '$_id.service.serviceId',
-                    'contactVia': '$_id.service.contactVia',
-                    "type": "$_id.service.type",
-                    "description": "$_id.service.description",
-                    "fee": "$_id.service.fee",
-                    "date": "$_id.service.date"
+                    'serviceId': '$provided_services.serviceId',
+                    'contactVia': '$provided_services.contactVia',
+                    "type": "$provided_services.provided_service.value",
+                    "description": "$provided_services.description",
+                    "fee": "$provided_services.service_fee",
+                    "date": "$provided_services.service_date"
                 }
             }
         }
-    ])
+    }
+
+    project = {
+        "$project": {
+            "_id": 0,
+            "company": {
+                "name": "$_id.company.name",
+                "slug": "$_id.company.slug",
+            },
+            "customer": {
+                "_id": "$_id._id",
+                "firstName": "$_id.customer.firstName",
+                "lastName": "$_id.customer.lastName",
+                "customerId": "$_id.customer.customerId",
+            },
+            "service": {
+                'serviceId': '$_id.service.serviceId',
+                'contactVia': '$_id.service.contactVia',
+                "type": "$_id.service.type",
+                "description": "$_id.service.description",
+                "fee": "$_id.service.fee",
+                "date": "$_id.service.date"
+            }
+        }
+    }
+    if region != 'All':
+        match = {
+            'region': region
+        }
+        pipeline = [unwind, match, group, project]
+    else:
+        match = {}
+        pipeline = [unwind, group, project]
+
+    json_obj = mongo.db.customers.aggregate(pipeline)
     return json_obj['result']
 
 
@@ -494,5 +504,67 @@ def createReport():
 @login_required
 def getXls():
     fn = createReport()
+    path = os.path.join('/home/vullkan/Desktop/dev/arda-crm', fn)
+    return send_file(path, mimetype='application/vnd.ms-excel')
+
+
+def create_report_services():
+    fn = 'report-services.xlsx'
+    workbook = xlsxwriter.Workbook(fn)
+    worksheet = workbook.add_worksheet()
+    bold = workbook.add_format({'bold': True})
+    center = workbook.add_format({'align': 'center'})
+
+    worksheet.set_column('A:A', 15)
+    worksheet.set_column('B:B', 15)
+    worksheet.set_column('C:C', 15)
+    worksheet.set_column('D:D', 15)
+    worksheet.set_column('E:E', 15)
+    worksheet.set_column('F:F', 15)
+    worksheet.set_column('G:G', 15)
+    worksheet.set_column('H:H', 15)
+
+    worksheet.write('A1', 'Company', bold)
+    worksheet.write('B1', 'First Name', bold)
+    worksheet.write('C1', 'Last Name', bold)
+    worksheet.write('D1', 'Service Type', bold)
+    worksheet.write('E1', 'Contacted Via', bold)
+    worksheet.write('F1', 'Service Date', bold)
+    worksheet.write('G1', 'Service Fee', bold)
+    worksheet.write('H1', 'Service Description', bold)
+
+    region = current_user.region
+
+    response = retrieve_all_services(region)
+
+    i = 1
+    for service in response:
+        company = service['company']['name']
+        first_name = service['customer']['firstName']
+        last_name = service['customer']['lastName']
+        service_type = service['service']['type']
+        contact_via = service['service']['contactVia']
+        service_date = service['service']['date']
+        service_fee = service['service']['fee']
+        service_description = service['service']['description']
+
+        worksheet.write(i, 0, company, center)
+        worksheet.write(i, 1, first_name, center)
+        worksheet.write(i, 2, last_name, center)
+        worksheet.write(i, 3, service_type, center)
+        worksheet.write(i, 4, contact_via, center)
+        worksheet.write(i, 5, str(service_date))
+        worksheet.write(i, 6, service_fee, center)
+        worksheet.write(i, 7, service_description, center)
+        i = i + 1
+
+    workbook.close()
+    return fn
+
+
+@mod_customers.route('/getXlsServices', methods=['POST', 'GET'])
+@login_required
+def getXlsServices():
+    fn = create_report_services()
     path = os.path.join('/home/vullkan/Desktop/dev/arda-crm', fn)
     return send_file(path, mimetype='application/vnd.ms-excel')

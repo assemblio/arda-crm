@@ -249,5 +249,3 @@ def get_services_for_given_company(query):
         }
     ])
     return json_obj['result']
-
-
