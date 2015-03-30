@@ -147,15 +147,18 @@ def change_password():
         if current_user.has_role('Admin'):
             return render_template('mod_admin/users.html', message=error, results=json_obj['results'])
         else:
-           return redirect(url_for(services.company_services))
+            return redirect(url_for('admin.settings'))
 
     else:
         mongo.db.users.update(
             {'_id': ObjectId(current_user.id)},
-            {"$set": {'password': new_password}
-        })
+            {"$set": {'password': new_password}}
+        )
+        if current_user.has_role('Admin'):
+            return redirect(url_for('admin.users'))
+        else:
+            return redirect(url_for('admin.settings'))
 
-        return redirect(url_for('admin.users'))
 
 @mod_admin.route('/settings', methods=['GET', 'POST'])
 @login_required
@@ -226,7 +229,7 @@ def settings_portfolio_update():
 
         return redirect(url_for('admin.settings'))
     else:
-        return redirect(url_for('customers.customers'))
+        return redirect(url_for('home_page.panel'))
 
 
 @mod_admin.route('/settings/portfolio/delete/<item_id>', methods=['GET'])
@@ -253,7 +256,7 @@ def settings_portfolio_delete(item_id):
 
         return redirect(url_for('admin.settings'))
     else:
-        return redirect(url_for('customers.customers'))
+        return redirect(url_for('home_page.panel'))
 
 
 @mod_admin.route('/delete/service/type/<type_id>', methods=['GET'])
