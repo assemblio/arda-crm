@@ -23,7 +23,7 @@
     drawChart(title, "pieCountChart", result, false);
   }
 
-    function drawContractValueChart(title, resultJson, containerDivId, isCurrency) {
+    function drawYearLineChart(title, resultJson, containerDivId, isCurrency) {
       var data = google.visualization.arrayToDataTable([
           ['Muaji'],
           ["January"],
@@ -96,6 +96,103 @@
 
         chart.draw(data, options);
     };
+
+    //draw line chart for each day of month
+
+    function drawMonthLineChart(title, resultJson, containerDivId, isCurrency) {
+      var data = google.visualization.arrayToDataTable([
+          ['Dita'],
+          ['1'],
+          ['2'],
+          ['3'],
+          ['4'],
+          ['5'],
+          ['6'],
+          ['7'],
+          ['8'],
+          ['9'],
+          ['10'],
+          ['11'],
+          ['12'],
+          ['13'],
+          ['14'],
+          ['15'],
+          ['16'],
+          ['17'],
+          ['18'],
+          ['19'],
+          ['20'],
+          ['21'],
+          ['22'],
+          ['23'],
+          ['24'],
+          ['25'],
+          ['26'],
+          ['27'],
+          ['28'],
+          ['29'],
+          ['30'],
+          ['31']
+        ]);
+
+        var currentServiceType = "";
+        var columnIndex = 0;
+        var columnLenght = 0;
+
+        for (var key in resultJson ){
+          if (resultJson[key].serviceType != currentServiceType){
+            data.addColumn('number', resultJson[key].serviceType, resultJson[key].serviceType);
+            currentServiceType = resultJson[key].serviceType;
+            columnLenght = columnLenght + 1;
+            columnIndex = columnIndex + 1;
+          }
+
+          if( containerDivId == "lineValueChartMonth"){
+            console.log(resultJson[key].day);
+            data.setCell(resultJson[key].day-1, columnIndex, resultJson[key].sumOfService);
+          } else {
+            data.setCell(resultJson[key].day-1, columnIndex, resultJson[key].countServices);
+          }
+        }
+        
+        $('input[type=checkbox]').each(function() {
+          if (checkRadioButtons($(this)) == null) {
+            var id = data.getColumnIndex($(this).val());
+            if(id > 0){
+              columnLenght = columnLenght - 1;
+              data.removeColumn(id);
+            }
+          }
+        });
+
+
+        if(isCurrency == true){
+          // Formater for column cells to display numbers as currency
+          var formatter = new google.visualization.NumberFormat({
+                  fractionDigits: 2,
+                  prefix: '€ '
+          });
+
+          for(var i=1; i <= columnLenght; i++){
+            formatter.format(data, i);
+          }
+        }
+        var options = {
+          'title': title,
+          'vAxis': {
+            'title': "Value"
+          },
+          'hAxis': {
+            'title': "Months"
+          }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById(containerDivId));
+
+        chart.draw(data, options);
+    };
+
+
   //draw pie chart 
   function drawChart(title, containerId, results, isCurrency) {
         var dataTable = new google.visualization.DataTable()
@@ -140,6 +237,7 @@
 
   //load document 
   $(document).ready(function() {
+    //drawContractValueChart();
     $('input[type=checkbox]').each(function(){
         $(this).prop("checked", true);
     })
@@ -165,6 +263,7 @@
       var customerFirstName = $('#customer-first-name').val();
       var customerLastName = $('#customer-last-name').val();
       var region = $('#region-select').val();
+      var month = $('#month-select').val();
        
       var date = new Date();
       var date_now =  date.getDate() + "-" + (date.getMonth() + 1) + "-" + (date.getYear() + 1900);
@@ -194,24 +293,51 @@
         $('#pieCountChart').css('display', "block");
         $('#lineValueChart').css('display', "none");
         $('#lineCountChart').css('display', "none");
+        $('#lineValueChartMonth').css('display', "none");
+        $('#lineCountChartMonth').css('display', "none");
       } else {
-        var year = $('#year').val();
-        var url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+        if(month == "All"){
+          var year = $('#year').val();
+          var url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
 
 
-        if (year == ""){
-          url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=2015&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+          if (year == ""){
+            url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=2015&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+          }
+          
+          $.get(url, function(resultJson){
+            drawYearLineChart("Incomes based on services fee", resultJson, "lineValueChart", true);
+            drawYearLineChart("Number of all provided services based on service type", resultJson, "lineCountChart", false);
+          });
+
+          $('#pieValueChart').css('display', "none");
+          $('#pieCountChart').css('display', "none");
+          $('#lineValueChart').css('display', "block");
+          $('#lineCountChart').css('display', "block");
+          $('#lineValueChartMonth').css('display', "none");
+          $('#lineCountChartMonth').css('display', "none");
+        } else {
+          var year = $('#year').val();
+          var url = "{{ url_for('api.services_month_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+
+
+          if (year == ""){
+            url = "{{ url_for('api.services_month_linechart') }}" + "?region=" + region + "&month="+ month +"&year=2015&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+          }
+
+          console.log(url);
+          $.get(url, function(resultJson){
+            drawMonthLineChart("Incomes based on services fee", resultJson, "lineValueChartMonth", true);
+            drawMonthLineChart("Number of all provided services based on service type", resultJson, "lineCountChartMonth", false);
+          });
+
+          $('#pieValueChart').css('display', "none");
+          $('#pieCountChart').css('display', "none");
+          $('#lineValueChart').css('display', "none");
+          $('#lineCountChart').css('display', "none");
+          $('#lineValueChartMonth').css('display', "block");
+          $('#lineCountChartMonth').css('display', "block");
         }
-        
-        $.get(url, function(resultJson){
-          drawContractValueChart("Incomes based on services fee", resultJson, "lineValueChart", true);
-          drawContractValueChart("Number of all provided services based on service type", resultJson, "lineCountChart", false);
-        });
-
-        $('#pieValueChart').css('display', "none");
-        $('#pieCountChart').css('display', "none");
-        $('#lineValueChart').css('display', "block");
-        $('#lineCountChart').css('display', "block");
       }
     });
     
@@ -385,6 +511,21 @@ function checkCheckBoxes(id){
     </li>
     <li class="cbp-spmenu-vertical-item-child line-chart-dates" id="line-chart-dates" style="padding-right:30px;padding-left: 30px;display:none;">
         <input type="text" id="year" name="year" class="form-control date-picker-year" placeholder="Year">
+        <select id="month-select" class="form-control" data-toggle='tooltip' data-placement='bottom' title='Month'>
+          <option value="All">All</option>
+          <option value="1">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
       <br>
     </li>
     <li style="border-bottom-width:0px;padding-right:30px;padding-left:30px;">
@@ -399,6 +540,8 @@ function checkCheckBoxes(id){
     <div id="pieCountChart" style="width: 750px; height: 400px;"></div>
     <div id="lineValueChart" style="display:none; margin: -50px 0 0 50px; width: 950px; height: 650px;"></div>
     <div id="lineCountChart" style="display:none; margin: -50px 0 0 50px; width: 950px; height: 650px;"></div>
+    <div id="lineValueChartMonth" style="display:none; margin: -50px 0 0 50px; width: 950px; height: 650px;"></div>
+    <div id="lineCountChartMonth" style="display:none; margin: -50px 0 0 50px; width: 950px; height: 650px;"></div>
   </div>
 
 </section>

@@ -389,3 +389,98 @@ def search_service_analytics_linechart():
     )
 
     return resp
+
+@mod_api.route('/services-month-linechart', methods=['GET'])
+@login_required
+def services_month_linechart():
+    if len(request.args) > 0:
+        region = request.args.get('region')
+        f_name = request.args.get('customerFname')
+        l_name = request.args.get('customerLname')
+        company = request.args.get('company')
+        year = request.args.get('year')
+        month = request.args.get('month')
+
+    match_fields = {}
+
+    if region:
+        if region != "All":
+            match_fields['region'] = region
+
+    if company:
+        match_fields['company.slug'] = slugify(company)
+
+    if f_name:
+        match_fields['first_name.slug'] = slugify(f_name)
+
+    if l_name:
+        match_fields['last_name.slug'] = slugify(l_name)
+
+    if month:
+        start_date = "01-%s-%s" % (month, year)
+        months_with_31 = [1, 3, 5, 7, 8, 10, 12]
+        if month == 2:
+            end_date = "28-%s-%s" % (month, year)
+        elif month in months_with_31:
+            end_date = "31-%s-%s" % (month, year)
+        else:
+            end_date = "30-%s-%s" % (month, year)
+
+
+        match_fields['provided_services.service_date'] = {
+            '$gte': datetime.strptime(start_date, "%d-%m-%Y"),
+            '$lte': datetime.strptime(end_date, "%d-%m-%Y")
+        }
+
+    match = {
+        "$match": match_fields
+    }
+
+    unwind = {
+        "$unwind": "$provided_services"
+    }
+
+    group = {
+        "$group": {
+            '_id': {
+                'serviceType': "$provided_services.provided_service.value",
+                'day': {
+                    '$dayOfMonth': "$provided_services.service_date"
+                }
+            },
+            "sumOfService": {
+                "$sum": "$provided_services.service_fee"
+            },
+            "countServices": {
+                "$sum": 1
+            }
+        },
+    }
+
+    project = {
+        "$project": {
+            "serviceType": "$_id.serviceType",
+            "day": "$_id.day",
+            "sumOfService": "$sumOfService",
+            "countServices": "$countServices",
+            "_id": 0
+        }
+    }
+
+    sort = {
+        '$sort':
+            SON([
+                ('serviceType', 1),
+                ('day', 1)])
+    }
+
+    pipeline = [unwind, match, group, project, sort]
+
+    json_obj = mongo.db.customers.aggregate(pipeline)
+
+    resp = Response(
+        response=json_util.dumps(json_obj['result']),
+        mimetype='application/json'
+    )
+
+    return resp
