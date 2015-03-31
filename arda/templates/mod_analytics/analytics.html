@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
-{% set active_page = url_for('analytics.analytics') %}
 {% block body %}
 
 <link rel="stylesheet" href="{{ url_for('static', filename='analytics-controls/analytics-controls.css') }}" />
 <script src="{{ url_for('static', filename='analytics-controls/analytics-controls.js') }}"></script>
 
 <script type="text/javascript">
+
   var service_result = {{results|tojson}} 
 
   google.load("visualization", "1", {packages:["corechart"]});
@@ -209,7 +209,6 @@
 
   //load document 
   $(document).ready(function() {
-    //drawContractValueChart();
     $('input[type=checkbox]').each(function(){
         $(this).prop("checked", true);
     })
@@ -299,7 +298,7 @@
           else {
             url = "{{ url_for('api.services_month_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&month="+ month + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
           }
-          console.log(url);
+
           $.get(url, function(resultJson){
             var monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"];
             if (year == ""){

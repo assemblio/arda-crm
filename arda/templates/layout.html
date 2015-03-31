@@ -64,7 +64,6 @@
 </head>
 
 <body id="page-top" class="index cbp-spmenu-push">
-
         <nav class="navbar navbar-default navbar-fixed-top navbar-shrink" role="navigation">
           <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -103,7 +102,7 @@
                 </form>
                 
                 {% else %}
-                <ul class="nav navbar-nav navbar-left">
+                <ul id="menu-items" class="nav navbar-nav navbar-left">
                     <li>
                         <a href="{{ url_for('customers.customers') }}">Customers</a>
                     </li>
