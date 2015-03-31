@@ -85,8 +85,6 @@
                 {% endif %}
             </div>
 
-
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top:50px;">
                 <ul class="nav navbar-nav navbar-right">
@@ -105,7 +103,23 @@
                 </form>
                 
                 {% else %}
-                <ul class="nav navbar-nav navbar-right" style="margin-top:-18px;">
+                <ul class="nav navbar-nav navbar-left">
+                    <li>
+                        <a href="{{ url_for('customers.customers') }}">Customers</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('analytics.analytics') }}">Analytics</a>
+                    </li>
+                    {% if current_user.has_role('Admin') %}
+                        <li>
+                            <a href="{{ url_for('admin.users') }}">Users</a>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <a href="{{ url_for('admin.settings') }}">Settings</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
                     <li><a href="{{url_for('auth.logout')}}">Logout</a></li>
                 </ul>
                 {% endif %}
