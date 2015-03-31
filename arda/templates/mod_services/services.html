@@ -301,7 +301,7 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
         <br>
         <div>
           <a download="Services.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'services', 'Services');">Export Current View</a>
-          <a download="All Services.xls" href="{{url_for('customers.export_services')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
+          <a download="All Services.xls" href="{{url_for('services.export_services')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
         </div>
         <br>
         
