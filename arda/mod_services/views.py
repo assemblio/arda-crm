@@ -5,7 +5,28 @@ from bson import ObjectId
 from datetime import datetime
 from slugify import slugify
 from forms.servicetypes import ServiceTypes
+from flask.ext.mongoengine import Pagination
+
 mod_services = Blueprint('services', __name__, url_prefix='/services')
+
+
+@mod_services.route('', methods=['GET'])
+def services():
+    if not request.args.get('faqe'):
+        faqe = 1
+    else:
+        faqe = int(request.args.get('faqe'))
+    form = ServiceTypes()
+    region = current_user.region
+    services = retrieve_all_services(region)
+
+    pagination_services = Pagination(services, page=faqe, per_page=10)
+    form = ServiceTypes()
+    return render_template(
+        'mod_services/services.html',
+        pagination_services=pagination_services,
+        form=form
+    )
 
 
 @mod_services.route('/<string:company_name>', methods=['GET'])
@@ -266,4 +287,72 @@ def get_services_for_given_company(query):
             }
         }
     ])
+    return json_obj['result']
+
+
+def retrieve_all_services(region):
+
+    if region != 'All':
+        match = {
+            '$match': {'region': region}
+        }
+    else:
+        match = {
+            '$match': {}
+        }
+    unwind = {
+        "$unwind": "$provided_services"
+    }
+
+    group = {
+        "$group": {
+            "_id": {
+                '_id': '$_id',
+                "company": {
+                    "name": "$company.name",
+                    "slug": "$company.slug",
+                },
+                "customer": {
+                    "firstName": "$first_name.value",
+                    "lastName": "$last_name.value",
+                    "customerId": "$_id"
+                },
+                "service": {
+                    'serviceId': '$provided_services.serviceId',
+                    'contactVia': '$provided_services.contactVia',
+                    "type": "$provided_services.provided_service.value",
+                    "description": "$provided_services.description",
+                    "fee": "$provided_services.service_fee",
+                    "date": "$provided_services.service_date"
+                }
+            }
+        }
+    }
+
+    project = {
+        "$project": {
+            "_id": 0,
+            "company": {
+                "name": "$_id.company.name",
+                "slug": "$_id.company.slug",
+            },
+            "customer": {
+                "_id": "$_id._id",
+                "firstName": "$_id.customer.firstName",
+                "lastName": "$_id.customer.lastName",
+                "customerId": "$_id.customer.customerId",
+            },
+            "service": {
+                'serviceId': '$_id.service.serviceId',
+                'contactVia': '$_id.service.contactVia',
+                "type": "$_id.service.type",
+                "description": "$_id.service.description",
+                "fee": "$_id.service.fee",
+                "date": "$_id.service.date"
+            }
+        }
+    }
+
+    pipeline = [unwind, match, group, project]
+    json_obj = mongo.db.customers.aggregate(pipeline)
     return json_obj['result']
