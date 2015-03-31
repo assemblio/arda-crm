@@ -84,7 +84,7 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
   	</div>
     {% endif %}
 
-    <div class="panel-heading">
+    <div>
       {% if company_name is defined and result_services|length > 0 %}
         <p>All services provided to Customer: <strong>{{result_services[0]['company']['name']}}</strong></p>
       {% endif %}
@@ -114,12 +114,9 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
     {% endif %}
         <br><br>
     
-    <div class="panel panel-info ">
+    <div class="panel panel-info">
       <!-- Default panel contents -->
       <div class="table-responsive">
-        <!-- Table -->
-        
-
         <table class="table table-striped table-condensed table-result">
           <thead >
             <tr class="info">
@@ -138,6 +135,7 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
           <tbody id="customers-list">
             {% for service in result %}
             <tr align="center">
+              <td>{{service['company']['name']}}</td>
               <td>{{service['customer']['firstName']}}</td>
               <td>{{service['customer']['lastName']}}</td>
               <td>{{service['service']['type']}}</td>
@@ -177,6 +175,7 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
           <tbody id="customers-list">
             {% for service in result_services %}
             <tr align="center">
+              <td>{{service['company']['name']}}</td>
               <td>{{service['customer']['firstName']}}</td>
               <td>{{service['customer']['lastName']}}</td>
               <td>{{service['service']['type']}}</td>
@@ -274,7 +273,6 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
       </div>
       {% endif %}
     </div>
-		
 	</div>
 </section>
 
