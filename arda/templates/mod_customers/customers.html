@@ -139,6 +139,7 @@
 
     //search customer
     $('#searchCustomer').click(function(){
+      $('#pagination').css("display", "none");
       var customer_type = $('#customer-type-select').val();
       var name = $('#firstName').val();
       var l_name = $('#lastName').val();
@@ -281,7 +282,7 @@
           <a download="Customers.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'results-table', 'Customers');">Export Current View</a>
           <a download="All Customers.xls" href="{{url_for('customers.export_customers')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
           <br>
-          <div class="pagination">
+          <div id="pagination" class="pagination">
             <ul class="pagination">
                 <li><a href="#" class="fa fa-angle-left"></a></li>
                 {% for page in pagination.iter_pages() %}

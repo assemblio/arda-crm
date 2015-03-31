@@ -62,6 +62,7 @@
     
     //Get result to populate service table
     $('#searchService').click(function(){
+      $('#pagination').css("display", "none");
     var service_type = $('#provided_service').val();
     var contactVia = $('#contact_via').val();
     var from_date = $('#from').val();
@@ -254,7 +255,7 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
               
           </tbody>
         </table>
-        <div class="pagination">
+        <div id="pagination" class="pagination">
             <ul class="pagination">
                 <li><a href="#" class="fa fa-angle-left"></a></li>
                 {% for page in pagination_services.iter_pages() %}
