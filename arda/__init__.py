@@ -6,7 +6,7 @@ from logging.handlers import RotatingFileHandler
 from utils.utils import Utils
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.security import Security, MongoEngineUserDatastore
-from flask.ext.mongoengine import MongoEngine, DoesNotExist
+from flask.ext.mongoengine import MongoEngine
 from flask.ext.login import LoginManager
 
 
@@ -43,10 +43,6 @@ def create_app():
 
     # Instantiate MongoEngine instance
     db.init_app(app)
-
-    # Create role "User" and "Admin"
-    # Create the "admin" user with "admin" password
-    create_user_roles(user_datastore)
 
     #Import blueprint modules
     from arda.mod_auth.views import mod_auth
@@ -132,40 +128,3 @@ def configure_logging(app):
     # First log informs where we are logging to.
     # Bit silly but serves  as a confirmation that logging works.
     app.logger.info('Logging to: %s', log_path)
-
-
-def create_user_roles(user_datastore):
-    '''
-    Create the roles using the flask-security plugin.
-    '''
-    # Create User role
-    try:
-        Role.objects.get(name="Regular")
-    except DoesNotExist:
-        # Create the user role
-        user_datastore.create_role(
-            name='Regular',
-            description='Regular user of the CRM.'
-        )
-    try:
-        Role.objects.get(name="Admin")
-    # Create Admin Role and admin user
-    except DoesNotExist:
-        # Create the admin role
-        role = user_datastore.create_role(
-            name='Admin',
-            description='Admin of the CRM.'
-        )
-        try:
-            Users.objects.get(email="admin@admin.com")
-        # Create the admin user
-        except DoesNotExist:
-            user = user_datastore.create_user(
-                email="admin@admin.com",
-                password="$2a$10$BQQey1ITMshl1f2PdKgek.vkRv4i/mTJ0ISR/OuaeAAAj3gJ/3OkC",
-                first_name="Filan",
-                last_name="Fisteku",
-                role="Admin",
-                region="All",
-            )
-            user_datastore.add_role_to_user(user, role)

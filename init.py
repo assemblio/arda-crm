@@ -52,54 +52,62 @@ def create_initial_service():
 
     class Servicetypes(db.Document):
         id = db.StringField()
+        region = db.StringField()
         serviceTypes = db.ListField()
         contactVia = db.ListField()
 
-
     Servicetypes(
-        id = ObjectId('5509cb3b484d3f17a2409cea'),
-        serviceTypes=[{
-            "type": {
-                "name": "Phone Call",
-                "slug": "phone-call"
+        id=ObjectId('5509cb3b484d3f17a2409cea'),
+        serviceTypes=[
+            {
+                "type": {
+                    "name": "Phone Call",
+                    "slug": "phone-call"
+                },
+                'region': 'West',
+                'serviceId': ObjectId(),
+                "description": "Phone Call Service"
             },
-            'serviceId': ObjectId(),
-            "description": "Phone Call Service"
-        },
-        {
-            "type": {
-                "name": "E-mail",
-                "slug": "e-mail"
+            {
+                "type": {
+                    "name": "E-mail",
+                    "slug": "e-mail"
+                },
+                'region': 'West',
+                'serviceId': ObjectId(),
+                "description": "E-mail Service"
             },
-            'serviceId': ObjectId(),
-            "description": "E-mail Service"
-        },
-        {
-            "type": {
-                "name": "Face-to-Face meeting",
-                "slug": "face-to-face-meeting"
+            {
+                "type": {
+                    "name": "Face-to-Face meeting",
+                    "slug": "face-to-face-meeting"
+                },
+                'region': 'West',
+                'serviceId': ObjectId(),
+                "description": "Face-to-Face Service"
+            }
+        ],
+        contactVia=[
+            {
+                "type": {
+                    "name": "1",
+                    "slug": "1"
+                },
+                'region': 'West',
+                'contactId': ObjectId(),
+                "description": "this one contact manner"
             },
-            'serviceId': ObjectId(),
-            "description": "Face-to-Face Service"
-        }],
-        contactVia = [{
-            "type": {
-                "name": "1",
-                "slug": "1"
-            },
-            'contactId': ObjectId(),
-            "description": "this one contact manner"
-        },
-        {
-            "type": {
-                "name": "2",
-                "slug": "2"
-            },
-            'contactId': ObjectId(),
-            "description": "this another contact manner"
-        }]
-
-        ).save()
+            {
+                "type": {
+                    "name": "2",
+                    "slug": "2"
+                },
+                'region': 'West',
+                'contactId': ObjectId(),
+                "description": "this another contact manner"
+            }
+        ]
+    ).save()
 
 # Run the app
 if __name__ == '__main__':

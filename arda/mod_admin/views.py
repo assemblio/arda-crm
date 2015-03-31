@@ -174,9 +174,19 @@ def settings():
         settings_doc = mongo.db.settings.find_one({'_id': 0})
         portfolio = []
         #retireve types in order to manage in settings page
+        if current_user.region != 'All':
+            query = {
+                'serviceTypes.region': current_user.region
+            }
+            query_contact = {
+                'contactVia.region': current_user.region
+            }
+        else:
+            query = {}
+            query_contact = {}
 
-        service_type = retrieve_all_service_types()
-        contact_via_types = retrieve_all_contact_types()
+        service_type = retrieve_all_service_types(query)
+        contact_via_types = retrieve_all_contact_types(query_contact)
 
         if settings_doc is None:
             settings_doc = utils.get_default_settings()
@@ -197,8 +207,6 @@ def settings():
         if current_user.has_role('Admin'):
             settings_form = SettingsForm(request.form)
             settings_data = settings_form.data
-            service_type = retrieve_all_service_types()
-            contact_via_types = retrieve_all_contact_types()
             mongo.db.settings.update({'_id': 0}, {'$set': settings_data}, True)
 
             # Update session with new settings data.
@@ -291,6 +299,13 @@ def add_service_type(type_id):
         },
         "description": service_description
     }
+
+    if current_user.region != 'All':
+        new_type['region'] = current_user.region
+    else:
+        region = request.form['region']
+        new_type['region'] = region
+
     mongo.db.servicetypes.update(
         {'_id': ObjectId(type_id)},
         {
@@ -308,6 +323,7 @@ def add_contact_type(type_id):
 
     contact_type = request.form['contactVia']
     description = request.form['contactDescription']
+
     new_type = {
         "type": {
             "name": contact_type,
@@ -316,6 +332,13 @@ def add_contact_type(type_id):
         'contactId': ObjectId(utils.get_doc_id()),
         "description": description
     }
+
+    if current_user.region != 'All':
+        new_type['region'] = current_user.region
+    else:
+        region = request.form['region']
+        new_type['region'] = region
+
     mongo.db.servicetypes.update(
         {'_id': ObjectId(type_id)},
         {
@@ -356,9 +379,10 @@ def build_contacts_cursor(cursor):
     return response
 
 
-def retrieve_all_service_types():
+def retrieve_all_service_types(query):
     json_result = mongo.db.servicetypes.aggregate([
         {"$unwind": "$serviceTypes"},
+        {'$match': query},
         {
             "$group": {
                 "_id": {
@@ -382,9 +406,10 @@ def retrieve_all_service_types():
     return json_result['result']
 
 
-def retrieve_all_contact_types():
+def retrieve_all_contact_types(query):
     json_result = mongo.db.servicetypes.aggregate([
         {"$unwind": "$contactVia"},
+        {'$match': query},
         {
             "$group": {
                 "_id": {

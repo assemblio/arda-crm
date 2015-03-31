@@ -192,17 +192,28 @@
 						<div class="form-group">
 							<p align="center">If you want to add Service Provided Types fill the fields below:</p>
 							<form class="form-horizontal" method="post" action="{{url_for('admin.add_service_type', type_id=type_id)}}">
-							    <div class="col-xs-2">
+								{% if current_user.region == "All" %}
+								<div class="col-xs-2">
+								<select id="region" name='region' class="form-control">
+							        <option value="West">West</option>
+							        <option value="South">South</option>
+							        <option value="North">North</option>
+							        <option value="East">East</option>
+							        <option value="Center">Center</option>
+							    </select>
+								</div>
+								{% endif %}
+							    <div class="col-xs-1">
 							        <label for="serviceType" class="control-label pull-right">Service Type:</label>
 							    </div>
 							    <div class="col-xs-3">
 							        <input id="serviceType" name="serviceType" class="form-control" type="text">
 							    </div>
-							    <div class="col-xs-2">
-							        <label for="serviceDescription" class="control-label pull-right">Service Description:</label>
+							    <div class="col-xs-1">
+							        <label for="serviceDescription" class="control-label pull-right">Description:</label>
 							    </div>
 							    <div class="col-xs-3">
-							        <input id="serviceDescription" name="serviceDescription" class="form-control" type="text">
+							        <input type="textarea" id="serviceDescription" name="serviceDescription" class="form-control">
 							    </div>
 							    <div class="form-group col-xs-2">
 						            <button type="submit" id="addType" class="col-xs-offset-1 btn btn-info">Add Type</button>							        
@@ -252,13 +263,24 @@
 						<div class="form-group">
 							<p align="center">Manage types of contacting manners</p>
 							<form class="form-horizontal" method="post" action="{{url_for('admin.add_contact_type', type_id=type_id)}}">
-							    <div class="col-xs-2">
-							        <label for="contactVia" class="control-label pull-right">Contact Via:</label>
+								{% if current_user.region == "All" %}
+								<div class="col-xs-2">
+								<select id="region" name='region' class="form-control">
+							        <option value="West">West</option>
+							        <option value="South">South</option>
+							        <option value="North">North</option>
+							        <option value="East">East</option>
+							        <option value="Center">Center</option>
+							    </select>
+								</div>
+								{% endif %}
+							    <div class="col-xs-1">
+							        <label for="contactVia" class="control-label pull-right">Contacted Via:</label>
 							    </div>
 							    <div class="col-xs-3">
 							        <input id="contactVia" name="contactVia" class="form-control" type="text">
 							    </div>
-							    <div class="col-xs-2">
+							    <div class="col-xs-1">
 							        <label for="contactDescription" class="control-label pull-right">Description:</label>
 							    </div>
 							    <div class="col-xs-3">
