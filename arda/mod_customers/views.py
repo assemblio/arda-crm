@@ -461,75 +461,12 @@ def export_customers():
     return send_file(path, mimetype='application/vnd.ms-excel')
 
 
-def create_report_services():
-    ts = get_timestamp()
-    fn =  '%s/All Services (As of %s).xlsx' % (current_app.config['EXCEL_DOC_DIR'], ts)
-
-    workbook = xlsxwriter.Workbook(fn)
-    worksheet = workbook.add_worksheet()
-    bold = workbook.add_format({'bold': True})
-    center = workbook.add_format({'align': 'center'})
-
-    worksheet.set_column('A:A', 15)
-    worksheet.set_column('B:B', 15)
-    worksheet.set_column('C:C', 15)
-    worksheet.set_column('D:D', 15)
-    worksheet.set_column('E:E', 15)
-    worksheet.set_column('F:F', 15)
-    worksheet.set_column('G:G', 15)
-    worksheet.set_column('H:H', 15)
-
-    worksheet.write('A1', 'Company', bold)
-    worksheet.write('B1', 'First Name', bold)
-    worksheet.write('C1', 'Last Name', bold)
-    worksheet.write('D1', 'Service Type', bold)
-    worksheet.write('E1', 'Contacted Via', bold)
-    worksheet.write('F1', 'Service Date', bold)
-    worksheet.write('G1', 'Service Fee', bold)
-    worksheet.write('H1', 'Service Description', bold)
-
-    region = current_user.region
-
-    response = retrieve_all_services(region)
-
-    i = 1
-    for service in response:
-        company = service['company']['name']
-        first_name = service['customer']['firstName']
-        last_name = service['customer']['lastName']
-        service_type = service['service']['type']
-        contact_via = service['service']['contactVia']
-        service_date = service['service']['date']
-        service_fee = service['service']['fee']
-        service_description = service['service']['description']
-
-        worksheet.write(i, 0, company, center)
-        worksheet.write(i, 1, first_name, center)
-        worksheet.write(i, 2, last_name, center)
-        worksheet.write(i, 3, service_type, center)
-        worksheet.write(i, 4, contact_via, center)
-        worksheet.write(i, 5, str(service_date))
-        worksheet.write(i, 6, service_fee, center)
-        worksheet.write(i, 7, service_description, center)
-        i = i + 1
-
-    workbook.close()
-    return fn
-
-
 def get_timestamp():
     ts = time.time()
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
     return timestamp
 
-
-@mod_customers.route('/export-services', methods=['POST', 'GET'])
-@login_required
-def export_services():
-    fn = create_report_services()
-    path = os.path.join(current_app.config['EXCEL_DOC_DIR'], fn)
-    return send_file(path, mimetype='application/vnd.ms-excel')
 
 
 @mod_customers.route('/reports')
