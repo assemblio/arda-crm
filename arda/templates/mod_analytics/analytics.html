@@ -317,13 +317,16 @@
           $('#lineCountChartMonth').css('display', "none");
         } else {
           var year = $('#year').val();
-          var url = "{{ url_for('api.services_month_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
-
+          
+          var url = "";
 
           if (year == ""){
             url = "{{ url_for('api.services_month_linechart') }}" + "?region=" + region + "&month="+ month +"&year=2015&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
           }
-
+          else {
+            url = "{{ url_for('api.services_month_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&month="+ month + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+          }
+          console.log(url);
           $.get(url, function(resultJson){
             var monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"];
             if (year == ""){
@@ -540,8 +543,10 @@ function checkCheckBoxes(id){
 <div id="container" align="center" style="padding-left:150px;padding-top:100px;">
   <div id="pieCountChart" style="width: 750px; height: 400px;"></div>
   <div id="pieValueChart" style="width: 750px; height: 400px;"></div>
-  <div id="lineCountChart" style="display:none; width: 950px; height: 650px;"></div>
   <div id="lineValueChart" style="display:none; width: 950px; height: 650px;"></div> 
+  <div id="lineCountChart" style="display:none; width: 950px; height: 650px;"></div>
+  <div id="lineValueChartMonth" style="display:none; width: 950px; height: 650px;"></div> 
+  <div id="lineCountChartMonth" style="display:none; width: 950px; height: 650px;"></div>
 </div>
 
     
