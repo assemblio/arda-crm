@@ -535,4 +535,5 @@ def export_services():
 @mod_customers.route('/reports')
 @login_required
 def reports():
-    return render_template("mod_exports/exports.html")
+    form = ServiceTypes()
+    return render_template("mod_exports/exports.html", form=form)
