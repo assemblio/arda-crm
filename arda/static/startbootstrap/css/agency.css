@@ -220,9 +220,9 @@ fieldset[disabled] .btn-xl.active {
 }
 
 .navbar-default .navbar-nav>.active>a {
-    border-radius: 0;
+    outline: 0;
     color: #fff;
-    background-color: #fed136;
+    background-color: #00427a;
 }
 
 .navbar-default .navbar-nav>.active>a:hover,
@@ -249,7 +249,9 @@ fieldset[disabled] .btn-xl.active {
     }
 
     .navbar-default .navbar-nav>.active>a {
-        border-radius: 3px;
+        outline: 0;
+        color: #fff;
+        background-color: #00427a;
     }
 
     .navbar-default.navbar-shrink {

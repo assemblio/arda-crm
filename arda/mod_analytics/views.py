@@ -1,10 +1,12 @@
 from flask import Blueprint, url_for, request, redirect, render_template
 from arda.mod_services.forms.servicetypes import ServiceTypes
 from arda import mongo
+from flask.ext.security import login_required
 mod_analytics = Blueprint('analytics', __name__, url_prefix='/analytics')
 
 
 @mod_analytics.route('', methods=['GET'])
+@login_required
 def analytics():
     form = ServiceTypes()
     services_incomes = provided_services_incomes()
