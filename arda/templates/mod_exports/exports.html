@@ -1,0 +1,6 @@
+{% extends 'layout.html' %}
+{% block body %}
+<script type="text/javascript">
+	$('nav a[href^="/' + location.pathname.split("/")[1] + '"]').addClass('active');
+</script>
+{% endblock %}

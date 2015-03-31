@@ -523,9 +523,16 @@ def get_timestamp():
 
     return timestamp
 
+
 @mod_customers.route('/export-services', methods=['POST', 'GET'])
 @login_required
 def export_services():
     fn = create_report_services()
     path = os.path.join(current_app.config['EXCEL_DOC_DIR'], fn)
     return send_file(path, mimetype='application/vnd.ms-excel')
+
+
+@mod_customers.route('/reports')
+@login_required
+def reports():
+    return render_template("mod_exports/exports.html")
