@@ -115,7 +115,7 @@ def add_service(company_name, customer_id):
                 'value': service_form.provided_service.data,
                 'slug': slugify(service_form.provided_service.data),
             },
-            'service_date': datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
+            'service_date': datetime.datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
             'description': service_form.description.data,
             'contactVia': service_form.contact_via.data,
             'service_fee': float(service_form.service_fee.data)
@@ -134,6 +134,7 @@ def add_service(company_name, customer_id):
                 'customers.customers',
             )
         )
+
 
 @mod_services.route('/edit/<company_name>/<customer_id>/<string:service_id>', methods=['GET', 'POST'])
 @login_required
@@ -176,7 +177,7 @@ def edit_service(company_name, customer_id, service_id):
         form.provided_service.data = service_doc['result'][0]['type']
         form.description.data = service_doc['result'][0]['description']
         form.service_fee.data = service_doc['result'][0]['fee']
-        form.service_date.data = datetime.strftime(service_doc['result'][0]['date'], '%d/%m/%Y')
+        form.service_date.data = datetime.datetime.strftime(service_doc['result'][0]['date'], '%d/%m/%Y')
         form.contact_via.data = service_doc['result'][0]['contactVia']
         text = "Edit Service"
         action = url_for('services.edit_service', company_name=company_name, customer_id=customer_id, service_id=service_id)
@@ -205,7 +206,7 @@ def edit_service(company_name, customer_id, service_id):
                             'value': service_form.provided_service.data,
                             'slug': slugify(service_form.provided_service.data),
                         },
-                        'service_date': datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
+                        'service_date': datetime.datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
                         'description': service_form.description.data,
                         'contactVia': service_form.contact_via.data,
                         'service_fee': float(service_form.service_fee.data)
