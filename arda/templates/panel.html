@@ -8,12 +8,12 @@
 		<div class="row">
 			<div class="col-lg-12 text-center">
 				<p><strong>Welcome</strong>, {{ current_user.first_name }}</p>
-        		<hr>
+        		<hr class="style-eight style-eight-later">
 				<h3 class="section-subheading text-muted">Where do you want to go from here?</h3>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-3 col-sm-6 portfolio-item" align="center">
+		<div class="row col-lg-12">
+			<div class="col-md-4 col-sm-6 portfolio-item" align="center">
 				<a href="{{url_for('customers.customers')}}" class="portfolio-link">
 				    
 				    <img src="{{ url_for('static', filename='startbootstrap/img/shares.png') }}" width="230" height="160">
@@ -22,7 +22,7 @@
 					</div>
 				</a>
 			</div>
-			<div class="col-md-3 col-sm-6 portfolio-item" align="center" align="center">
+			<div class="col-md-4 col-sm-6 portfolio-item" align="center" align="center">
 				<a href="{{url_for('analytics.analytics')}}" class="portfolio-link">
 			    
 			    	<img src="{{ url_for('static', filename='startbootstrap/img/businessman.png') }}" width="230" height="160">
@@ -31,7 +31,7 @@
 					</div>
 				</a>
 			</div>
-			<div class="col-md-3 col-sm-6 portfolio-item" align="center">
+			<div class="col-md-4 col-sm-6 portfolio-item" align="center">
 				<a href="{{url_for('admin.settings')}}" class="portfolio-link">
 			    
 			    	<img src="{{ url_for('static', filename='startbootstrap/img/gearturning.png') }}" width="160" height="160">
@@ -40,16 +40,28 @@
 					</div>
 				</a>
 			</div>
-
+			
+			
+		</div>
+		<div class="row col-lg-12">
+			<div class="col-md-4 col-sm-6 portfolio-item" align="center" style="margin-top:28px;">
+				<a href="{{url_for('customers.reports')}}" class="portfolio-link">
+			    
+			    	<img src="{{ url_for('static', filename='startbootstrap/img/excelReports.png') }}" width="110" height="110">
+			    	<div class="portfolio-caption" style="margin-top:20px;">
+				    	<p class="text-muted">Reports</p>
+					</div>
+				</a>
+			</div>
 			{% if current_user.has_role('Admin') %}
-			<div class="col-md-3 col-sm-6 portfolio-item" align="center">
+			<div class="col-md-4 col-sm-6 portfolio-item" align="center">
 				<a href="{{url_for('admin.users')}}" class="portfolio-link">
 			    
-			    <img src="{{ url_for('static', filename='startbootstrap/img/users.png') }}" width="200" height="160">
-			    <div class="portfolio-caption">
-			    	<p class="text-muted">Users</p>
-				</div>
-			</a>
+				    <img src="{{ url_for('static', filename='startbootstrap/img/users.png') }}" width="200" height="160">
+				    <div class="portfolio-caption">
+				    	<p class="text-muted">Users</p>
+					</div>
+				</a>
 			</div>
 			{% endif %}
 		</div>
