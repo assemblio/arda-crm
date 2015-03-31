@@ -112,7 +112,32 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
           </div>
         </form>
     </div>
+    <br></br>
     {% endif %}
+    {% if service_type is defined and service_type|length > 0 %}
+      <div class="panel panel-info">
+        <!-- Default panel contents -->
+        <div class="table-responsive">
+          <!-- Table -->
+          <table class="table table-striped">
+            <thead>
+              <tr class="info">
+                <th>Service Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            {% for result in service_type %}
+            <tbody id="user-list">                    
+              <tr align="center">
+                <td>{{result['serviceType']}}</td>
+                <td>{{result['description']}}</td>
+              </tr>
+            </tbody>
+           {% endfor %}
+          </table>
+        </div>
+    </div>
+    {% endif %} 
         <br><br>
     
     <div class="panel panel-info">

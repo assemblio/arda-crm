@@ -22,8 +22,16 @@ def services():
 
     pagination_services = Pagination(services, page=page, per_page=10)
     form = ServiceTypes()
+    if current_user.region != 'All':
+            query = {
+                'serviceTypes.region': current_user.region
+            }
+    else:
+            query = {}
+    service_type = retrieve_all_service_types(query)
     return render_template(
         'mod_services/services.html',
+        service_type=service_type,
         pagination_services=pagination_services,
         form=form
     )
@@ -356,3 +364,30 @@ def retrieve_all_services(region):
     pipeline = [unwind, match, group, project]
     json_obj = mongo.db.customers.aggregate(pipeline)
     return json_obj['result']
+
+
+def retrieve_all_service_types(query):
+    json_result = mongo.db.servicetypes.aggregate([
+        {"$unwind": "$serviceTypes"},
+        {'$match': query},
+        {
+            "$group": {
+                "_id": {
+                    '_id': '$_id',
+                    "serviceId": "$serviceTypes.serviceId",
+                    "serviceType": "$serviceTypes.type.name",
+                    "description": "$serviceTypes.description"
+                }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "_id":"$_id._id",
+                "serviceId": "$_id.serviceId",
+                "serviceType": "$_id.serviceType",
+                "description": "$_id.description",
+            }
+        }
+    ])
+    return json_result['result']
