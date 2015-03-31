@@ -107,7 +107,13 @@
                         <a href="{{ url_for('customers.customers') }}">Customers</a>
                     </li>
                     <li>
+                        <a href="{{ url_for('services.services') }}">Services</a>
+                    </li>
+                    <li>
                         <a href="{{ url_for('analytics.analytics') }}">Analytics</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('customers.reports') }}">Reports</a>
                     </li>
                     {% if current_user.has_role('Admin') %}
                         <li>
@@ -117,9 +123,7 @@
                     <li>
                         <a href="{{ url_for('admin.settings') }}">Settings</a>
                     </li>
-                    <li>
-                        <a href="{{ url_for('customers.reports') }}">Reports</a>
-                    </li>
+                    
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="{{url_for('auth.logout')}}">Logout</a></li>

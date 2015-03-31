@@ -260,7 +260,7 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
                 {% for page in pagination_services.iter_pages() %}
                   {% if page %}
                     {% if page != pagination_services.page %}
-                        <li><a href="{{url_for('customers.customers')}}?faqe={{ page }}">{{ page }}</a>
+                        <li><a href="{{url_for('services.services')}}?faqe={{ page }}">{{ page }}</a>
                         </li>
                     {% endif %}
                   {% endif %}

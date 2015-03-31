@@ -12,15 +12,15 @@ mod_services = Blueprint('services', __name__, url_prefix='/services')
 
 @mod_services.route('', methods=['GET'])
 def services():
-    if not request.args.get('faqe'):
-        faqe = 1
+    if not request.args.get('page'):
+        page = 1
     else:
-        faqe = int(request.args.get('faqe'))
+        page = int(request.args.get('page'))
     form = ServiceTypes()
     region = current_user.region
     services = retrieve_all_services(region)
 
-    pagination_services = Pagination(services, page=faqe, per_page=10)
+    pagination_services = Pagination(services, page=page, per_page=10)
     form = ServiceTypes()
     return render_template(
         'mod_services/services.html',
