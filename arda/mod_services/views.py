@@ -2,13 +2,12 @@ from flask import Blueprint, render_template, redirect, request, url_for, send_f
 from flask.ext.security import login_required, current_user
 from arda import mongo, utils
 from bson import ObjectId
-from datetime import datetime
+import datetime
 from slugify import slugify
 from forms.servicetypes import ServiceTypes
 from flask.ext.mongoengine import Pagination
 import xlsxwriter
 import os
-import time
 
 mod_services = Blueprint('services', __name__, url_prefix='/services')
 
@@ -378,6 +377,7 @@ def retrieve_all_service_types(query):
             "$group": {
                 "_id": {
                     '_id': '$_id',
+                    'region': '$serviceTypes.region',
                     "serviceId": "$serviceTypes.serviceId",
                     "serviceType": "$serviceTypes.type.name",
                     "description": "$serviceTypes.description"
@@ -388,6 +388,7 @@ def retrieve_all_service_types(query):
             "$project": {
                 "_id": 0,
                 "_id": "$_id._id",
+                'region': '$_id.region',
                 "serviceId": "$_id.serviceId",
                 "serviceType": "$_id.serviceType",
                 "description": "$_id.description",
@@ -535,8 +536,8 @@ def export_filtered_services():
         start_date = "01-01-%s" % year
         end_date = "31-12-%s" % year
         match_fields["provided_services.service_date"] = {
-            '$gte': datetime.strptime(start_date, "%d-%m-%Y"),
-            '$lte': datetime.strptime(end_date, "%d-%m-%Y")
+            '$gte': datetime.datetime.strptime(start_date, "%d-%m-%Y"),
+            '$lte': datetime.datetime.strptime(end_date, "%d-%m-%Y")
         }
 
     if month:
@@ -551,8 +552,8 @@ def export_filtered_services():
                 end_date = "30-%s-%s" % (month, year)
 
             match_fields['provided_services.service_date'] = {
-                '$gte': datetime.strptime(start_date, "%d-%m-%Y"),
-                '$lte': datetime.strptime(end_date, "%d-%m-%Y")
+                '$gte': datetime.datetime.strptime(start_date, "%d-%m-%Y"),
+                '$lte': datetime.datetime.strptime(end_date, "%d-%m-%Y")
             }
     if service_type:
         match_fields["provided_services.provided_service.slug"] = slugify(service_type)

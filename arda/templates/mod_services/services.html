@@ -80,7 +80,7 @@
 	<div class="container" align="center">
     {% if result is defined %}
 		<div>    
-        <p>{% if result|length > 0 %}Services provided to Customer <strong>{{result[0]['customer']['firstName'] ~" "~
+        <p>{% if result|length > 0 %}Services provided to customer <strong>{{result[0]['customer']['firstName'] ~" "~
 result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){% endif %}</p>
   	</div>
     {% endif %}
@@ -124,6 +124,9 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
               <tr class="info">
                 <th>Service Type</th>
                 <th>Description</th>
+                {% if current_user.region == 'All' %}
+                <th>Provided in Region</th>
+                {% endif %}
               </tr>
             </thead>
             {% for result in service_type %}
@@ -131,6 +134,9 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
               <tr align="center">
                 <td>{{result['serviceType']}}</td>
                 <td>{{result['description']}}</td>
+                {% if current_user.region == 'All' %}
+                <td>{{result['region']}}</td>
+                {% endif %}
               </tr>
             </tbody>
            {% endfor %}
@@ -305,6 +311,5 @@ result[0]['customer']['lastName']}}</strong>({{result[0]['company']['name']}}){%
     </div>
 	</div>
 </section>
-
 
 {% endblock %}
