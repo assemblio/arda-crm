@@ -27,17 +27,13 @@ def customers():
     form = ServiceTypes()
     customers = mongo.db.customers.find({})
 
-    if current_user.region != 'All':
-        try:
-            customers_pagi = Customers.objects(region=current_user.region)
-            pagination = customers_pagi.paginate(page=page, per_page=10)
-
-        except DoesNotExist:
-
-            pagination = None
-    else:
+    try:
         customers_pagi = Customers.objects.all()
         pagination = customers_pagi.paginate(page=page, per_page=10)
+
+    except DoesNotExist:
+
+        pagination = None
 
     response = build_customers_cursor(customers)
 

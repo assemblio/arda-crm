@@ -229,6 +229,7 @@
                 <td>
                   <table align="center">
                     <tr align="center">
+                      {% if current_user.region == customer.region  or current_user.region == 'All' %}
                       <td>
                         <form method="get" action="{{ url_for('services.add_service', company_name=customer['company']['slug'], customer_id=customer.id) }}">
                           <button type="submit"  data-toggle='tooltip' data-placement='top' title='Add Service' class="btn btn-default btn-sm btn-default">
@@ -236,6 +237,7 @@
                           </button>&nbsp;
                         </form>
                       </td>
+                      {% endif %}
                       <td>
                         <form method="get" action="{{ url_for('services.customer_services', company_name=customer['company']['slug'], customer_id=customer.id) }}">
                           <button type="submit" data-toggle='tooltip' data-placement='top' title='Individual Services' class="btn btn-default btn-sm btn-default">
@@ -255,6 +257,7 @@
                   </table>
                 </td>
                 <td>
+                  {% if current_user.region == customer.region or current_user.region == 'All' %}
                   <table align="center">
                     <tr align="center">
                       <td>
@@ -273,6 +276,9 @@
                       </td>
                     </tr>
                   </table>
+                  {% else %}
+                    Region {{customer['region']}}
+                  {% endif %}
                 </td>
               </tr>
               {% endfor %}
