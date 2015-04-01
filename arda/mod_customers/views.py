@@ -530,12 +530,14 @@ def export_filtered_customers():
         query["company.slug"] = slugify(customer)
 
     if target_group:
-        query["customer_type.target_group"] = target_group
+        if target_group != "All":
+            query["customer_type.target_group"] = target_group
 
     if region:
         if region != "All":
             query["region"] = region
 
+    print query
     customers = mongo.db.customers.find(query)
     response = build_customers_cursor(customers)
 
