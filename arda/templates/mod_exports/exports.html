@@ -2,6 +2,17 @@
 {% block body %}
 <script type="text/javascript">
 	$(document).ready(function(){
+		$('#download-filtered-services').click(function(){
+			var year = $('#year').val();
+			var month = $('#month-select').val();
+			var service_type = $('#provided_service').val();
+			var dateTime = new Date();
+			var url = "{{url_for('services.export_filtered_services')}}" + "?year=" + year + "&month=" + month + "&serviceType=" + service_type;
+			var downloadAttr = "All Filtered Services (As of '" + dateTime + "').xls";
+			$('#download-filtered-services').prop('href', url);
+			$('#download-filtered-services').prop('download', downloadAttr);
+		})
+
 		$('.date-picker-year').datepicker({
 	        autoclose: true,
 	        todayHighlight: true,
@@ -47,7 +58,7 @@
                 {{form.provided_service(class="form-control")}}
 	        </div>
 	        <div class="col-xs-1">
-	        	<a download="All Customers.xls" href="/" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
+	        	<a id="download-filtered-services" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
 	        </div>
 	      </form>
     	</div>
