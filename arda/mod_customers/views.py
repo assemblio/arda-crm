@@ -469,7 +469,6 @@ def reports():
     return render_template("mod_exports/exports.html", form=form)
 
 
-
 def create_filtered_customer_report(response):
     fn = '%s/All Filtered Customers.xlsx' % current_app.config['EXCEL_DOC_DIR']
 

@@ -1,315 +1,312 @@
+
 {% extends "layout.html" %}
 {% block body %}
 <script type="text/javascript">
-  function rebuildServiceTable(result){
-	$('.table-result td').remove();
-	//Now we populate the table based on the filtering parameters
-	for (var index in result) {
-		var d = new Date(result[index]['date']['$date']);
-		var date_string =  d.getDate() + "/" + (d.getMonth() + 1) + "/" + (d.getYear() + 1900);
-
-		var serviceId = result[index]['serviceId'];
-		var company = result[index]['company']['slug'];
-		var customer_id = result[index]['_id'];
-
-		var url_action_delete = "{{url_for('services.delete_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', company+"/"+customer_id['$oid']+"/"+serviceId['$oid']);
-
-		var url_action_edit = "{{url_for('services.edit_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', company+"/"+customer_id['$oid']+"/"+serviceId['$oid']);
-
-         $("#service-list").append(
-         	"<tr>" +
-              "<td>"+result[index]["company"]['name']+"</td>"+
-	            "<td>"+result[index]["first_name"]+"</td>"+
-	            "<td>"+result[index]["last_name"]+"</td>"+
-	            "<td>"+result[index]["serviceType"]+"</td>"+
-	            "<td>"+result[index]['contactVia']+"</td>"+
-	            "<td>"+date_string+"</td>"+
-	            "<td>"+result[index]["fee"]+"</td>"+
-	            "<td>"+result[index]["description"]+"</td>"+
-	            "<td>"+
-		            "<table align='center'>"+
-			            "<tr align='center'>"+
-			              "<td>"+
-			              	"<form method='get' action='"+url_action_edit+"'>"+
-	                          "<button type='submit'data-toggle='tooltip' data-placement='bottom' title='Edit Service' class='btn btn-default btn-sm btn-defualt'>"+
-	                            "<span class='glyphicon glyphicon-edit'></span>"+
-	                          "</button>&nbsp;"+
-	                        "</form>"+
-			              "</td>"+
-			              "<td>"+
-			              	"<form method='get' action='"+url_action_delete+"'>"+
-	                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Delete Service' class='btn btn-default btn-sm btn-danger'>"+
-	                            "<span class='glyphicon glyphicon-remove'></span>"+
-	                          "</button>&nbsp;"+
-	                        "</form>"+
-			              "</td>"+
-			            "</tr>"+
-		          	"</table>"+
-	            "</td>"+
-        	"</tr>"
-        );
-
-	}
-};
-  // Populate the table 
-  function rebuildTable(result){
-    // First remove the results before showing the new results table
-        $("#results-table td").remove();
-        for (var index in result) {
-        		var slug = result[index]['company']['slug'];
-        		var customer_id = result[index]['_id'];
-        		/* we are building the url(s) with requeired parameters
-        		   for AJAX request we do
-        		*/
-
-        		var url_action = "{{url_for('services.add_service', company_name='company_slug', customer_id='customerID')}}".replace('company_slug/customerID', slug + "/" + customer_id['$oid']);
-
-        		var url_action_customer = "{{url_for('services.customer_services', company_name='company_slug', customer_id='customerID')}}".replace('company_slug/customerID', slug + "/" + customer_id['$oid']);
-
-        		var url_action_company = "{{url_for('services.company_services', company_name='company_slug')}}".replace('company_slug', slug);
-
-        		var url_action_delete = "{{url_for('customers.delete_customer',customer_id='customerID')}}".replace('customerID', customer_id['$oid']);
-
-        		var url_action_edit = "{{url_for('customers.edit_customer',customer_id='customerID')}}".replace('customerID', customer_id['$oid']);
-        		//populate table
-                $("#customers-list").append("<tr>" +
-                    "<td>"+result[index]["first_name"]+"</td>"+
-                    "<td>"+result[index]["last_name"]+"</td>"+
-                    "<td>"+result[index]['company']['name']+"</td>"+
-                    "<td>"+result[index]["target_group"]+"</td>"+
-                    "<td>"+result[index]['phone']['main_phone']+"</td>"+
-                    "<td>"+result[index]["email"]+"</td>"+
-                    "<td>"+
-                    "<table align='center'>"+
-                    "<tr align='center'>"+
-                      "<td>"+
-                        "<form method='get' action='"+url_action+"'>"+
-                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Add Service' class='btn btn-default btn-sm btn-default'>"+
-                            "<span class='glyphicon glyphicon-plus'></span>"+
-                          "</button>&nbsp;"+
-                        "</form>"+
-                      "</td>"+
-                      "<td>"+
-                        "<form method='get' action='"+url_action_customer+"'>"+
-                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Individual Services' class='btn btn-default btn-sm btn-default'>"+
-                            "<span class='glyphicon glyphicon-user'></span>"+
-                          "</button>&nbsp;"+
-                        "</form>"+
-                      "</td>"+
-                      "<td>"+
-                        "<form method='get' action='"+url_action_company+"'>"+
-                        
-                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Customer Services' class='btn btn-default btn-sm btn-default'>"+
-                            "<span class='glyphicon glyphicon-th-list'></span>"+
-                          "</button>&nbsp;"+
-                        "</form>"+
-                      "</td>"+
-                    "</tr>"+
-                  "</table>"+
-                "</td>"+
-                "<td>"+
-                  "<table align='center'>"+
-                    "<tr align='center'>"+
-                      "<td>"+
-                        "<form method='get' action='"+url_action_edit+"'>"+
-                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Edit Customer' class='btn btn-default btn-sm btn-default'>"+
-                            "<span class='glyphicon glyphicon-edit'></span>"+
-                          "</button>&nbsp;"+
-                        "</form>"+
-                      "</td>"+
-                      "<td>"+
-                        "<form method='get' action='"+url_action_delete+"'>"+
-                          "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Delete Customer' class='btn btn-default btn-sm btn-danger'>"+
-                            "<span class='glyphicon glyphicon-remove'></span>"+
-                          "</button>&nbsp;"+
-                        "</form>"+
-                      "</td>"+
-                    "</tr>"+
-                  "</table>"+
-          "</td>"+
-        "</tr>");
-        }
-  };
-  $(document).ready(function(){
-  	$('.service-date-picker').datepicker({
-	        autoclose: true,
-	        todayHighlight: true,
-	        format: 'dd/mm/yyyy',
-    });
-
-    //search customer
-    $('#searchCustomer').click(function(){
-      $('#pagination').css("display", "none");
-      var customer_type = $('#customer-type-select').val();
-      var name = $('#firstName').val();
-      var l_name = $('#lastName').val();
-      var company = $('#company').val();
-
-      url = "{{ url_for('api.search') }}" + "?firstName=" + name + "&lastName=" + l_name + "&company=" + company + "&customer_type=" + customer_type;
-
+   function rebuildServiceTable(result){
+   $('.table-result td').remove();
+   //Now we populate the table based on the filtering parameters
+   for (var index in result) {
+   var d = new Date(result[index]['date']['$date']);
+   var date_string =  d.getDate() + "/" + (d.getMonth() + 1) + "/" + (d.getYear() + 1900);
+   
+   var serviceId = result[index]['serviceId'];
+   var company = result[index]['company']['slug'];
+   var customer_id = result[index]['_id'];
+   
+   var url_action_delete = "{{url_for('services.delete_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', company+"/"+customer_id['$oid']+"/"+serviceId['$oid']);
+   
+   var url_action_edit = "{{url_for('services.edit_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', company+"/"+customer_id['$oid']+"/"+serviceId['$oid']);
+   
+          $("#service-list").append(
+            "<tr>" +
+               "<td>"+result[index]["company"]['name']+"</td>"+
+              "<td>"+result[index]["first_name"]+"</td>"+
+              "<td>"+result[index]["last_name"]+"</td>"+
+              "<td>"+result[index]["serviceType"]+"</td>"+
+              "<td>"+result[index]['contactVia']+"</td>"+
+              "<td>"+date_string+"</td>"+
+              "<td>"+result[index]["fee"]+"</td>"+
+              "<td>"+result[index]["description"]+"</td>"+
+              "<td>"+
+               "<table align='center'>"+
+                "<tr align='center'>"+
+                  "<td>"+
+                    "<form method='get' action='"+url_action_edit+"'>"+
+                            "<button type='submit'data-toggle='tooltip' data-placement='bottom' title='Edit Service' class='btn btn-default btn-sm btn-defualt'>"+
+                              "<span class='glyphicon glyphicon-edit'></span>"+
+                            "</button>&nbsp;"+
+                          "</form>"+
+                  "</td>"+
+                  "<td>"+
+                    "<form method='get' action='"+url_action_delete+"'>"+
+                            "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Delete Service' class='btn btn-default btn-sm btn-danger'>"+
+                              "<span class='glyphicon glyphicon-remove'></span>"+
+                            "</button>&nbsp;"+
+                          "</form>"+
+                  "</td>"+
+                "</tr>"+
+              "</table>"+
+              "</td>"+
+          "</tr>"
+         );
+   
+   }
+   };
+   // Populate the table 
+   function rebuildTable(result){
+     // First remove the results before showing the new results table
+         $("#results-table td").remove();
+         for (var index in result) {
+            var slug = result[index]['company']['slug'];
+            var customer_id = result[index]['_id'];
+            /* we are building the url(s) with requeired parameters
+               for AJAX request we do
+            */
+   
+            var url_action = "{{url_for('services.add_service', company_name='company_slug', customer_id='customerID')}}".replace('company_slug/customerID', slug + "/" + customer_id['$oid']);
+   
+            var url_action_customer = "{{url_for('services.customer_services', company_name='company_slug', customer_id='customerID')}}".replace('company_slug/customerID', slug + "/" + customer_id['$oid']);
+   
+            var url_action_company = "{{url_for('services.company_services', company_name='company_slug')}}".replace('company_slug', slug);
+   
+            var url_action_delete = "{{url_for('customers.delete_customer',customer_id='customerID')}}".replace('customerID', customer_id['$oid']);
+   
+            var url_action_edit = "{{url_for('customers.edit_customer',customer_id='customerID')}}".replace('customerID', customer_id['$oid']);
+            //populate table
+                 $("#customers-list").append("<tr>" +
+                     "<td>"+result[index]["first_name"]+"</td>"+
+                     "<td>"+result[index]["last_name"]+"</td>"+
+                     "<td>"+result[index]['company']['name']+"</td>"+
+                     "<td>"+result[index]["target_group"]+"</td>"+
+                     "<td>"+result[index]['phone']['main_phone']+"</td>"+
+                     "<td>"+result[index]["email"]+"</td>"+
+                     "<td>"+
+                     "<table align='center'>"+
+                     "<tr align='center'>"+
+                       "<td>"+
+                         "<form method='get' action='"+url_action+"'>"+
+                           "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Add Service' class='btn btn-default btn-sm btn-default'>"+
+                             "<span class='glyphicon glyphicon-plus'></span>"+
+                           "</button>&nbsp;"+
+                         "</form>"+
+                       "</td>"+
+                       "<td>"+
+                         "<form method='get' action='"+url_action_customer+"'>"+
+                           "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Individual Services' class='btn btn-default btn-sm btn-default'>"+
+                             "<span class='glyphicon glyphicon-user'></span>"+
+                           "</button>&nbsp;"+
+                         "</form>"+
+                       "</td>"+
+                       "<td>"+
+                         "<form method='get' action='"+url_action_company+"'>"+
+                         
+                           "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Customer Services' class='btn btn-default btn-sm btn-default'>"+
+                             "<span class='glyphicon glyphicon-th-list'></span>"+
+                           "</button>&nbsp;"+
+                         "</form>"+
+                       "</td>"+
+                     "</tr>"+
+                   "</table>"+
+                 "</td>"+
+                 "<td>"+
+                   "<table align='center'>"+
+                     "<tr align='center'>"+
+                       "<td>"+
+                         "<form method='get' action='"+url_action_edit+"'>"+
+                           "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Edit Customer' class='btn btn-default btn-sm btn-default'>"+
+                             "<span class='glyphicon glyphicon-edit'></span>"+
+                           "</button>&nbsp;"+
+                         "</form>"+
+                       "</td>"+
+                       "<td>"+
+                         "<form method='get' action='"+url_action_delete+"'>"+
+                           "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Delete Customer' class='btn btn-default btn-sm btn-danger'>"+
+                             "<span class='glyphicon glyphicon-remove'></span>"+
+                           "</button>&nbsp;"+
+                         "</form>"+
+                       "</td>"+
+                     "</tr>"+
+                   "</table>"+
+           "</td>"+
+         "</tr>");
+         }
+   };
+   $(document).ready(function(){
+    $('.service-date-picker').datepicker({
+          autoclose: true,
+          todayHighlight: true,
+          format: 'dd/mm/yyyy',
+     });
+   
+     //search customer
+     $('#searchCustomer').click(function(){
+       $('#pagination').css("display", "none");
+       var customer_type = $('#customer-type-select').val();
+       var name = $('#firstName').val();
+       var l_name = $('#lastName').val();
+       var company = $('#company').val();
+   
+       url = "{{ url_for('api.search') }}" + "?firstName=" + name + "&lastName=" + l_name + "&company=" + company + "&customer_type=" + customer_type;
+   
+       $.get(url, function(result){
+         rebuildTable(result);
+       });
+     });
+     //Get result to populate service table
+     $('#searchService').click(function(){
+   var service_type = $('#provided_service').val();
+   var contactVia = $('#contact_via').val();
+   var from_date = $('#from').val();
+   var to_date = $('#to').val();
+   var url = "{{url_for('api.search_service')}}" + "?serviceType="+service_type+ "&contactVia="+ contactVia +"&from="+from_date+"&to="+to_date;
       $.get(url, function(result){
-        rebuildTable(result);
+        rebuildServiceTable(result);
       });
-    });
-    //Get result to populate service table
-    $('#searchService').click(function(){
-		var service_type = $('#provided_service').val();
-		var contactVia = $('#contact_via').val();
-		var from_date = $('#from').val();
-		var to_date = $('#to').val();
-		var url = "{{url_for('api.search_service')}}" + "?serviceType="+service_type+ "&contactVia="+ contactVia +"&from="+from_date+"&to="+to_date;
-  		$.get(url, function(result){
-  			rebuildServiceTable(result);
-  		});
-    });
-  });
-
+     });
+   });
+   
 </script>
 <section>
-  <div class="container" align="center">
-    <div>
-      <form method="get" action="{{url_for('customers.create_customer')}}">
-        <button type="submit" class="btn btn-info" >New Customer</button>
-      </form>
-    </div>
-    <div class="form-group form-group-sm">
-      <form class="form-horizontal">
-        <div class="col-xs-offset-1 col-xs-3">
-        <select id="customer-type-select" class="form-control">
-          <option value="All" selected="selected">All</option>
-          <option value="Entrepreneur">Entrepreneur</option>
-          <option value="Non-Governmental Organisation">Non-Governmental Organisation</option>
-          <option value="Investor">Investor</option>
-          <option value="Municipality">Municipality</option>
-        </select>
-        </div>
-        <div class="col-xs-offset-0 col-xs-2">
-          <input type="text" class="form-control" id='firstName' name='firstName' placeholder="First Name">
-        </div>
-        <div class="col-xs-2">
-          <input type="text" class="form-control" id='lastName' name='lastName' placeholder="Last Name">
-        </div>
-        <div class="col-xs-2">
-          <input type="text" class="form-control" id='company' name='company' placeholder="Company">
-        </div>
-        <div class="col-xs-2">
-          <button type="button" class="btn btn-info" id="searchCustomer">Search</button>
-        </div>
-      </form>
-    </div>
-    <br><br></br>
+   <div class="container" align="center">
+      <div>
+         <form method="get" action="{{url_for('customers.create_customer')}}">
+            <button type="submit" class="btn btn-info" >New Customer</button>
+         </form>
+      </div>
+      <div class="form-group form-group-sm">
+         <form class="form-horizontal">
+            <div class="col-xs-offset-1 col-xs-3">
+               <select id="customer-type-select" class="form-control">
+                  <option value="All" selected="selected">All</option>
+                  <option value="Entrepreneur">Entrepreneur</option>
+                  <option value="Non-Governmental Organisation">Non-Governmental Organisation</option>
+                  <option value="Investor">Investor</option>
+                  <option value="Municipality">Municipality</option>
+               </select>
+            </div>
+            <div class="col-xs-offset-0 col-xs-2">
+               <input type="text" class="form-control" id='firstName' name='firstName' placeholder="First Name">
+            </div>
+            <div class="col-xs-2">
+               <input type="text" class="form-control" id='lastName' name='lastName' placeholder="Last Name">
+            </div>
+            <div class="col-xs-2">
+               <input type="text" class="form-control" id='company' name='company' placeholder="Company">
+            </div>
+            <div class="col-xs-2">
+               <button type="button" class="btn btn-info" id="searchCustomer">Search</button>
+            </div>
+         </form>
+      </div>
+      <br><br></br>
       {% if results|length > 0 %}
       <div class="panel panel-danger">
-        <!-- Default panel contents -->
-        <div class="panel-body table-responsive">
-          <!-- Table -->
-          <table id="results-table" class="table table-striped table-condensed">
-            <thead >
-              <tr class="info">
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Customer</th>
-                <th>Target Group</th>
-                <th>Main Phone</th>
-                <th>E-mail</th>
-                <th><i>Services<i></th>
-                <th><i>Operations<i></th>
-              </tr>
-            </thead>
-            <tbody id="customers-list">
-              {% for customer in pagination.items %}
-              <tr align="center">
-                <td>{{customer['first_name']['value']}}</td>
-                <td>{{customer['last_name']['value']}}</td>
-                <td>{{customer['company']['name']}}</td>
-
-                <td>{{customer['customer_type']['target_group']}}</td>
-                <td>{{customer['phone']['main_phone']}}</td>
-                <td>{{customer['email']}}</td>
-                <td>
-                  <table align="center">
-                    <tr align="center">
-                      {% if current_user.region == customer.region  or current_user.region == 'All' %}
-                      <td>
-                        <form method="get" action="{{ url_for('services.add_service', company_name=customer['company']['slug'], customer_id=customer.id) }}">
-                          <button type="submit"  data-toggle='tooltip' data-placement='top' title='Add Service' class="btn btn-default btn-sm btn-default">
-                            <span class="glyphicon glyphicon-plus"></span>
-                          </button>&nbsp;
-                        </form>
-                      </td>
-                      {% endif %}
-                      <td>
-                        <form method="get" action="{{ url_for('services.customer_services', company_name=customer['company']['slug'], customer_id=customer.id) }}">
-                          <button type="submit" data-toggle='tooltip' data-placement='top' title='Individual Services' class="btn btn-default btn-sm btn-default">
-                            <span class="glyphicon glyphicon-user"></span>
-                          </button>&nbsp;
-                        </form>
-                      </td>
-                      <td>
-                        <form method="get" action="{{ url_for('services.company_services', company_name=customer['company']['slug']) }}">
-                        
-                          <button type="submit" data-toggle='tooltip' data-placement='top' title='Customer Services' class="btn btn-default btn-sm btn-default">
-                            <span class="glyphicon glyphicon-th-list"></span>
-                          </button>&nbsp;
-                        </form>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-                <td>
-                  {% if current_user.region == customer.region or current_user.region == 'All' %}
-                  <table align="center">
-                    <tr align="center">
-                      <td>
-                        <form method="get" action="{{ url_for('customers.edit_customer', customer_id=customer.id) }}">
-                          <button type="submit" data-toggle='tooltip' data-placement='top' title='Edit Customer' class="btn btn-default btn-sm btn-default">
-                            <span class="glyphicon glyphicon-edit"></span>
-                          </button>&nbsp;
-                        </form>
-                      </td>
-                      <td>
-                        <form method="get" action="{{ url_for('customers.delete_customer', customer_id=customer.id) }}">
-                          <button type="submit" data-toggle='tooltip' data-placement='top' title='Delete Customer' class="btn btn-default btn-sm btn-danger">
-                            <span class="glyphicon glyphicon-remove"></span>
-                          </button>&nbsp;
-                        </form>
-                      </td>
-                    </tr>
-                  </table>
-                  {% else %}
-                    Region {{customer['region']}}
-                  {% endif %}
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-          <div id="pagination" class="pagination">
-            <ul class="pagination">
-                <li><a href="#" class="fa fa-angle-left"></a></li>
-                {% for page in pagination.iter_pages() %}
+         <!-- Default panel contents -->
+         <div class="panel-body table-responsive">
+            <!-- Table -->
+            <table id="results-table" class="table table-striped table-condensed">
+               <thead >
+                  <tr class="info">
+                     <th>First Name</th>
+                     <th>Last Name</th>
+                     <th>Customer</th>
+                     <th>Target Group</th>
+                     <th>Main Phone</th>
+                     <th>E-mail</th>
+                     <th><i>Services<i></th>
+                     <th><i>Operations<i></th>
+                  </tr>
+               </thead>
+               <tbody id="customers-list">
+                  {% for customer in pagination.items %}
+                  <tr align="center">
+                     <td>{{customer['first_name']['value']}}</td>
+                     <td>{{customer['last_name']['value']}}</td>
+                     <td>{{customer['company']['name']}}</td>
+                     <td>{{customer['customer_type']['target_group']}}</td>
+                     <td>{{customer['phone']['main_phone']}}</td>
+                     <td>{{customer['email']}}</td>
+                     {% if current_user.region == customer.region  or current_user.region == 'All' %}
+                     <td>
+                        <table align="center">
+                           <tr align="center">
+                              <td>
+                                 <form method="get" action="{{ url_for('services.add_service', company_name=customer['company']['slug'], customer_id=customer.id) }}">
+                                    <button type="submit"  data-toggle='tooltip' data-placement='top' title='Add Service' class="btn btn-default btn-sm btn-default">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    </button>&nbsp;
+                                 </form>
+                              </td>
+                              <td>
+                                 <form method="get" action="{{ url_for('services.customer_services', company_name=customer['company']['slug'], customer_id=customer.id) }}">
+                                    <button type="submit" data-toggle='tooltip' data-placement='top' title='Individual Services' class="btn btn-default btn-sm btn-default">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    </button>&nbsp;
+                                 </form>
+                              </td>
+                              <td>
+                                 <form method="get" action="{{ url_for('services.company_services', company_name=customer['company']['slug']) }}">
+                                    <button type="submit" data-toggle='tooltip' data-placement='top' title='Customer Services' class="btn btn-default btn-sm btn-default">
+                                    <span class="glyphicon glyphicon-th-list"></span>
+                                    </button>&nbsp;
+                                 </form>
+                              </td>
+                           </tr>
+                        </table>
+                     </td>
+                     {% else %}
+                     <td>N/A</td>
+                     {% endif %}
+                     <td>
+                        {% if current_user.region == customer.region or current_user.region == 'All' %}
+                        <table align="center">
+                           <tr align="center">
+                              <td>
+                                 <form method="get" action="{{ url_for('customers.edit_customer', customer_id=customer.id) }}">
+                                    <button type="submit" data-toggle='tooltip' data-placement='top' title='Edit Customer' class="btn btn-default btn-sm btn-default">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                    </button>&nbsp;
+                                 </form>
+                              </td>
+                              <td>
+                                 <form method="get" action="{{ url_for('customers.delete_customer', customer_id=customer.id) }}">
+                                    <button type="submit" data-toggle='tooltip' data-placement='top' title='Delete Customer' class="btn btn-default btn-sm btn-danger">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    </button>&nbsp;
+                                 </form>
+                              </td>
+                           </tr>
+                        </table>
+                        {% else %}
+                        Region {{customer['region']}}
+                        {% endif %}
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+            <div id="pagination" class="pagination">
+               <ul class="pagination">
+                  {% for page in pagination.iter_pages() %}
                   {% if page %}
-                    {% if page != pagination.page %}
-                        <li>
-                          <a href="{{url_for('customers.customers')}}?page={{ page }}">{{ page }}</a>
-                        </li>
-                    {% endif %}
+                  {% if page != pagination.page %}
+                  <li>
+                     <a href="{{url_for('customers.customers')}}?page={{ page }}">{{ page }}</a>
+                  </li>
                   {% endif %}
-                {% endfor %}
-                <li><a href="#" class="fa fa-angle-right"></a></li>
-            </ul>
-          </div>
-          <br>
-          <div>
-            <a download="Customers.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'results-table', 'Customers');">Export Current View</a>
-            <a download="All Customers.xls" href="{{url_for('customers.export_customers')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
-          </div>
-          
-        </div>
+                  {% endif %}
+                  {% endfor %}
+               </ul>
+            </div>
+            <br>
+            <div>
+               <a download="Customers.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'results-table', 'Customers');">Export Current View</a>
+               <a download="All Customers.xls" href="{{url_for('customers.export_customers')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
+            </div>
+         </div>
       </div>
-
       {% endif %}
-      
-  </div>
+   </div>
 </section>
 {% endblock %}
+
