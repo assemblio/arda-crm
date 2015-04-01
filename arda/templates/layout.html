@@ -112,11 +112,9 @@
                     <li>
                         <a href="{{ url_for('analytics.analytics') }}">Analytics</a>
                     </li>
-                    {#
                     <li>
                         <a href="{{ url_for('customers.reports') }}">Reports</a>
                     </li>
-                    #}
                     {% if current_user.has_role('Admin') %}
                         <li>
                             <a href="{{ url_for('admin.users') }}">Users</a>
