@@ -11,7 +11,7 @@ from bson import ObjectId
 from flask.ext.security import login_user, login_required, logout_user, current_user
 from arda.mod_services.forms.servicetypes import ServiceTypes
 from arda.mod_customers.models.model import Customers
-from flask.ext.mongoengine import DoesNotExist, Pagination
+from flask.ext.mongoengine import DoesNotExist
 import time
 import datetime
 

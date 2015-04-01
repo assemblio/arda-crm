@@ -56,6 +56,7 @@ def retrieve_all_service_types():
     ])
     return json_result['result']
 
+
 def retrieve_all_contact_types():
     json_result = mongo.db.servicetypes.aggregate([
         {"$unwind": "$contactVia"},

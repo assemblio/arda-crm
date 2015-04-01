@@ -209,11 +209,24 @@ def settings():
             settings_data = settings_form.data
             mongo.db.settings.update({'_id': 0}, {'$set': settings_data}, True)
 
+            if current_user.region != 'All':
+                query = {
+                    'serviceTypes.region': current_user.region
+                }
+                query_contact = {
+                    'contactVia.region': current_user.region
+                }
+            else:
+                query = {}
+                query_contact = {}
+
+                service_type = retrieve_all_service_types(query)
+                contact_via_types = retrieve_all_contact_types(query_contact)
             # Update session with new settings data.
             session['settings'] = settings_form.data
         else:
             return redirect(url_for('home_page.panel'))
-    type_id='5509cb3b484d3f17a2409cea'
+    type_id = '5509cb3b484d3f17a2409cea'
     portfolio_form = PortfolioForm()
     return render_template(
         'mod_admin/settings.html',

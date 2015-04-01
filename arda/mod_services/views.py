@@ -378,6 +378,7 @@ def retrieve_all_service_types(query):
             "$group": {
                 "_id": {
                     '_id': '$_id',
+                    'region': '$serviceTypes.region',
                     "serviceId": "$serviceTypes.serviceId",
                     "serviceType": "$serviceTypes.type.name",
                     "description": "$serviceTypes.description"
@@ -387,7 +388,8 @@ def retrieve_all_service_types(query):
         {
             "$project": {
                 "_id": 0,
-                "_id":"$_id._id",
+                "_id": "$_id._id",
+                'region': '$_id.region',
                 "serviceId": "$_id.serviceId",
                 "serviceType": "$_id.serviceType",
                 "description": "$_id.description",
