@@ -220,8 +220,8 @@ def settings():
                 query = {}
                 query_contact = {}
 
-                service_type = retrieve_all_service_types(query)
-                contact_via_types = retrieve_all_contact_types(query_contact)
+            service_type = retrieve_all_service_types(query)
+            contact_via_types = retrieve_all_contact_types(query_contact)
             # Update session with new settings data.
             session['settings'] = settings_form.data
         else:
