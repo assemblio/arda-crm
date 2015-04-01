@@ -12,8 +12,6 @@ from flask.ext.security import login_user, login_required, logout_user, current_
 from arda.mod_services.forms.servicetypes import ServiceTypes
 from arda.mod_customers.models.model import Customers
 from flask.ext.mongoengine import DoesNotExist, Pagination
-import time
-import datetime
 
 mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
 
@@ -400,8 +398,7 @@ def edit_costumers_document(customer_id):
 
 
 def create_customer_report():
-    ts = get_timestamp()
-    fn = '%s/All Customers (As of %s).xlsx' % (current_app.config['EXCEL_DOC_DIR'], ts)
+    fn = '%s/All Customers.xlsx' % current_app.config['EXCEL_DOC_DIR']
 
     workbook = xlsxwriter.Workbook(fn)
     worksheet = workbook.add_worksheet()
@@ -458,13 +455,12 @@ def export_customers():
     path = os.path.join(current_app.config['EXCEL_DOC_DIR'], fn)
     return send_file(path, mimetype='application/vnd.ms-excel')
 
-
+'''
 def get_timestamp():
     ts = time.time()
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-
     return timestamp
-
+'''
 
 
 @mod_customers.route('/reports')
@@ -472,3 +468,73 @@ def get_timestamp():
 def reports():
     form = ServiceTypes()
     return render_template("mod_exports/exports.html", form=form)
+
+
+def create_filtered_customer_report(response):
+    fn = '%s/All Filtered Customers.xlsx' % current_app.config['EXCEL_DOC_DIR']
+
+    workbook = xlsxwriter.Workbook(fn)
+    worksheet = workbook.add_worksheet()
+    bold = workbook.add_format({'bold': True})
+
+    worksheet.set_column('A:A', 20)
+    worksheet.set_column('B:B', 20)
+    worksheet.set_column('C:C', 20)
+    worksheet.set_column('D:D', 20)
+    worksheet.set_column('E:E', 20)
+    worksheet.set_column('F:F', 20)
+
+    worksheet.write('A1', 'Company', bold)
+    worksheet.write('B1', 'First Name', bold)
+    worksheet.write('C1', 'Last Name', bold)
+    worksheet.write('D1', 'Target Group', bold)
+    worksheet.write('E1', 'Main Phone', bold)
+    worksheet.write('F1', 'E-mail', bold)
+
+    i = 1
+    for customer in response['results']:
+        company = customer['company']['name']
+        first_name = customer['first_name']['value']
+        last_name = customer['last_name']['value']
+        target_group = customer['customer_type']['target_group']
+        phone = customer['phone']['main_phone']
+        email = customer['email']
+
+        worksheet.write(i, 0, company)
+        worksheet.write(i, 1, first_name)
+        worksheet.write(i, 2, last_name)
+        worksheet.write(i, 3, target_group)
+        worksheet.write(i, 4, phone)
+        worksheet.write(i, 5, email)
+        i = i + 1
+
+    workbook.close()
+    return fn
+
+
+@mod_customers.route('/export-filtered-customers', methods=['GET'])
+@login_required
+def export_filtered_customers():
+    if(len(request.args) > 0):
+        customer = request.args.get('customer')
+        target_group = request.args.get('target_group')
+        region = request.args.get('region')
+
+    query = {}
+
+    if customer:
+        query["company.slug"] = slugify(customer)
+
+    if target_group:
+        query["customer_type.target_group"] = target_group
+
+    if region:
+        if region != "All":
+            query["region"] = region
+
+    customers = mongo.db.customers.find(query)
+    response = build_customers_cursor(customers)
+
+    fn = create_filtered_customer_report(response)
+    path = os.path.join(current_app.config['EXCEL_DOC_DIR'], fn)
+    return send_file(path, mimetype='application/vnd.ms-excel')

@@ -11,8 +11,22 @@
 			var downloadAttr = "All Filtered Services (As of '" + dateTime + "').xls";
 			$('#download-filtered-services').prop('href', url);
 			$('#download-filtered-services').prop('download', downloadAttr);
-		})
+		});
 
+		$('#download-filtered-customers').click(function(){
+			var customer = $('#customer').val();
+			var target_group = $('#target-group-select').val();
+			var region = $('#region-select').val();
+			var dateTime = new Date();
+			var url = "{{url_for('customers.export_filtered_customers')}}" + "?customer=" + customer + "&target_group=" + target_group + "&region=" + region;
+			var downloadAttr = "All Filtered Customers (As of '" + dateTime + "').xls";
+			$('#download-filtered-customers').prop('href', url);
+			$('#download-filtered-customers').prop('download', downloadAttr);
+		});
+
+
+		$('#provided_service').prop("data-toggle", "tooltip");
+		$('#provided_service').prop("title", "Service Type");
 		$('.date-picker-year').datepicker({
 	        autoclose: true,
 	        todayHighlight: true,
@@ -27,12 +41,11 @@
 		<div class="row">
 			<div class="col-lg-12 text-center">
 				<p><strong>Reports</strong></p>
-        		<hr class="style-eight style-eight-later">
-				<h3 class="section-subheading text-muted">Filtered Reports</h3>
+        		<hr style="width:600px;" class="style-eight style-eight-later">
+				<h3 class="section-subheading text-muted">Services Reports</h3>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
-		  <h3 class="section-subheading text-muted">Services Reports</h3>
 	      <form class="form-horizontal">
 	        <div class="col-xs-3">
 	        	<input id="year" type="text" class="form-control date-picker-year" placeholder="Year"></input>
@@ -58,7 +71,44 @@
                 {{form.provided_service(class="form-control")}}
 	        </div>
 	        <div class="col-xs-1">
-	        	<a id="download-filtered-services" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
+	        	<a id="download-filtered-services" style="margin-right:2px;" class="btn btn-sm btn-success">Export</a>
+	        </div>
+	      </form>
+    	</div>
+    	<br><br>
+    	<br><br>
+    	<hr style="width:600px;" class="style-eight style-eight-later">
+    	<div class="form-group form-group-sm">
+		  <h3 class="section-subheading text-muted">Customer Reports</h3>
+	      <form class="form-horizontal">
+	        <div class="col-xs-3">
+	        	<input id="customer" type="text" class="form-control" placeholder="Customer"></input>
+	        </div>
+	        <div class="col-xs-4">
+	        	<select id="target-group-select" class="form-control" data-toggle='tooltip' data-placement='bottom' title='Target-group'>
+		          <option value="All">All</option>
+		          <option value="Entrepreneur">Entrepreneur</option>
+		          <option value="Non-Governmental Organisation">Non-Governmental Organisation</option>
+		          <option value="Investor">Investor</option>
+		          <option value="Municipality">Municipality</option>
+		        </select>
+	        </div>
+	        <div class="col-xs-4">
+                <select id="region-select" class="form-control" data-toggle='tooltip' data-placement='bottom' title='Region'>
+		          {% if current_user.region == "All" %}
+			       <option value="All">All Regions</option>
+			       <option value="West">West</option>
+			       <option value="South">South</option>
+			       <option value="North">North</option>
+			       <option value="East">East</option>
+			       <option value="Center">Center</option>
+			      {% else %}
+			      <option value="{{current_user['region']}}">{{current_user['region']}}</option>
+			      {% endif %}
+		        </select>
+	        </div>
+	        <div class="col-xs-1">
+	        	<a id="download-filtered-customers" style="margin-right:2px;" class="btn btn-sm btn-success">Export</a>
 	        </div>
 	      </form>
     	</div>
