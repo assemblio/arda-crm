@@ -6,12 +6,12 @@ from arda.mod_admin.forms.user_form import UserForm
 from arda.mod_admin.forms.settings_form import SettingsForm
 from arda.mod_admin.forms.portfolio_form import PortfolioForm
 from arda import mongo, utils, bcrypt
-from bson import json_util, ObjectId
-from arda.mod_admin.models.user_model import Users, Role
-from flask.ext.security import login_user, login_required, logout_user, current_user
+from bson import ObjectId
+from arda.mod_admin.models.user_model import Users
+from flask.ext.security import login_required, current_user
 from arda import user_datastore
 from slugify import slugify
-from arda import bcrypt
+
 
 mod_admin = Blueprint('admin', __name__, url_prefix='/admin')
 
