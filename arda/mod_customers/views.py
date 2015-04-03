@@ -395,8 +395,7 @@ def edit_costumers_document(customer_id):
 
 
 def create_customer_report():
-    ts = get_timestamp()
-    fn = '%s/All Customers (As of %s).xlsx' % (current_app.config['EXCEL_DOC_DIR'], ts)
+    fn = '%s/All Customers.xlsx' % current_app.config['EXCEL_DOC_DIR']
 
     workbook = xlsxwriter.Workbook(fn)
     worksheet = workbook.add_worksheet()
