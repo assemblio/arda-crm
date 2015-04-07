@@ -6,11 +6,11 @@ from wtforms import SelectField, TextField, RadioField, HiddenField, TextAreaFie
 class CustomerForm(Form):
 
     municipalities = [
-    	'Prishtine', 'Drenas', 'Fushe Kosove', 'Obilliq', 'Podujeve',
-    	'Shtime', 'Gracanice', 'Lipjan',
-    	'Vushtrri', 'Leposavic', ' Mitrovice', 'Skenderaj',
-    	'Istog', 'Kline',' Peja', 'Junik', 'Decan', 'Gjakova',
-    	'Prizren', 'Dragash', 'Suhareka', 'Dragash', 'Mamusha', 'Rahovec',
+        'Prishtine', 'Drenas', 'Fushe Kosove', 'Obilliq', 'Podujeve',
+        'Shtime', 'Gracanice', 'Lipjan',
+        'Vushtrri', 'Leposavic', ' Mitrovice', 'Skenderaj',
+        'Istog', 'Kline', ' Peja', 'Junik', 'Decan', 'Gjakova',
+        'Prizren', 'Dragash', 'Suhareka', 'Dragash', 'Mamusha', 'Rahovec',
         'Ferizaj', 'Gjilan', 'Viti', 'Novoberde', 'Kamenice', 'Hani Elezit', 'Kacanik',
         'Shterpce', 'Ranillug', 'Kllokot', 'Partesh'
     ]
@@ -96,17 +96,17 @@ class CustomerForm(Form):
     description_investor = TextField("Description of Business")
 
     department_choices = [
-    	'Department of Finance',
-    	'Department for Economic Development',
-    	'Department for Education',
-    	'Department for Health',
-    	'Department for Culture and Sport',
-    	'Department for Infrastructure',
-    	'Department for Public Services',
-    	'General Department of Cadaster',
-    	'Department of Administration',
-		'Department of Inspections',
-		'Department of Agriculture'
+        'Department of Finance',
+        'Department for Economic Development',
+        'Department for Education',
+        'Department for Health',
+        'Department for Culture and Sport',
+        'Department for Infrastructure',
+        'Department for Public Services',
+        'General Department of Cadaster',
+        'Department of Administration',
+        'Department of Inspections',
+        'Department of Agriculture'
     ]
     #Target Group: Municipality
     municipality_name = TextField("Municipality Name")
@@ -144,5 +144,3 @@ class CustomerForm(Form):
     ship_state = TextField("State")
     ship_postal_code = TextField("Postal code")
     ship_country = TextField("Country")
-
-    target_group = HiddenField()

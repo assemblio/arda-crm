@@ -71,6 +71,17 @@ def edit_customer(customer_id):
     if request.method == "GET":
         customer_doc = mongo.db.customers.find_one({'_id': ObjectId(customer_id)})
 
+        if customer_doc['region'] == 'West':
+            form.municipality_region_west.data = customer_doc['municipality_region']
+        elif customer_doc['region'] == 'Center':
+            form.municmunicipality_region_central.data = customer_doc['municipality_region']
+        elif customer_doc['region'] == 'East':
+            form.municipality_region_east.data = customer_doc['municipality_region']
+        elif customer_doc['region'] == 'South':
+            form.municipality_region_south.data = customer_doc['municipality_region']
+        else:
+            form.municipality_region_north.data = customer_doc['municipality_region']
+
         form.company_name.data = customer_doc['company']['name']
         form.first_name.data = customer_doc['first_name']['value']
         form.last_name.data = customer_doc['last_name']['value']
@@ -80,6 +91,7 @@ def edit_customer(customer_id):
         form.mobile.data = customer_doc['phone']['main_phone']
         form.fax.data = customer_doc['phone']['fax']
         form.email.data = customer_doc['email']
+        form.customer_address.data = customer_doc['customer_address']
         form.website.data = customer_doc['website']
         # Let's check what target group we have in order to know what fields to fill
         if customer_doc['customer_type']['target_group'] == "Entrepreneur":
@@ -156,6 +168,7 @@ def edit_customer(customer_id):
         edit_costumers_document(customer_id)
         return redirect(url_for('customers.customers'))
 
+
 @mod_customers.route('/delete/<customer_id>', methods=['GET'])
 @login_required
 def delete_customer(customer_id):
@@ -193,6 +206,7 @@ def build_save_costumers_document():
             'value': costumer['last_name'],
             'slug': slugify(costumer['last_name'])
         },
+        'customer_address': costumer['customer_address'],
         'job_title': costumer['job_title'],
         'phone': {
             'main_phone': costumer['main_phone'],
@@ -228,6 +242,20 @@ def build_save_costumers_document():
     else:
         json_obj['region'] = costumer['region']
 
+    #municipality based on region
+    if costumer['municipality_region_north']:
+        json_obj['municipality_region'] = costumer['municipality_region_north']
+
+    elif costumer['municipality_region_central']:
+        json_obj['municipality_region'] = costumer['municipality_region_central']
+
+    elif costumer['municipality_region_south']:
+        json_obj['municipality_region'] = costumer['municipality_region_south']
+
+    elif costumer['municipality_region_west']:
+        json_obj['municipality_region'] = costumer['municipality_region_west']
+    else:
+        json_obj['municipality_region'] = costumer['municipality_region_east']
 
     if costumer['customer_type'] == "Entrepreneur":
         json_obj['customer_type'] = {
@@ -302,8 +330,8 @@ def edit_costumers_document(customer_id):
             'value': costumer['last_name'],
             'slug': slugify(costumer['last_name'])
         },
+        'customer_address': costumer['customer_address'],
         'job_title': costumer['job_title'],
-        'region':  current_user['region'],
         'phone': {
             'main_phone': costumer['main_phone'],
             'work_phone': costumer['work_phone'],
@@ -331,6 +359,26 @@ def edit_costumers_document(customer_id):
         'email': costumer['email'],
         'website': costumer['website'],
     }
+
+    if current_user['region'] != "All":
+        json_obj['region'] = current_user['region']
+    else:
+        json_obj['region'] = costumer['region']
+
+    #municipality based on region
+    if costumer['municipality_region_north']:
+        json_obj['municipality_region'] = costumer['municipality_region_north']
+
+    elif costumer['municipality_region_central']:
+        json_obj['municipality_region'] = costumer['municipality_region_central']
+
+    elif costumer['municipality_region_south']:
+        json_obj['municipality_region'] = costumer['municipality_region_south']
+
+    elif costumer['municipality_region_west']:
+        json_obj['municipality_region'] = costumer['municipality_region_west']
+    else:
+        json_obj['municipality_region'] = costumer['municipality_region_east']
 
     if costumer['customer_type'] == "Entrepreneur":
         json_obj['customer_type'] = {
@@ -451,14 +499,6 @@ def export_customers():
     fn = create_customer_report()
     path = os.path.join(current_app.config['EXCEL_DOC_DIR'], fn)
     return send_file(path, mimetype='application/vnd.ms-excel')
-
-'''
-def get_timestamp():
-    ts = time.time()
-    timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-
-    return timestamp
-'''
 
 
 @mod_customers.route('/reports')

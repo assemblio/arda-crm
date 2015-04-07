@@ -101,3 +101,5 @@ class Customers(db.Document):
     email = db.StringField()
     website = db.StringField()
     provided_services = db.ListField()
+    municipality_region = db.StringField()
+    customer_address = db.StringField()
