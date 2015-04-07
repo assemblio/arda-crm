@@ -56,14 +56,24 @@ def create_user():
         if current_user.has_role('Admin'):
             user_form = UserForm(request.form)
             user_data = user_form.data
-            user = Users(
-                region=user_data['region'],
-                last_name=user_data['last_name'],
-                first_name=user_data['first_name'],
-                email=user_data['email'],
-                role=user_data['role'],
-                password=bcrypt.generate_password_hash(user_data['password'], rounds=12)
-            )
+            if current_user.region == 'All':
+                user = Users(
+                    region=user_data['region'],
+                    last_name=user_data['last_name'],
+                    first_name=user_data['first_name'],
+                    email=user_data['email'],
+                    role=user_data['role'],
+                    password=bcrypt.generate_password_hash(user_data['password'], rounds=12)
+                )
+            else:
+                user = Users(
+                    region=current_user.region,
+                    last_name=user_data['last_name'],
+                    first_name=user_data['first_name'],
+                    email=user_data['email'],
+                    role=user_data['role'],
+                    password=bcrypt.generate_password_hash(user_data['password'], rounds=12)
+                )
             user.save()
             default_role = user_datastore.find_role(user_data['role'])
             user_datastore.add_role_to_user(user, default_role)

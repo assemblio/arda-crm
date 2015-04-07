@@ -47,12 +47,14 @@ $(document).ready(function(){
 	                {{ form.last_name(class_="form-control") }}
 	             </div>
 	        </div>
+	        {% if current_user.region == 'All' %}
 	        <div class="form-group">
 	            {{ form.region.label(class_="control-label col-xs-4") }}
 	            <div class="col-xs-3">
 	                {{ form.region(class_="form-control") }}
 	             </div>
 	        </div>
+	        {% endif %}
 	        <div class="form-group">
 	            {{ form.email.label(class_="control-label col-xs-4") }}
 	            <div class="col-xs-3">
