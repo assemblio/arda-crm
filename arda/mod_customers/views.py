@@ -513,21 +513,64 @@ def create_filtered_customer_report(response):
 
     workbook = xlsxwriter.Workbook(fn)
     worksheet = workbook.add_worksheet()
-    bold = workbook.add_format({'bold': True})
+    bold = workbook.add_format({'bold': True, 'font_size': 8})
+    font_size = workbook.add_format({'font_size': 8, 'align': 'center'})
 
-    worksheet.set_column('A:A', 20)
-    worksheet.set_column('B:B', 20)
-    worksheet.set_column('C:C', 20)
-    worksheet.set_column('D:D', 20)
-    worksheet.set_column('E:E', 20)
-    worksheet.set_column('F:F', 20)
+    worksheet.set_column('A:A', 10)
+    worksheet.set_column('B:B', 8)
+    worksheet.set_column('C:C', 8)
+    worksheet.set_column('D:D', 8)
+    worksheet.set_column('E:E', 8)
+    worksheet.set_column('F:F', 8)
+    worksheet.set_column('G:G', 8)
+    worksheet.set_column('H:H', 8)
+    worksheet.set_column('I:I', 8)
+    worksheet.set_column('J:J', 8)
+    worksheet.set_column('K:K', 8)
+    worksheet.set_column('L:L', 8)
+    worksheet.set_column('M:M', 8)
+    worksheet.set_column('N:N', 8)
+    worksheet.set_column('O:O', 8)
+    worksheet.set_column('P:P', 8)
+    worksheet.set_column('Q:Q', 8)
+    worksheet.set_column('R:R', 8)
+    worksheet.set_column('S:S', 8)
+    worksheet.set_column('T:T', 8)
+    worksheet.set_column('U:U', 8)
+    worksheet.set_column('V:V', 8)
+    worksheet.set_column('W:W', 8)
+    worksheet.set_column('X:X', 8)
+    worksheet.set_column('Y:Y', 8)
+    worksheet.set_column('Z:Z', 8)
+    worksheet.set_column('AA:AA', 8)
 
-    worksheet.write('A1', 'Company', bold)
+    worksheet.write('A1', 'Client', bold)
     worksheet.write('B1', 'First Name', bold)
     worksheet.write('C1', 'Last Name', bold)
     worksheet.write('D1', 'Target Group', bold)
     worksheet.write('E1', 'Main Phone', bold)
     worksheet.write('F1', 'E-mail', bold)
+    worksheet.write('G1', 'Website', bold)
+    worksheet.write('H1', 'Region', bold)
+    worksheet.write('I1', 'Main Activities', bold)
+    worksheet.write('J1', 'Legal Entity Types', bold)
+    worksheet.write('K1', 'Business Name', bold)
+    worksheet.write('L1', 'Size Category', bold)
+    worksheet.write('M1', 'No. of Employees', bold)
+    worksheet.write('N1', 'Investment', bold)
+    worksheet.write('O1', 'Industry', bold)
+    worksheet.write('P1', 'Description', bold)
+    worksheet.write('Q1', 'Founding Year', bold)
+    worksheet.write('R1', 'Fiscal Number', bold)
+    worksheet.write('S1', 'Sector', bold)
+    worksheet.write('T1', 'Donors', bold)
+    worksheet.write('U1', 'Sector', bold)
+    worksheet.write('V1', 'Registration Number', bold)
+    worksheet.write('W1', 'Interest', bold)
+    worksheet.write('X1', 'Business Number', bold)
+    worksheet.write('Y1', 'Industry of Interest', bold)
+    worksheet.write('Z1', 'Investor Size', bold)
+    worksheet.write('AA1', 'Country', bold)
 
     i = 1
     for customer in response['results']:
@@ -537,13 +580,81 @@ def create_filtered_customer_report(response):
         target_group = customer['customer_type']['target_group']
         phone = customer['phone']['main_phone']
         email = customer['email']
+        website = customer['website']
+        region = customer['region']
 
-        worksheet.write(i, 0, company)
-        worksheet.write(i, 1, first_name)
-        worksheet.write(i, 2, last_name)
-        worksheet.write(i, 3, target_group)
-        worksheet.write(i, 4, phone)
-        worksheet.write(i, 5, email)
+        worksheet.write(i, 0, company, font_size)
+        worksheet.write(i, 1, first_name, font_size)
+        worksheet.write(i, 2, last_name, font_size)
+        worksheet.write(i, 3, target_group, font_size)
+        worksheet.write(i, 4, phone, font_size)
+        worksheet.write(i, 5, email, font_size)
+        worksheet.write(i, 6, website, font_size)
+        worksheet.write(i, 7, region, font_size)
+
+        if target_group == "Entrepreneur":
+            main_activity = customer['customer_type']['main_activity']
+            legal_entity_types = customer['customer_type']['legal_entity_types']
+            business_name = customer['customer_type']['business_name']
+            size_category = customer['customer_type']['size_category']
+            number_of_employees = customer['customer_type']['number_of_employees']
+            investment = customer['customer_type']['investment']
+            industry = customer['customer_type']['industry']
+            business_description = customer['customer_type']['business_description']
+            founding_year = customer['customer_type']['founding_year']
+            fiscal_number = customer['customer_type']['fiscal_number']
+
+            worksheet.write(i, 8, main_activity, font_size)
+            worksheet.write(i, 9, legal_entity_types, font_size)
+            worksheet.write(i, 10, business_name, font_size)
+            worksheet.write(i, 11, size_category, font_size)
+            worksheet.write(i, 12, number_of_employees, font_size)
+            worksheet.write(i, 13, investment, font_size)
+            worksheet.write(i, 14, industry, font_size)
+            worksheet.write(i, 15, business_description, font_size)
+            worksheet.write(i, 16, founding_year, font_size)
+            worksheet.write(i, 17, fiscal_number, font_size)
+
+        elif target_group == "Non-Governmental Organisation":
+            number_of_staff_ngo = customer['customer_type']['number_of_staff_ngo']
+            sector_ngo = customer['customer_type']['sector_ngo']
+            founding_year_ngo = customer['customer_type']['founding_year_ngo']
+            main_activities = customer['customer_type']['main_activities']
+            fiscal_number_ngo = customer['customer_type']['fiscal_number_ngo']
+            donors = customer['customer_type']['donors']
+            description_of_ngo = customer['customer_type']['description_of_ngo']
+            ngo_registration_number_ngo = customer['customer_type']['ngo_registration_number_ngo']
+
+            worksheet.write(i, 8, main_activities, font_size)
+            worksheet.write(i, 12, number_of_staff_ngo, font_size)
+            worksheet.write(i, 15, description_of_ngo, font_size)
+            worksheet.write(i, 16, founding_year_ngo, font_size)
+            worksheet.write(i, 17, fiscal_number_ngo, font_size)
+            worksheet.write(i, 19, donors, font_size)
+            worksheet.write(i, 20, sector_ngo, font_size)
+            worksheet.write(i, 21, ngo_registration_number_ngo, font_size)
+
+        elif target_group == "Investor":
+            investor_industry = customer['customer_type']['investor_industry']
+            interest = customer['customer_type']['interest']
+            foundation_year_investor = customer['customer_type']['foundation_year_investor']
+            business_number = customer['customer_type']['business_number']
+            business = customer['customer_type']['business']
+            country = customer['customer_type']['country']
+            description_investor = customer['customer_type']['description_investor']
+            industry_of_interest = customer['customer_type']['industry_of_interest']
+            investor_size = customer['customer_type']['investor_size']
+
+            worksheet.write(i, 10, business, font_size)
+            worksheet.write(i, 14, investor_industry, font_size)
+            worksheet.write(i, 15, description_investor, font_size)
+            worksheet.write(i, 16, foundation_year_investor, font_size)
+            worksheet.write(i, 22, interest, font_size)
+            worksheet.write(i, 23, business_number, font_size)
+            worksheet.write(i, 24, industry_of_interest, font_size)
+            worksheet.write(i, 25, investor_size, font_size)
+            worksheet.write(i, 26, country, font_size)
+
         i = i + 1
 
     workbook.close()
