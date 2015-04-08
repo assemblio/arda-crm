@@ -513,10 +513,10 @@ def create_filtered_customer_report(response):
 
     workbook = xlsxwriter.Workbook(fn)
     worksheet = workbook.add_worksheet()
-    bold = workbook.add_format({'bold': True, 'font_size': 8})
-    font_size = workbook.add_format({'font_size': 8, 'align': 'center'})
+    bold = workbook.add_format({'bold': True, 'font_size': 7})
+    font_size = workbook.add_format({'font_size': 7, 'align': 'center'})
 
-    worksheet.set_column('A:A', 10)
+    worksheet.set_column('A:A', 8)
     worksheet.set_column('B:B', 8)
     worksheet.set_column('C:C', 8)
     worksheet.set_column('D:D', 8)
@@ -543,6 +543,12 @@ def create_filtered_customer_report(response):
     worksheet.set_column('Y:Y', 8)
     worksheet.set_column('Z:Z', 8)
     worksheet.set_column('AA:AA', 8)
+    worksheet.set_column('AB:AB', 8)
+    worksheet.set_column('AC:AC', 8)
+    worksheet.set_column('AD:AD', 8)
+    worksheet.set_column('AE:AE', 8)
+    worksheet.set_column('AF:AF', 8)
+    worksheet.set_column('AG:AG', 8)
 
     worksheet.write('A1', 'Client', bold)
     worksheet.write('B1', 'First Name', bold)
@@ -571,6 +577,12 @@ def create_filtered_customer_report(response):
     worksheet.write('Y1', 'Industry of Interest', bold)
     worksheet.write('Z1', 'Investor Size', bold)
     worksheet.write('AA1', 'Country', bold)
+    worksheet.write('AB1', 'Municipality Name', bold)
+    worksheet.write('AC1', 'Investment Incentives', bold)
+    worksheet.write('AD1', 'Offering', bold)
+    worksheet.write('AE1', 'Department', bold)
+    worksheet.write('AF1', 'Infrastructure Available', bold)
+    worksheet.write('AG1', 'Modules', bold)
 
     i = 1
     for customer in response['results']:
@@ -654,6 +666,24 @@ def create_filtered_customer_report(response):
             worksheet.write(i, 24, industry_of_interest, font_size)
             worksheet.write(i, 25, investor_size, font_size)
             worksheet.write(i, 26, country, font_size)
+        else:
+            industries = customer['customer_type']['industries']
+            investment_incentives = customer['customer_type']['investment_incentives']
+            municipality_name = customer['customer_type']['municipality_name']
+            description = customer['customer_type']['description']
+            offering = customer['customer_type']['offering']
+            department = customer['customer_type']['department']
+            infrastructure_available = customer['customer_type']['infrastructure_available']
+            modules = customer['customer_type']['modules']
+
+            worksheet.write(i, 15, description, font_size)
+            worksheet.write(i, 14, industries, font_size)
+            worksheet.write(i, 27, municipality_name, font_size)
+            worksheet.write(i, 28, investment_incentives, font_size)
+            worksheet.write(i, 29, offering, font_size)
+            worksheet.write(i, 30, department, font_size)
+            worksheet.write(i, 31, infrastructure_available, font_size)
+            worksheet.write(i, 32, modules, font_size)
 
         i = i + 1
 
