@@ -141,63 +141,6 @@
 {% block body %}
 
 {% endblock %}
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    {#
-                    <span class="copyright">Copyright &copy; ARDA 2015</span>
-                    #}
-                </div>
-                <div class="col-md-4">
-                    <ul class="list-inline social-buttons">
-                        {% if session.settings.web_url %}
-                        <li>
-                            <a href="{{ session.settings.web_url }}">
-                                <i class="fa fa-globe"></i>
-                            </a>
-                        </li>
-                        {% endif %}
-
-                        {% if session.settings.fb_url %}
-                        <li>
-                            <a href="{{ session.settings.fb_url }}">
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                        </li>
-                        {% endif %}
-
-                        {% if session.settings.tw_url %}
-                        <li>
-                            <a href="{{ session.settings.tw_url }}">
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                        </li>
-                        {% endif %}
-
-                        {% if session.settings.li_url %}
-                        <li>
-                            <a href="{{ session.settings.li_url }}">
-                                <i class="fa fa-linkedin"></i>
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    {#
-                    <ul class="list-inline quicklinks">
-                        <li><a href="#">Privacy Policy</a>
-                        </li>
-                        <li><a href="#">Terms of Use</a>
-                        </li>
-                    </ul>
-                    #}
-                </div>
-            </div>
-        </div>
-    </footer>
-
     
     <!-- Plugin JavaScript -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>

@@ -2,19 +2,19 @@
 {% block body %}
     <!-- Header -->
 <style type="text/css">
-.section-heading {
+.intro-lead-in {
     background: rgb(54, 25, 25); /* Fall-back for browsers that don't
                                     support rgba */
     background: rgba(54, 25, 25, .5);
+    color:#ffffff;
 }
 </style>
 <header style="padding: 400px 0 0 0; background-image: url('http://arda-kosovo.org/repository/images/thumb_693x410/East_Region_92511.jpg');">
     <div class="container">
     <div class="section-heading"></div>
-
-    <h1 class="section-heading">ARDA CRM</h1>
+        <h1 class="intro-lead-in">Welcome to ARDA CRM</h1>
         <div class="intro-text">
-        
+            
         </div>
     </div>
 </header>
@@ -25,7 +25,7 @@
             <div class="col-lg-12 text-center">
                 <p><strong>Welcome to ARDA Regions</strong></p>
                 <hr class="style-eight style-eight-later">
-                <h3 class="section-subheading text-muted">Here goes CRM description.</h3>
+                <h3 class="section-subheading text-muted">This is the Customer Relationship Management (CRM) system of the Association for Regional Development Agencies. CRM allows users to manage their client information and services provided, as well as generate analytics and retrieve reports from the database.</h3>
             </div>
         </div>
         <div class="row col-lg-12">
@@ -78,6 +78,48 @@
             </div>
         
         </div>
+        <br></br>
     </div>
 </section>
+<footer>
+    <div id="container">
+        <div class="row">
+            <div class="col-md-offset-4 col-md-4">
+                <ul class="list-inline social-buttons">
+                    {% if session.settings.web_url %}
+                    <li>
+                        <a href="{{ session.settings.web_url }}">
+                            <i class="fa fa-globe"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if session.settings.fb_url %}
+                    <li>
+                        <a href="{{ session.settings.fb_url }}">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if session.settings.tw_url %}
+                    <li>
+                        <a href="{{ session.settings.tw_url }}">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if session.settings.li_url %}
+                    <li>
+                        <a href="{{ session.settings.li_url }}">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
 {% endblock %}

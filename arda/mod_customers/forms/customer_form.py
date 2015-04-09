@@ -8,19 +8,19 @@ class CustomerForm(Form):
     municipalities = [
         'Prishtine', 'Drenas', 'Fushe Kosove', 'Obilliq', 'Podujeve',
         'Shtime', 'Gracanice', 'Lipjan',
-        'Vushtrri', 'Leposavic', ' Mitrovice', 'Skenderaj',
+        'Vushtrri', 'Zubin Potok', 'Zvecan', 'Leposavic', ' Mitrovice', 'Skenderaj',
         'Istog', 'Kline', ' Peja', 'Junik', 'Decan', 'Gjakova',
-        'Prizren', 'Dragash', 'Suhareka', 'Dragash', 'Mamusha', 'Rahovec',
+        'Prizren', 'Malisheva', 'Suhareka', 'Dragash', 'Mamusha', 'Rahovec',
         'Ferizaj', 'Gjilan', 'Viti', 'Novoberde', 'Kamenice', 'Hani Elezit', 'Kacanik',
         'Shterpce', 'Ranillug', 'Kllokot', 'Partesh'
     ]
 
     municipality = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities])
     municipality_region_central = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[0:8]])
-    municipality_region_north = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[8:12]])
-    municipality_region_west = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[12:18]])
-    municipality_region_south = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[18:24]])
-    municipality_region_east = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[24:34]])
+    municipality_region_north = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[8:14]])
+    municipality_region_west = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[14:20]])
+    municipality_region_south = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[20:26]])
+    municipality_region_east = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[26:37]])
 
     arda_regions = ['North', 'East', 'West', 'South', 'Center']
     choices = [(x, x) for x in arda_regions]
@@ -28,8 +28,8 @@ class CustomerForm(Form):
     region = SelectField("Region", choices=choices)
 
     company_name = TextField("Customer")
-    first_name = TextField("Costumer First Name")
-    last_name = TextField("Costumer Last Name")
+    first_name = TextField("First Name")
+    last_name = TextField("Last Name")
     job_title = TextField("Job Title")
     main_phone = TextField("Main Phone")
     work_phone = TextField("Work Phone")
@@ -39,7 +39,7 @@ class CustomerForm(Form):
     website = TextField("Website")
     customer_address = TextAreaField('Customer Adderess')
     customer_type = SelectField(
-        "Costumer Type",
+        "Customer Type",
         choices=[
             ('Entrepreneur', 'Entrepreneur'),
             ('Non-Governmental Organisation', 'Non-Governmental Organisation'),
@@ -47,7 +47,6 @@ class CustomerForm(Form):
             ('Municipality', 'Municipality')
         ]
     )
-
 
     #if Target Group is Business/Entrepreneur
     business_name = TextField("Business Name")
@@ -60,7 +59,7 @@ class CustomerForm(Form):
         default='Yes'
     )
     fiscal_number = TextField("Fiscal Number")
-    legal_entity_types = TextField("Legal Entity Types")
+    legal_entity_types = TextField("Legal Entity Type")
     industry = TextField("Industry")
     main_activity = TextField("Main Activity")
     founding_year = TextField("Founding Year")
@@ -68,12 +67,12 @@ class CustomerForm(Form):
     size_category = SelectField(
         "Size",
         choices=[
-            ('Micro', 'Micro'),
-            ('Small', 'Small'),
-            ('Medium', 'Medium'),
-            ('Large', 'Large')
-         ]
-     )
+            ('Micro (1-9)', 'Micro (1-9)'),
+            ('Small (10-49)', 'Small (10-49)'),
+            ('Medium (50-249)', 'Medium (50-249)'),
+            ('Large (250+)', 'Large (250+)')
+        ]
+    )
     investment = RadioField(
         "Investment",
         choices=[
@@ -92,8 +91,8 @@ class CustomerForm(Form):
     investor_industry = TextField("Industry")
     industry_of_interest = TextField("Industry of interest")
     investor_size = TextField("Size")
-    foundation_year_investor = TextField("Foundation year")
-    description_investor = TextField("Description of Business")
+    foundation_year_investor = TextField("Foundation Year")
+    description_investor = TextField("Business Description")
 
     department_choices = [
         'Department of Finance',
@@ -114,7 +113,7 @@ class CustomerForm(Form):
     offering = TextField("Offering")
     industries = TextField("Industries")
     modules = TextField("Modules")
-    infrastructure_available = TextField("Infrastructure available")
+    infrastructure_available = TextField("Infrastructure Available")
     investment_incentives = TextField("Investment Incentives")
     description = TextField("Description")
 
@@ -127,7 +126,6 @@ class CustomerForm(Form):
     number_of_staff_ngo = TextField("Number of Staff")
     description_of_ngo = TextAreaField("Description")
     main_activities = TextField("Main Activities")
-    web_site = TextField("Web Site")
     donors = TextField("Donors")
 
     #Bill to Address fields

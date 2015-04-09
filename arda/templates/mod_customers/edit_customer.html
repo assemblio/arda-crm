@@ -177,12 +177,21 @@
                 <div class="col-xs-6">{{form.customer_address.label(class="pull-right")}}</div>
                 <div class="col-xs-6">{{form.customer_address(class="form-control")}}</div>
             </div>
+            
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.email.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.email(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.website.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.website(class="form-control")}}</div>
+            </div>
             <div class="form-group form-group-sm">
                 <div class="col-xs-6">{{form.main_phone.label(class="pull-right")}}</div>
                 <div class="col-xs-6">{{form.main_phone(class="form-control")}}</div>
             </div>
-        </div>
-        <div class="form-group col-xs-6">
             <div class="form-group form-group-sm">
                 <div class="col-xs-6">{{form.work_phone.label(class="pull-right")}}</div>
                 <div class="col-xs-6">{{form.work_phone(class="form-control")}}</div>
@@ -194,15 +203,7 @@
             <div class="form-group form-group-sm">
                 <div class="col-xs-6">{{form.fax.label(class="pull-right")}}</div>
                 <div class="col-xs-6">{{form.fax(class="form-control")}}</div>
-            </div>
-            <div class="form-group form-group-sm">
-                <div class="col-xs-6">{{form.email.label(class="pull-right")}}</div>
-                <div class="col-xs-6">{{form.email(class="form-control")}}</div>
-            </div>
-            <div class="form-group form-group-sm">
-                <div class="col-xs-6">{{form.website.label(class="pull-right")}}</div>
-                <div class="col-xs-6">{{form.website(class="form-control")}}</div>
-            </div>
+            </div>            
         </div>
         <br></br>
         <div id="address-details" style="display:none">
@@ -329,7 +330,7 @@
         <br>
         <div class="col-xs-12" align="center" id="NGO-targetGroup" style="display:none">
             <div class="form-group form-group-lg">
-                <label class="control-label" style="font-size: 18px;">Target Group: Non-Governmental Organisations</label>
+                <label class="control-label" style="font-size: 18px;">Target Group: Non-Governmental Organisation</label>
                 <hr>
             </div><br>
             <div class="form-group col-xs-6">
@@ -366,10 +367,6 @@
                 <div class="form-group form-group-sm">
                     <div class="col-xs-6">{{form.main_activities.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.main_activities(class="form-control")}}</div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <div class="col-xs-6">{{form.web_site.label(class="pull-right")}}</div>
-                    <div class="col-xs-6">{{form.web_site(class="form-control")}}</div>
                 </div>
                 <div class="form-group form-group-sm">
                     <div class="col-xs-6">{{form.donors.label(class="pull-right")}}</div>
