@@ -1,0 +1,139 @@
+MongoDB shell version: 2.6.8
+connecting to: arda
+{
+	"_id" : ObjectId("5523e455484d3f1764b1651f"),
+	"website" : "",
+	"last_name" : {
+		"slug" : "bytyqi",
+		"value" : "Bytyqi"
+	},
+	"company" : {
+		"name" : "endriti LLC",
+		"slug" : "endriti-llc"
+	},
+	"customer_address" : "rruga Sali Berisha",
+	"address" : {
+		"shipping" : {
+			"ship_postal_code" : "",
+			"ship_country" : "",
+			"ship_state" : "",
+			"ship_add2" : "",
+			"ship_add1" : "",
+			"ship_city" : ""
+		},
+		"billing" : {
+			"bill_postal_code" : "",
+			"bill_state" : "",
+			"bill_add1" : "",
+			"bill_add2" : "",
+			"bill_country" : "",
+			"bill_city" : ""
+		}
+	},
+	"first_name" : {
+		"slug" : "endrit",
+		"value" : "Endrit"
+	},
+	"municipality_region" : "Leposavic",
+	"phone" : {
+		"main_phone" : "2324-222-112",
+		"work_phone" : "2324-222-112",
+		"fax" : "",
+		"mobile" : "2324-222-112"
+	},
+	"region" : "North",
+	"provided_services" : [
+		{
+			"description" : "fgheytgfhge",
+			"contactVia" : "Phone Call",
+			"serviceId" : ObjectId("55242b44484d3f1b3b89c05f"),
+			"provided_service" : {
+				"slug" : "blowjob",
+				"value" : "blowjob"
+			},
+			"service_fee" : 12,
+			"service_date" : ISODate("2015-04-24T00:00:00Z")
+		}
+	],
+	"customer_type" : {
+		"main_activity" : "",
+		"target_group" : "Entrepreneur",
+		"legal_entity_types" : "",
+		"business_name" : "",
+		"size_category" : "Micro",
+		"number_of_employees" : "",
+		"investment" : "Yes",
+		"industry" : "",
+		"business_description" : "",
+		"founding_year" : "",
+		"vat" : "Yes",
+		"fiscal_number" : ""
+	},
+	"email" : "endriti.92@gmail.com",
+	"job_title" : "",
+	"hejti" : "",
+	"unea" : ""
+}
+{
+	"_id" : ObjectId("55242cda484d3f1b3b89c060"),
+	"website" : "",
+	"last_name" : {
+		"slug" : "susuri",
+		"value" : "Susuri"
+	},
+	"company" : {
+		"name" : "Coso",
+		"slug" : "coso"
+	},
+	"customer_address" : "waSZDFXhkl;",
+	"address" : {
+		"shipping" : {
+			"ship_postal_code" : "",
+			"ship_country" : "",
+			"ship_state" : "",
+			"ship_add2" : "",
+			"ship_add1" : "",
+			"ship_city" : ""
+		},
+		"billing" : {
+			"bill_postal_code" : "",
+			"bill_state" : "",
+			"bill_add1" : "",
+			"bill_add2" : "",
+			"bill_country" : "",
+			"bill_city" : ""
+		}
+	},
+	"first_name" : {
+		"slug" : "dhurim",
+		"value" : "Dhurim"
+	},
+	"municipality_region" : "Vushtrri",
+	"phone" : {
+		"main_phone" : "2324-222-112",
+		"work_phone" : "",
+		"fax" : "",
+		"mobile" : ""
+	},
+	"region" : "North",
+	"provided_services" : [ ],
+	"customer_type" : {
+		"main_activity" : "",
+		"target_group" : "Entrepreneur",
+		"legal_entity_types" : "",
+		"business_name" : "",
+		"size_category" : "Micro",
+		"number_of_employees" : "",
+		"investment" : "Yes",
+		"industry" : "",
+		"business_description" : "",
+		"founding_year" : "",
+		"vat" : "Yes",
+		"fiscal_number" : ""
+	},
+	"email" : "endriti.92@gmail.com",
+	"job_title" : "",
+	"hejti" : "",
+	"unea" : ""
+}
+bye

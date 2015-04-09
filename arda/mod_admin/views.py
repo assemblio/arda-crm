@@ -12,7 +12,6 @@ from flask.ext.security import login_required, current_user
 from arda import user_datastore
 from slugify import slugify
 
-
 mod_admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 

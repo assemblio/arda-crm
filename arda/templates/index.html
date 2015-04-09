@@ -1,17 +1,23 @@
 {% extends "layout.html" %}
 {% block body %}
     <!-- Header -->
-
+<style type="text/css">
+.section-heading {
+    background: rgb(54, 25, 25); /* Fall-back for browsers that don't
+                                    support rgba */
+    background: rgba(54, 25, 25, .5);
+}
+</style>
 <header style="padding: 400px 0 0 0; background-image: url('http://arda-kosovo.org/repository/images/thumb_693x410/East_Region_92511.jpg');">
-        <div class="container">
-            <div class="intro-text">
-                <div class="intro-lead-in">
-                    {# {{ session.settings.site_tagline }} #}
-                </div>
+    <div class="container">
+    <div class="section-heading"></div>
 
-            </div>
+    <h1 class="section-heading">ARDA CRM</h1>
+        <div class="intro-text">
+        
         </div>
-    </header>
+    </div>
+</header>
 
 <section>
     <div class="container" align="center">
