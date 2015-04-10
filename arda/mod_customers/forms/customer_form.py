@@ -22,9 +22,14 @@ class CustomerForm(Form):
     municipality_region_south = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[21:27]])
     municipality_region_east = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[27:38]])
 
+    search_municipality_region_central = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[1:9]])
+    search_municipality_region_north = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[9:15]])
+    search_municipality_region_west = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[15:21]])
+    search_municipality_region_south = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[21:27]])
+    search_municipality_region_east = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[27:38]])
+
     arda_regions = ['North', 'East', 'West', 'South', 'Center']
     choices = [(x, x) for x in arda_regions]
-
     region = SelectField("Region", choices=choices)
 
     company_name = TextField("Customer")

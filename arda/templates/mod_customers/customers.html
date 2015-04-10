@@ -102,9 +102,8 @@ $(document).ready(function(){
          rebuildTable(result);
        });
      });
-     //show/hide municipalities based on selected region
-     $('#municipality_region_north').css('display', 'block');
 
+     //show/hide municipalities based on selected region
       $('#region').change(function(){
           var region = $('#region').val();
           
@@ -126,19 +125,27 @@ $(document).ready(function(){
               $('#municipality_region_south').css('display', "block");
               $('#municipality_region_north').css('display', "none");
               $('#municipality_region_central').css('display', "none");
-          } else if (region == "Center") {
-              $('#municipality_region_east').css('display', "none");
-              $('#municipality_region_west').css('display', "none");
-              $('#municipality_region_south').css('display', "none");
-              $('#municipality_region_north').css('display', "none");
-              $('#municipality_region_central').css('display', "block");
-          } else if (region == "North") {
+          }  else if (region == "North") {
               $('#municipality_region_east').css('display', "none");
               $('#municipality_region_west').css('display', "none");
               $('#municipality_region_south').css('display', "none");
               $('#municipality_region_north').css('display', "block");
               $('#municipality_region_central').css('display', "none");
-          } 
+          }
+          else if (region == "Center") {
+              $('#municipality_region_east').css('display', "none");
+              $('#municipality_region_west').css('display', "none");
+              $('#municipality_region_south').css('display', "none");
+              $('#municipality_region_central').css('display', "block");
+              $('#municipality_region_north').css('display', "none");
+          }
+          else {
+              $('#municipality_region_east').css('display', "none");
+              $('#municipality_region_west').css('display', "none");
+              $('#municipality_region_south').css('display', "none");
+              $('#municipality_region_north').css('display', "none");
+              $('#municipality_region_central').css('display', "none");
+          }
       });
      
   });
@@ -186,20 +193,29 @@ $(document).ready(function(){
                 {{form.municipality_region_east(class="form-control")}}
               </div>
             {% else %}
-              <div class="col-xs-2">{{form.region(class="form-control")}}</div>
+              <div class="col-xs-3">
+               <select id="region" name="region" class="form-control">
+                  <option value="All" selected="selected">All</option>
+                  <option value="Center">Center</option>
+                  <option value="North">North</option>
+                  <option value="West">West</option>
+                  <option value="South">South</option>
+                  <option value="East">East</option>
+               </select>
+            </div>
               <div class="col-xs-2" id='municipality_region_north' style="display:none">
                 {{form.municipality_region_north(class="form-control")}}
               </div>           
-              <div class="col-xs-2" style="display:none">
+              <div class="col-xs-2" id='municipality_region_central' style="display:none">
                 {{form.municipality_region_central(class="form-control")}}
               </div>
-              <div class="col-xs-2" style="display:none">
+              <div class="col-xs-2" id='municipality_region_south' style="display:none">
                 {{form.municipality_region_south(class="form-control")}}
               </div>
-              <div class="col-xs-2" style="display:none">
+              <div class="col-xs-2" id='municipality_region_west' style="display:none">
                 {{form.municipality_region_west(class="form-control")}}
               </div>
-              <div class="col-xs-2" style="display:none">
+              <div class="col-xs-2" id='municipality_region_east' style="display:none">
                 {{form.municipality_region_east(class="form-control")}}
               </div>
             {% endif %}
