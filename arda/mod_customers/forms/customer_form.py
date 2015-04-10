@@ -6,7 +6,7 @@ from wtforms import SelectField, TextField, RadioField, HiddenField, TextAreaFie
 class CustomerForm(Form):
 
     municipalities = [
-        'Prishtine', 'Drenas', 'Fushe Kosove', 'Obilliq', 'Podujeve',
+        'All', 'Prishtine', 'Drenas', 'Fushe Kosove', 'Obilliq', 'Podujeve',
         'Shtime', 'Gracanice', 'Lipjan',
         'Vushtrri', 'Zubin Potok', 'Zvecan', 'Leposavic', ' Mitrovice', 'Skenderaj',
         'Istog', 'Kline', ' Peja', 'Junik', 'Decan', 'Gjakova',
@@ -16,11 +16,11 @@ class CustomerForm(Form):
     ]
 
     municipality = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities])
-    municipality_region_central = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[0:8]])
-    municipality_region_north = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[8:14]])
-    municipality_region_west = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[14:20]])
-    municipality_region_south = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[20:26]])
-    municipality_region_east = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[26:37]])
+    municipality_region_central = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[1:9]])
+    municipality_region_north = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[9:15]])
+    municipality_region_west = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[15:21]])
+    municipality_region_south = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[21:27]])
+    municipality_region_east = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[27:38]])
 
     arda_regions = ['North', 'East', 'West', 'South', 'Center']
     choices = [(x, x) for x in arda_regions]
@@ -35,7 +35,7 @@ class CustomerForm(Form):
     work_phone = TextField("Work Phone")
     mobile = TextField("Mobile Phone")
     fax = TextField("Fax")
-    email = TextField("Email")
+    email = TextField("E-mail")
     website = TextField("Website")
     customer_address = TextAreaField('Customer Adderess')
     customer_type = SelectField(

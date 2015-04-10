@@ -24,12 +24,12 @@ def customers():
         page = 1
     else:
         page = int(request.args.get('page'))
-    form = ServiceTypes()
+    form = CustomerForm()
     customers = mongo.db.customers.find({})
 
     try:
         customers_pagi = Customers.objects.all()
-        pagination = customers_pagi.paginate(page=page, per_page=10)
+        pagination = customers_pagi.paginate(page=page, per_page=100)
 
     except DoesNotExist:
 
