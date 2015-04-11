@@ -92,59 +92,127 @@ $(document).ready(function(){
      $('#searchCustomer').click(function(){
        $('#pagination').css("display", "none");
        var customer_type = $('#customer-type-select').val();
-       var name = $('#firstName').val();
-       var l_name = $('#lastName').val();
+       var size = $('#search_size_category').val();
+       var region = $('#region').val();
+       var north = $('#search_municipality_region_north').val();
+       var center = $('#search_municipality_region_central').val();
+       var south = $('#search_municipality_region_south').val();
+       var west = $('#search_municipality_region_west').val();
+       var east = $('#search_municipality_region_east').val();
        var company = $('#company').val();
    
-       url = "{{ url_for('api.search') }}" + "?firstName=" + name + "&lastName=" + l_name + "&company=" + company + "&customer_type=" + customer_type;
+       url = "{{ url_for('api.search') }}" + "?company=" + company + "&customer_type=" + customer_type + "&size=" + size + "&region=" + region + "&north=" + north + "&center=" + center + "&south=" + south + "&west=" + west + "&east=" + east;
    
        $.get(url, function(result){
          rebuildTable(result);
        });
      });
-
+     //show select filed based on selection
+     var target_group_type = $('#customer-type-select').val();
+      if (target_group_type == "Entrepreneur"){
+        $('#size_category').css('display', "block");
+      }
+      else{
+        $('#size_category').css('display', "none");
+      };
+     $('#customer-type-select').change(function(){
+            var target_group_type = $('#customer-type-select').val();
+            if (target_group_type == "Entrepreneur"){
+              $('#size_category').css('display', "block");
+            }
+            else{
+              $('#size_category').css('display', "none");
+            };
+      });
      //show/hide municipalities based on selected region
+      var region = $('#region').val();
+          
+          if(region == "East"){
+              $('#search_municipality_east').css('display', "block");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "West"){
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "block");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "South") {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "block");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "North") {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "block");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "Center") {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_central').css('display', "block");
+              $('#search_municipality_north').css('display', "none");
+          }
+          else {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
       $('#region').change(function(){
           var region = $('#region').val();
           
           if(region == "East"){
-              $('#municipality_region_east').css('display', "block");
-              $('#municipality_region_west').css('display', "none");
-              $('#municipality_region_south').css('display', "none");
-              $('#municipality_region_north').css('display', "none");
-              $('#municipality_region_central').css('display', "none");
-          } else if (region == "West"){
-              $('#municipality_region_east').css('display', "none");
-              $('#municipality_region_west').css('display', "block");
-              $('#municipality_region_south').css('display', "none");
-              $('#municipality_region_north').css('display', "none");
-              $('#municipality_region_central').css('display', "none");
-          } else if (region == "South") {
-              $('#municipality_region_east').css('display', "none");
-              $('#municipality_region_west').css('display', "none");
-              $('#municipality_region_south').css('display', "block");
-              $('#municipality_region_north').css('display', "none");
-              $('#municipality_region_central').css('display', "none");
-          }  else if (region == "North") {
-              $('#municipality_region_east').css('display', "none");
-              $('#municipality_region_west').css('display', "none");
-              $('#municipality_region_south').css('display', "none");
-              $('#municipality_region_north').css('display', "block");
-              $('#municipality_region_central').css('display', "none");
+              $('#search_municipality_east').css('display', "block");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "West"){
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "block");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "South") {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "block");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "North") {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "block");
+              $('#search_municipality_central').css('display', "none");
           }
           else if (region == "Center") {
-              $('#municipality_region_east').css('display', "none");
-              $('#municipality_region_west').css('display', "none");
-              $('#municipality_region_south').css('display', "none");
-              $('#municipality_region_central').css('display', "block");
-              $('#municipality_region_north').css('display', "none");
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_central').css('display', "block");
+              $('#search_municipality_north').css('display', "none");
           }
           else {
-              $('#municipality_region_east').css('display', "none");
-              $('#municipality_region_west').css('display', "none");
-              $('#municipality_region_south').css('display', "none");
-              $('#municipality_region_north').css('display', "none");
-              $('#municipality_region_central').css('display', "none");
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
           }
       });
      
@@ -154,46 +222,50 @@ $(document).ready(function(){
 <section>
    <div class="container" align="center">
       <div>
+        <br></br>
          <form method="get" action="{{url_for('customers.create_customer')}}">
             <button type="submit" class="btn btn-info" >New Customer</button>
          </form>
       </div>
-      <div class="form-group form-group-sm">
+      <div class="form-group form-group-sm" align="center">
          <form class="form-horizontal">
             <div class="col-xs-2">
                <input type="text" class="form-control" id='company' name='company' placeholder="Customer">
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-2">
                <select id="customer-type-select" class="form-control">
                   <option value="All" selected="selected">All</option>
-                  <option value="Entrepreneur">Entrepreneur</option>
+                  <option value="Entrepreneur">Entrepreneur/Business</option>
                   <option value="Non-Governmental Organisation">Non-Governmental Organisation</option>
                   <option value="Investor">Investor</option>
                   <option value="Municipality">Municipality</option>
                </select>
             </div>
+            <div class="col-xs-2" id='size_category' style="display:none;">
+              {{form.search_size_category(class="form-control")}}
+            </div>
             {% if current_user.region == "Center" %}
               <div class="col-xs-2">
-                {{form.municipality_region_central(class="form-control")}}
+                {{form.search_municipality_region_central(class="form-control")}}
               </div>
             {% elif current_user.region == "North" %}
               <div class="col-xs-2">
-                {{form.municipality_region_north(class="form-control")}}
+                {{form.search_municipality_region_north(class="form-control")}}
               </div>
             {% elif current_user.region == "West" %}
               <div class="col-xs-2">
-                {{form.municipality_region_west(class="form-control")}}
+                {{form.search_municipality_region_west(class="form-control")}}
               </div>
             {% elif current_user.region == "South" %}
                 <div class="col-xs-2">
-                  {{form.municipality_region_south(class="form-control")}}
+                  {{form.search_municipality_region_south(class="form-control")}}
                 </div>
             {% elif current_user.region == "East" %}
               <div class="col-xs-2">
-                {{form.municipality_region_east(class="form-control")}}
+                {{form.search_municipality_region_east(class="form-control")}}
               </div>
             {% else %}
-              <div class="col-xs-3">
+              <div class="col-xs-2">
                <select id="region" name="region" class="form-control">
                   <option value="All" selected="selected">All</option>
                   <option value="Center">Center</option>
@@ -203,20 +275,20 @@ $(document).ready(function(){
                   <option value="East">East</option>
                </select>
             </div>
-              <div class="col-xs-2" id='municipality_region_north' style="display:none">
-                {{form.municipality_region_north(class="form-control")}}
+              <div class="col-xs-2" id='search_municipality_north' style="display:none">
+                {{form.search_municipality_region_north(class="form-control")}}
               </div>           
-              <div class="col-xs-2" id='municipality_region_central' style="display:none">
-                {{form.municipality_region_central(class="form-control")}}
+              <div class="col-xs-2" id='search_municipality_central' style="display:none">
+                {{form.search_municipality_region_central(class="form-control")}}
               </div>
-              <div class="col-xs-2" id='municipality_region_south' style="display:none">
-                {{form.municipality_region_south(class="form-control")}}
+              <div class="col-xs-2" id='search_municipality_south' style="display:none">
+                {{form.search_municipality_region_south(class="form-control")}}
               </div>
-              <div class="col-xs-2" id='municipality_region_west' style="display:none">
-                {{form.municipality_region_west(class="form-control")}}
+              <div class="col-xs-2" id='search_municipality_west' style="display:none">
+                {{form.search_municipality_region_west(class="form-control")}}
               </div>
-              <div class="col-xs-2" id='municipality_region_east' style="display:none">
-                {{form.municipality_region_east(class="form-control")}}
+              <div class="col-xs-2" id='search_municipality_east' style="display:none">
+                {{form.search_municipality_region_east(class="form-control")}}
               </div>
             {% endif %}
             

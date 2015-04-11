@@ -1,6 +1,5 @@
 from flask import Blueprint, send_file, render_template, \
-                  session, redirect, url_for, current_app, request
-from flask.ext.security import login_required
+    redirect, url_for, current_app, request
 import os
 from arda import mongo
 import xlsxwriter
@@ -8,7 +7,7 @@ import json
 from forms.customer_form import CustomerForm
 from slugify import slugify
 from bson import ObjectId
-from flask.ext.security import login_user, login_required, logout_user, current_user
+from flask.ext.security import login_required, current_user
 from arda.mod_services.forms.servicetypes import ServiceTypes
 from arda.mod_customers.models.model import Customers
 from flask.ext.mongoengine import DoesNotExist
@@ -52,8 +51,13 @@ def create_customer():
 
     if request.method == "GET":
         action = url_for('customers.create_customer')
-        text = "Create Customer"
-        return render_template('mod_customers/edit_customer.html', form=form, action=action, text=text)
+        text = "Create a New Customer"
+        return render_template(
+            'mod_customers/edit_customer.html',
+            form=form,
+            action=action,
+            text=text
+        )
 
     if request.method == "POST":
         #call the function which builds than stores the json document
@@ -73,13 +77,17 @@ def edit_customer(customer_id):
 
         if customer_doc['region'] == 'West':
             form.municipality_region_west.data = customer_doc['municipality_region']
-        elif customer_doc['region'] == 'Center':
-            form.municmunicipality_region_central.data = customer_doc['municipality_region']
-        elif customer_doc['region'] == 'East':
+
+        if customer_doc['region'] == 'Center':
+            form.municipality_region_central.data = customer_doc['municipality_region']
+
+        if customer_doc['region'] == 'East':
             form.municipality_region_east.data = customer_doc['municipality_region']
-        elif customer_doc['region'] == 'South':
+
+        if customer_doc['region'] == 'South':
             form.municipality_region_south.data = customer_doc['municipality_region']
-        else:
+
+        if customer_doc['region'] == 'North':
             form.municipality_region_north.data = customer_doc['municipality_region']
 
         form.company_name.data = customer_doc['company']['name']
@@ -91,6 +99,7 @@ def edit_customer(customer_id):
         form.mobile.data = customer_doc['phone']['main_phone']
         form.fax.data = customer_doc['phone']['fax']
         form.email.data = customer_doc['email']
+        form.region.data = customer_doc['region']
         form.customer_address.data = customer_doc['customer_address']
         form.website.data = customer_doc['website']
         # Let's check what target group we have in order to know what fields to fill
@@ -243,19 +252,22 @@ def build_save_costumers_document():
         json_obj['region'] = costumer['region']
 
     #municipality based on region
-    if costumer['municipality_region_north']:
+    #municipality based on region
+    if costumer['municipality_region_north'] and costumer['region'] == "North":
         json_obj['municipality_region'] = costumer['municipality_region_north']
 
-    elif costumer['municipality_region_central']:
+    if costumer['municipality_region_central'] and costumer['region'] == "Center":
         json_obj['municipality_region'] = costumer['municipality_region_central']
 
-    elif costumer['municipality_region_south']:
+    if costumer['municipality_region_south'] and costumer['region'] == "South":
         json_obj['municipality_region'] = costumer['municipality_region_south']
 
-    elif costumer['municipality_region_west']:
+    if costumer['municipality_region_west'] and costumer['region'] == "West":
         json_obj['municipality_region'] = costumer['municipality_region_west']
-    else:
+
+    if costumer['municipality_region_east'] and costumer['region'] == "East":
         json_obj['municipality_region'] = costumer['municipality_region_east']
+
 
     if costumer['customer_type'] == "Entrepreneur":
         json_obj['customer_type'] = {
@@ -317,6 +329,7 @@ def edit_costumers_document(customer_id):
 
     customer_form = CustomerForm(request.form)
     costumer = customer_form.data
+
     json_obj = {
         'company': {
             'name': costumer['company_name'],
@@ -366,18 +379,19 @@ def edit_costumers_document(customer_id):
         json_obj['region'] = costumer['region']
 
     #municipality based on region
-    if costumer['municipality_region_north']:
+    if costumer['municipality_region_north'] and costumer['region'] == "North":
         json_obj['municipality_region'] = costumer['municipality_region_north']
 
-    elif costumer['municipality_region_central']:
+    if costumer['municipality_region_central'] and costumer['region'] == "Center":
         json_obj['municipality_region'] = costumer['municipality_region_central']
 
-    elif costumer['municipality_region_south']:
+    if costumer['municipality_region_south'] and costumer['region'] == "South":
         json_obj['municipality_region'] = costumer['municipality_region_south']
 
-    elif costumer['municipality_region_west']:
+    if costumer['municipality_region_west'] and costumer['region'] == "West":
         json_obj['municipality_region'] = costumer['municipality_region_west']
-    else:
+
+    if costumer['municipality_region_east'] and costumer['region'] == "East":
         json_obj['municipality_region'] = costumer['municipality_region_east']
 
     if costumer['customer_type'] == "Entrepreneur":

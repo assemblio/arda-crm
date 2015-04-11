@@ -72,18 +72,45 @@ def date_fee_chart():
 @login_required
 def search():
     if(len(request.args) > 0):
-        f_name = request.args.get('firstName')
-        l_name = request.args.get('lastName')
+        north = request.args.get('north')
+        center = request.args.get('center')
+        south = request.args.get('south')
+        west = request.args.get('west')
+        east = request.args.get('east')
+        size = request.args.get('size')
+        region = request.args.get('region')
         company = request.args.get('company')
         customer_type = request.args.get('customer_type')
 
     match_field = {}
-    if f_name:
-        match_field['first_name.slug'] = slugify(f_name)
-    if l_name:
-        match_field['last_name.slug'] = slugify(l_name)
+
     if company:
         match_field['company.slug'] = slugify(company)
+
+    if north:
+        if north != "All":
+            match_field['municipality_region'] = north
+
+    if center:
+        if center != "All":
+            match_field['municipality_region'] = center
+    if south:
+        if south != "All":
+            match_field['municipality_region'] = south
+    if west:
+        if west != "All":
+            match_field['municipality_region'] = west
+    if east:
+        if east != "All":
+            match_field['municipality_region'] = east
+    if size:
+        if size != "All":
+            match_field['customer_type.size_category'] = size
+
+    if region:
+        if region != "All":
+            match_field['region'] = region
+
     if customer_type:
         if customer_type != "All":
             match_field['customer_type.target_group'] = customer_type

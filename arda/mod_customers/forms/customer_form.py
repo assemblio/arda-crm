@@ -8,25 +8,25 @@ class CustomerForm(Form):
     municipalities = [
         'All', 'Prishtine', 'Drenas', 'Fushe Kosove', 'Obilliq', 'Podujeve',
         'Shtime', 'Gracanice', 'Lipjan',
-        'Vushtrri', 'Zubin Potok', 'Zvecan', 'Leposavic', ' Mitrovice', 'Skenderaj',
-        'Istog', 'Kline', ' Peja', 'Junik', 'Decan', 'Gjakova',
-        'Prizren', 'Malisheva', 'Suhareka', 'Dragash', 'Mamusha', 'Rahovec',
-        'Ferizaj', 'Gjilan', 'Viti', 'Novoberde', 'Kamenice', 'Hani Elezit', 'Kacanik',
+        'All', 'Vushtrri', 'Zubin Potok', 'Zvecan', 'Leposavic', ' Mitrovice', 'Skenderaj',
+        'All', 'Istog', 'Kline', ' Peja', 'Junik', 'Decan', 'Gjakova',
+        'All', 'Prizren', 'Malisheva', 'Suhareka', 'Dragash', 'Mamusha', 'Rahovec',
+        'All', 'Ferizaj', 'Gjilan', 'Viti', 'Novoberde', 'Kamenice', 'Hani Elezit', 'Kacanik',
         'Shterpce', 'Ranillug', 'Kllokot', 'Partesh'
     ]
 
-    municipality = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities])
-    municipality_region_central = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[1:9]])
-    municipality_region_north = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[9:15]])
-    municipality_region_west = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[15:21]])
-    municipality_region_south = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[21:27]])
-    municipality_region_east = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[27:38]])
+    municipality = SelectField('Municipality', choices=[(x, x) for x in municipalities])
+    municipality_region_central = SelectField('Municipality', choices=[(x, x) for x in municipalities[1:9]])
+    municipality_region_north = SelectField('Municipality', choices=[(x, x) for x in municipalities[10:16]])
+    municipality_region_west = SelectField('Municipality', choices=[(x, x) for x in municipalities[17:23]])
+    municipality_region_south = SelectField('Municipality', choices=[(x, x) for x in municipalities[24:30]])
+    municipality_region_east = SelectField('Municipality', choices=[(x, x) for x in municipalities[31:42]])
 
-    search_municipality_region_central = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[1:9]])
-    search_municipality_region_north = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[9:15]])
-    search_municipality_region_west = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[15:21]])
-    search_municipality_region_south = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[21:27]])
-    search_municipality_region_east = SelectField('Choose Municipality', choices=[(x, x) for x in municipalities[27:38]])
+    search_municipality_region_central = SelectField('Municipality', choices=[(x, x) for x in municipalities[0:9]])
+    search_municipality_region_north = SelectField('Municipality', choices=[(x, x) for x in municipalities[9:16]])
+    search_municipality_region_west = SelectField('Municipality', choices=[(x, x) for x in municipalities[16:23]])
+    search_municipality_region_south = SelectField('Municipality', choices=[(x, x) for x in municipalities[23:30]])
+    search_municipality_region_east = SelectField('Municipality', choices=[(x, x) for x in municipalities[30:42]])
 
     arda_regions = ['North', 'East', 'West', 'South', 'Center']
     choices = [(x, x) for x in arda_regions]
@@ -42,11 +42,11 @@ class CustomerForm(Form):
     fax = TextField("Fax")
     email = TextField("E-mail")
     website = TextField("Website")
-    customer_address = TextAreaField('Customer Adderess')
+    customer_address = TextAreaField('Adderess')
     customer_type = SelectField(
         "Customer Type",
         choices=[
-            ('Entrepreneur', 'Entrepreneur'),
+            ('Entrepreneur', 'Entrepreneur/Business'),
             ('Non-Governmental Organisation', 'Non-Governmental Organisation'),
             ('Investor', 'Investor'),
             ('Municipality', 'Municipality')
@@ -72,10 +72,20 @@ class CustomerForm(Form):
     size_category = SelectField(
         "Size",
         choices=[
-            ('Micro (1-9)', 'Micro (1-9)'),
-            ('Small (10-49)', 'Small (10-49)'),
-            ('Medium (50-249)', 'Medium (50-249)'),
-            ('Large (250+)', 'Large (250+)')
+            ('Micro', 'Micro (1-9)'),
+            ('Small', 'Small (10-49)'),
+            ('Medium', 'Medium (50-249)'),
+            ('Large', 'Large (250+)')
+        ]
+    )
+    search_size_category = SelectField(
+        "Size",
+        choices=[
+            ('All', 'All'),
+            ('Micro', 'Micro (1-9)'),
+            ('Small', 'Small (10-49)'),
+            ('Medium', 'Medium (50-249)'),
+            ('Large', 'Large (250+)')
         ]
     )
     investment = RadioField(

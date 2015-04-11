@@ -2,7 +2,38 @@
 {% block body %}
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#region-north').css('display', "block");
+        var region = $('#region').val();            
+        if(region == "East"){
+            $('#region-east').css('display', "block");
+            $('#region-west').css('display', "none");
+            $('#region-south').css('display', "none");
+            $('#region-north').css('display', "none");
+            $('#region-central').css('display', "none");
+        } else if (region == "West"){
+            $('#region-east').css('display', "none");
+            $('#region-west').css('display', "block");
+            $('#region-south').css('display', "none");
+            $('#region-north').css('display', "none");
+            $('#region-central').css('display', "none");
+        } else if (region == "South") {
+            $('#region-east').css('display', "none");
+            $('#region-west').css('display', "none");
+            $('#region-south').css('display', "block");
+            $('#region-north').css('display', "none");
+            $('#region-central').css('display', "none");
+        } else if (region == "Center") {
+            $('#region-east').css('display', "none");
+            $('#region-west').css('display', "none");
+            $('#region-south').css('display', "none");
+            $('#region-north').css('display', "none");
+            $('#region-central').css('display', "block");
+        } else if (region == "North") {
+            $('#region-east').css('display', "none");
+            $('#region-west').css('display', "none");
+            $('#region-south').css('display', "none");
+            $('#region-north').css('display', "block");
+            $('#region-central').css('display', "none");
+        } 
 
         $('#region').change(function(){
             var region = $('#region').val();
@@ -258,7 +289,7 @@
         <br></br><br>
         <div class="col-xs-12" id="Entrepreneur-targetGroup" align="center" style="display:none">
             <div class="form-group form-group-lg">
-                <label class="control-label" style="font-size: 18px;">Target Group: Entrepreneur</label>
+                <label class="control-label" style="font-size: 18px;">Target Group: Entrepreneur/Business</label>
                 <hr>
             </div><br>
             <div class="form-group col-xs-6">
