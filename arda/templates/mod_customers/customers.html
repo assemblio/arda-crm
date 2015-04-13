@@ -227,15 +227,15 @@ $(document).ready(function(){
             <button type="submit" class="btn btn-info" >New Customer</button>
          </form>
       </div>
-      <div class="form-group form-group-sm pull-right" align="center">
+      <div class="form-group form-group-sm pull-right">
          <form class="form-horizontal">
             <div class="col-xs-2">
                <input type="text" class="form-control" id='company' name='company' placeholder="Customer">
             </div>
             <div class="col-xs-2">
                <select id="customer-type-select" class="form-control">
-                  <option value="All" selected="selected">All</option>
-                  <option value="Business/Entrepreneur">Business/Entrepreneur</option>
+                  <option value="All">All</option>
+                  <option value="Business/Entrepreneur"  selected="selected">Business/Entrepreneur</option>
                   <option value="Non-Governmental Organisation">Non-Governmental Organisation</option>
                   <option value="Investor">Investor</option>
                   <option value="Municipality">Municipality</option>
@@ -267,8 +267,8 @@ $(document).ready(function(){
             {% else %}
               <div class="col-xs-2">
                <select id="region" name="region" class="form-control">
-                  <option value="All" selected="selected">All</option>
-                  <option value="Center">Center</option>
+                  <option value="All">All</option>
+                  <option value="Center" selected="selected">Center</option>
                   <option value="North">North</option>
                   <option value="West">West</option>
                   <option value="South">South</option>
