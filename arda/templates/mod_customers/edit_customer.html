@@ -72,7 +72,7 @@
         });
 
         var target_group_type1 = $('#customer_type').val();
-        if (target_group_type1 == "Entrepreneur"){
+        if (target_group_type1 == "Business/Entrepreneur"){
                 $('#Entrepreneur-targetGroup').css("display", "block");
                 $('#NGO-targetGroup').css("display", "none");
                 $('#investorTargetGroup').css("display", "none");
@@ -96,7 +96,7 @@
 
         $('#customer_type').change(function(){
             var target_group_type = $('#customer_type').val();
-            if (target_group_type == "Entrepreneur"){
+            if (target_group_type == "Business/Entrepreneur"){
                 $('#Entrepreneur-targetGroup').css("display", "block");
                 $('#NGO-targetGroup').css("display", "none");
                 $('#investorTargetGroup').css("display", "none");
@@ -289,7 +289,7 @@
         <br></br><br>
         <div class="col-xs-12" id="Entrepreneur-targetGroup" align="center" style="display:none">
             <div class="form-group form-group-lg">
-                <label class="control-label" style="font-size: 18px;">Target Group: Entrepreneur/Business</label>
+                <label class="control-label" style="font-size: 18px;">Target Group: Business/Entrepreneur</label>
                 <hr>
             </div><br>
             <div class="form-group col-xs-6">
@@ -297,10 +297,17 @@
                 <div class="col-xs-6">{{form.business_name.label(class="pull-right")}}</div>
                 <div class="col-xs-6">{{form.business_name(class="form-control")}}</div>
             </div>
-            
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.business_number.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.business_number(class="form-control")}}</div>
+            </div>
             <div class="form-group form-group-sm">
                 <div class="col-xs-6">{{form.fiscal_number.label(class="pull-right")}}</div>
                 <div class="col-xs-6">{{form.fiscal_number(class="form-control")}}</div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.vat.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.vat(class="form-control")}}</div>
             </div>
             <div class="form-group form-group-sm">
                 <div class="col-xs-6">{{form.legal_entity_types.label(class="pull-right")}}</div>
@@ -313,20 +320,13 @@
             <div class="form-group form-group-sm">
                 <div class="col-xs-6">{{form.main_activity.label(class="pull-right")}}</div>
                 <div class="col-xs-6">{{form.main_activity(class="form-control")}}</div>
-            </div>
-            <div class="form-group form-group-sm">
-                <div class="col-xs-6">{{form.vat.label(class="pull-right")}}</div>
-                <div class="btn-group col-xs-6 roles role checkeme" data-toggle="buttons">
-                    {% for subfield in form.vat %}
-                        <div class="btn btn-default col-xs-12">
-                            {{ subfield }}
-                            {{ subfield.label }}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+            </div>            
             </div>
             <div class="form-group col-xs-6">
+            <div class="form-group form-group-sm">
+                <div class="col-xs-6">{{form.size_category.label(class="pull-right")}}</div>
+                <div class="col-xs-6">{{form.size_category(class="form-control")}}</div>
+            </div>
             <div class="form-group form-group-sm">
                 <div class="col-xs-6">{{form.founding_year.label(class="pull-right")}}</div>
                 <div class="col-xs-6">{{form.founding_year(class="form-control")}}</div>
@@ -335,11 +335,6 @@
                 <div class="col-xs-6">{{form.number_of_employees.label(class="pull-right")}}</div>
                 <div class="col-xs-6">{{form.number_of_employees(class="form-control")}}</div>
             </div>
-            <div class="form-group form-group-sm">
-                <div class="col-xs-6">{{form.size_category.label(class="pull-right")}}</div>
-                <div class="col-xs-6">{{form.size_category(class="form-control")}}</div>
-            </div>
-            
             <div class="form-group form-group-sm">
                 <div class="col-xs-6">
                 {{form.investment.label(class="pull-right")}}</div>
@@ -381,12 +376,12 @@
                     <div class="col-xs-6">{{form.sector_ngo.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.sector_ngo(class="form-control")}}</div>
                 </div>
-                <div class="form-group form-group-sm">
+                </div>
+                <div class="form-group col-xs-6">
+                 <div class="form-group form-group-sm">
                     <div class="col-xs-6">{{form.founding_year_ngo.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.founding_year_ngo(class="form-control")}}</div>
                 </div>
-                </div>
-                <div class="form-group col-xs-6">
                 <div class="form-group form-group-sm">
                     <div class="col-xs-6">{{form.number_of_staff_ngo.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.number_of_staff_ngo(class="form-control")}}</div>
@@ -399,16 +394,12 @@
                     <div class="col-xs-6">{{form.main_activities.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.main_activities(class="form-control")}}</div>
                 </div>
-                <div class="form-group form-group-sm">
-                    <div class="col-xs-6">{{form.donors.label(class="pull-right")}}</div>
-                    <div class="col-xs-6">{{form.donors(class="form-control")}}</div>
-                </div>
             </div>
         </div>
         <br>
         <div class="col-xs-12" align="center" id="investorTargetGroup" style="display:none">
             <div class="form-group form-group-lg">
-                <label class="control-label" style="font-size: 18px;">Target Group: Investor</label>
+                <label class="control-label" style="font-size: 18px;">Target Group: Investor ( Foreing and Diaspora) </label>
                 <hr>
             </div><br>
             <div class="form-group col-xs-6">
@@ -421,19 +412,27 @@
                     <div class="col-xs-6">{{form.business(class="form-control")}}</div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <div class="col-xs-6">{{form.business_number.label(class="pull-right")}}</div>
-                    <div class="col-xs-6">{{form.business_number(class="form-control")}}</div>
+                    <div class="col-xs-6">{{form.investor_business_number.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.investor_business_number(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.investor_fiscal_number.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.investor_fiscal_number(class="form-control")}}</div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.investor_vat.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.investor_vat(class="form-control")}}</div>
                 </div>
                 <div class="form-group form-group-sm">
                     <div class="col-xs-6">{{form.interest.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.interest(class="form-control")}}</div>
+                </div>                
                 </div>
+                <div class="form-group col-xs-6">
                 <div class="form-group form-group-sm">
                     <div class="col-xs-6">{{form.investor_industry.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.investor_industry(class="form-control")}}</div>
                 </div>
-                </div>
-                <div class="form-group col-xs-6">
                 <div class="form-group form-group-sm">
                     <div class="col-xs-6">{{form.industry_of_interest.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.industry_of_interest(class="form-control")}}</div>
@@ -467,25 +466,25 @@
                     <div class="col-xs-6">{{form.department.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.department(class="form-control")}}</div>
                 </div>
-                <div class="form-group form-group-sm">
+                <div class="form-group form-group-sm" style="display:none">
                     <div class="col-xs-6">{{form.offering.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.offering(class="form-control")}}</div>
                 </div>
-                <div class="form-group form-group-sm">
+                <div class="form-group form-group-sm" style="display:none">
                     <div class="col-xs-6">{{form.industries.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.industries(class="form-control")}}</div>
                 </div>
-                <div class="form-group form-group-sm">
+                <div class="form-group form-group-sm" style="display:none">
                     <div class="col-xs-6">{{form.modules.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.modules(class="form-control")}}</div>
                 </div>
                 </div>
                 <div class="form-group col-xs-6">
-                <div class="form-group form-group-sm">
+                <div class="form-group form-group-sm" style="display:none">
                     <div class="col-xs-6">{{form.infrastructure_available.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.infrastructure_available(class="form-control")}}</div>
                 </div>
-                <div class="form-group form-group-sm">
+                <div class="form-group form-group-sm" style="display:none">
                     <div class="col-xs-6">{{form.investment_incentives.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.investment_incentives(class="form-control")}}</div>
                 </div>

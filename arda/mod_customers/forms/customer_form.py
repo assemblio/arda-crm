@@ -46,7 +46,7 @@ class CustomerForm(Form):
     customer_type = SelectField(
         "Customer Type",
         choices=[
-            ('Entrepreneur', 'Entrepreneur/Business'),
+            ('Business/Entrepreneur', 'Business/Entrepreneur'),
             ('Non-Governmental Organisation', 'Non-Governmental Organisation'),
             ('Investor', 'Investor'),
             ('Municipality', 'Municipality')
@@ -55,18 +55,12 @@ class CustomerForm(Form):
 
     #if Target Group is Business/Entrepreneur
     business_name = TextField("Business Name")
-    vat = RadioField(
-        "VAT Number",
-        choices=[
-            ('Yes', 'Yes'),
-            ('No', 'No'),
-        ],
-        default='Yes'
-    )
+    vat = TextField("VAT Number")
+    business_number = TextField("Business Number")
     fiscal_number = TextField("Fiscal Number")
     legal_entity_types = TextField("Legal Entity Type")
     industry = TextField("Industry")
-    main_activity = TextField("Main Activity")
+    main_activity = TextAreaField(" Business Dectription/Main Activity")
     founding_year = TextField("Founding Year")
     number_of_employees = TextField("Number of Employees")
     size_category = SelectField(
@@ -89,25 +83,26 @@ class CustomerForm(Form):
         ]
     )
     investment = RadioField(
-        "Investment",
+        "Interested in Invesment",
         choices=[
             ('Yes', 'Yes'),
             ('No', 'No'),
-        ],
-        default='Yes'
+        ]
     )
-    business_description = TextAreaField("Business Description")
+    business_description = TextAreaField("Primary Interest for Cooperation")
 
     #Target Group: Investor
     country = TextField("Country")
     business = TextField("Business")
-    business_number = TextField("Business Number")
+    investor_business_number = TextField("Business Number")
+    investor_vat = TextField("VAT Number")
+    investor_fiscal_number = TextField("Fiscal Number")
     interest = TextField("Interest")
     investor_industry = TextField("Industry")
     industry_of_interest = TextField("Industry of interest")
     investor_size = TextField("Size")
     foundation_year_investor = TextField("Foundation Year")
-    description_investor = TextField("Business Description")
+    description_investor = TextAreaField("Business Description")
 
     department_choices = [
         'Department of Finance',
@@ -130,7 +125,7 @@ class CustomerForm(Form):
     modules = TextField("Modules")
     infrastructure_available = TextField("Infrastructure Available")
     investment_incentives = TextField("Investment Incentives")
-    description = TextField("Description")
+    description = TextAreaField("Description")
 
     #if the Target Group is NGO
     ngo_registration_number_ngo = TextField("Registration Number")

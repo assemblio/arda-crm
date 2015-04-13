@@ -103,9 +103,10 @@ def edit_customer(customer_id):
         form.customer_address.data = customer_doc['customer_address']
         form.website.data = customer_doc['website']
         # Let's check what target group we have in order to know what fields to fill
-        if customer_doc['customer_type']['target_group'] == "Entrepreneur":
+        if customer_doc['customer_type']['target_group'] == "Business/Entrepreneur":
             form.customer_type.data = customer_doc['customer_type']['target_group']
             form.business_name.data = customer_doc['customer_type']['business_name']
+            form.business_number.data = customer_doc['customer_type']['business_number']
             form.vat.data = customer_doc['customer_type']['vat']
             form.fiscal_number.data = customer_doc['customer_type']['fiscal_number']
             form.legal_entity_types.data = customer_doc['customer_type']['legal_entity_types']
@@ -127,20 +128,20 @@ def edit_customer(customer_id):
             form.number_of_staff_ngo.data = customer_doc['customer_type']['number_of_staff_ngo']
             form.description_of_ngo.data = customer_doc['customer_type']['description_of_ngo']
             form.main_activities.data = customer_doc['customer_type']['main_activities']
-            form.donors.data = customer_doc['customer_type']['donors']
 
         elif customer_doc['customer_type']['target_group'] == "Investor":
             form.customer_type.data = customer_doc['customer_type']['target_group']
             form.country.data = customer_doc['customer_type']['country']
             form.business.data = customer_doc['customer_type']['business']
-            form.business_number.data = customer_doc['customer_type']['business_number']
+            form.investor_vat.data = customer_doc['customer_type']['investor_vat']
+            form.investor_fiscal_number.data = customer_doc['customer_type']['investor_fiscal_number']
+            form.investor_business_number.data = customer_doc['customer_type']['investor_business_number']
             form.interest.data = customer_doc['customer_type']['interest']
             form.investor_industry.data = customer_doc['customer_type']['investor_industry']
             form.industry_of_interest.data = customer_doc['customer_type']['industry_of_interest']
             form.investor_size.data = customer_doc['customer_type']['investor_size']
             form.foundation_year_investor.data = customer_doc['customer_type']['foundation_year_investor']
             form.description_investor.data = customer_doc['customer_type']['description_investor']
-
         else:
             form.customer_type.data = customer_doc['customer_type']['target_group']
             form.municipality_name.data = customer_doc['customer_type']['municipality_name']
@@ -269,11 +270,12 @@ def build_save_costumers_document():
         json_obj['municipality_region'] = costumer['municipality_region_east']
 
 
-    if costumer['customer_type'] == "Entrepreneur":
+    if costumer['customer_type'] == "Business/Entrepreneur":
         json_obj['customer_type'] = {
             'target_group': costumer['customer_type'],
             'business_name': costumer['business_name'],
             'vat': costumer['vat'],
+            'business_number': costumer['business_number'],
             'fiscal_number': costumer['fiscal_number'],
             'legal_entity_types': costumer['legal_entity_types'],
             'industry': costumer['industry'],
@@ -294,16 +296,17 @@ def build_save_costumers_document():
             'founding_year_ngo': costumer['founding_year_ngo'],
             'number_of_staff_ngo': costumer['number_of_staff_ngo'],
             'description_of_ngo': costumer['description_of_ngo'],
-            'main_activities': costumer['main_activities'],
-            'donors': costumer['donors']
+            'main_activities': costumer['main_activities']
         }
     elif costumer['customer_type'] == "Investor":
         json_obj['customer_type'] = {
             'target_group': costumer['customer_type'],
             'country': costumer['country'],
             'business': costumer['business'],
-            'business_number': costumer['business_number'],
             'interest': costumer['interest'],
+            'investor_vat': costumer['investor_vat'],
+            'investor_fiscal_number': costumer['investor_fiscal_number'],
+            'investor_business_number': costumer['investor_business_number'],
             'investor_industry': costumer['investor_industry'],
             'industry_of_interest': costumer['industry_of_interest'],
             'investor_size': costumer['investor_size'],
@@ -394,11 +397,12 @@ def edit_costumers_document(customer_id):
     if costumer['municipality_region_east'] and costumer['region'] == "East":
         json_obj['municipality_region'] = costumer['municipality_region_east']
 
-    if costumer['customer_type'] == "Entrepreneur":
+    if costumer['customer_type'] == "Business/Entrepreneur":
         json_obj['customer_type'] = {
             'target_group': costumer['customer_type'],
             'business_name': costumer['business_name'],
             'vat': costumer['vat'],
+            'business_number': costumer['business_number'],
             'fiscal_number': costumer['fiscal_number'],
             'legal_entity_types': costumer['legal_entity_types'],
             'industry': costumer['industry'],
@@ -419,15 +423,16 @@ def edit_costumers_document(customer_id):
             'founding_year_ngo': costumer['founding_year_ngo'],
             'number_of_staff_ngo': costumer['number_of_staff_ngo'],
             'description_of_ngo': costumer['description_of_ngo'],
-            'main_activities': costumer['main_activities'],
-            'donors': costumer['donors']
+            'main_activities': costumer['main_activities']
         }
     elif costumer['customer_type'] == "Investor":
         json_obj['customer_type'] = {
             'target_group': costumer['customer_type'],
             'country': costumer['country'],
             'business': costumer['business'],
-            'business_number': costumer['business_number'],
+            'investor_vat': costumer['investor_vat'],
+            'investor_fiscal_number': costumer['investor_fiscal_number'],
+            'investor_business_number': costumer['investor_business_number'],
             'interest': costumer['interest'],
             'investor_industry': costumer['investor_industry'],
             'industry_of_interest': costumer['industry_of_interest'],
@@ -470,7 +475,7 @@ def create_customer_report():
     worksheet.set_column('E:E', 20)
     worksheet.set_column('F:F', 20)
 
-    worksheet.write('A1', 'Company', bold)
+    worksheet.write('A1', 'Customer', bold)
     worksheet.write('B1', 'First Name', bold)
     worksheet.write('C1', 'Last Name', bold)
     worksheet.write('D1', 'Target Group', bold)
@@ -573,7 +578,7 @@ def create_filtered_customer_report(response):
     worksheet.write('G1', 'Website', bold)
     worksheet.write('H1', 'Region', bold)
     worksheet.write('I1', 'Main Activities', bold)
-    worksheet.write('J1', 'Legal Entity Types', bold)
+    worksheet.write('J1', 'Legal Entity Type', bold)
     worksheet.write('K1', 'Business Name', bold)
     worksheet.write('L1', 'Size Category', bold)
     worksheet.write('M1', 'No. of Employees', bold)
@@ -583,7 +588,7 @@ def create_filtered_customer_report(response):
     worksheet.write('Q1', 'Founding Year', bold)
     worksheet.write('R1', 'Fiscal Number', bold)
     worksheet.write('S1', 'Sector', bold)
-    worksheet.write('T1', 'Donors', bold)
+    worksheet.write('T1', '', bold)
     worksheet.write('U1', 'Sector', bold)
     worksheet.write('V1', 'Registration Number', bold)
     worksheet.write('W1', 'Interest', bold)
@@ -618,7 +623,7 @@ def create_filtered_customer_report(response):
         worksheet.write(i, 6, website, font_size)
         worksheet.write(i, 7, region, font_size)
 
-        if target_group == "Entrepreneur":
+        if target_group == "Business/Entrepreneur":
             main_activity = customer['customer_type']['main_activity']
             legal_entity_types = customer['customer_type']['legal_entity_types']
             business_name = customer['customer_type']['business_name']
@@ -629,6 +634,7 @@ def create_filtered_customer_report(response):
             business_description = customer['customer_type']['business_description']
             founding_year = customer['customer_type']['founding_year']
             fiscal_number = customer['customer_type']['fiscal_number']
+            business_number = customer['customer_type']['business_number']
 
             worksheet.write(i, 8, main_activity, font_size)
             worksheet.write(i, 9, legal_entity_types, font_size)
@@ -640,6 +646,7 @@ def create_filtered_customer_report(response):
             worksheet.write(i, 15, business_description, font_size)
             worksheet.write(i, 16, founding_year, font_size)
             worksheet.write(i, 17, fiscal_number, font_size)
+            worksheet.write(i, 18, business_number, font_size)
 
         elif target_group == "Non-Governmental Organisation":
             number_of_staff_ngo = customer['customer_type']['number_of_staff_ngo']
@@ -647,7 +654,6 @@ def create_filtered_customer_report(response):
             founding_year_ngo = customer['customer_type']['founding_year_ngo']
             main_activities = customer['customer_type']['main_activities']
             fiscal_number_ngo = customer['customer_type']['fiscal_number_ngo']
-            donors = customer['customer_type']['donors']
             description_of_ngo = customer['customer_type']['description_of_ngo']
             ngo_registration_number_ngo = customer['customer_type']['ngo_registration_number_ngo']
 
@@ -656,7 +662,6 @@ def create_filtered_customer_report(response):
             worksheet.write(i, 15, description_of_ngo, font_size)
             worksheet.write(i, 16, founding_year_ngo, font_size)
             worksheet.write(i, 17, fiscal_number_ngo, font_size)
-            worksheet.write(i, 19, donors, font_size)
             worksheet.write(i, 20, sector_ngo, font_size)
             worksheet.write(i, 21, ngo_registration_number_ngo, font_size)
 
@@ -664,12 +669,14 @@ def create_filtered_customer_report(response):
             investor_industry = customer['customer_type']['investor_industry']
             interest = customer['customer_type']['interest']
             foundation_year_investor = customer['customer_type']['foundation_year_investor']
-            business_number = customer['customer_type']['business_number']
+            business_number = customer['customer_type']['investor_business_number']
             business = customer['customer_type']['business']
             country = customer['customer_type']['country']
             description_investor = customer['customer_type']['description_investor']
             industry_of_interest = customer['customer_type']['industry_of_interest']
             investor_size = customer['customer_type']['investor_size']
+            fiscal_number = customer['customer_type']['investor_fiscal_number']
+            investor_vat = customer['customer_type']['investor_vat']
 
             worksheet.write(i, 10, business, font_size)
             worksheet.write(i, 14, investor_industry, font_size)
@@ -680,6 +687,8 @@ def create_filtered_customer_report(response):
             worksheet.write(i, 24, industry_of_interest, font_size)
             worksheet.write(i, 25, investor_size, font_size)
             worksheet.write(i, 26, country, font_size)
+            worksheet.write(i, 27, fiscal_number, font_size)
+            worksheet.write(i, 28, investor_vat, font_size)
         else:
             industries = customer['customer_type']['industries']
             investment_incentives = customer['customer_type']['investment_incentives']

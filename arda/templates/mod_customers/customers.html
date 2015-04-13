@@ -109,7 +109,7 @@ $(document).ready(function(){
      });
      //show select filed based on selection
      var target_group_type = $('#customer-type-select').val();
-      if (target_group_type == "Entrepreneur"){
+      if (target_group_type == "Business/Entrepreneur"){
         $('#size_category').css('display', "block");
       }
       else{
@@ -117,7 +117,7 @@ $(document).ready(function(){
       };
      $('#customer-type-select').change(function(){
             var target_group_type = $('#customer-type-select').val();
-            if (target_group_type == "Entrepreneur"){
+            if (target_group_type == "Business/Entrepreneur"){
               $('#size_category').css('display', "block");
             }
             else{
@@ -235,7 +235,7 @@ $(document).ready(function(){
             <div class="col-xs-2">
                <select id="customer-type-select" class="form-control">
                   <option value="All" selected="selected">All</option>
-                  <option value="Entrepreneur">Entrepreneur/Business</option>
+                  <option value="Business/Entrepreneur">Business/Entrepreneur</option>
                   <option value="Non-Governmental Organisation">Non-Governmental Organisation</option>
                   <option value="Investor">Investor</option>
                   <option value="Municipality">Municipality</option>

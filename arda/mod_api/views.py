@@ -4,7 +4,7 @@ from arda import mongo
 from bson import json_util, SON
 from datetime import datetime
 from slugify import slugify
-from datetime import datetime
+
 
 mod_api = Blueprint('api', __name__, url_prefix='/api')
 
