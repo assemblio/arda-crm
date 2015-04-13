@@ -211,6 +211,7 @@ def settings():
         settings_form.fb_url.data = settings_doc['fb_url']
         settings_form.tw_url.data = settings_doc['tw_url']
         settings_form.li_url.data = settings_doc['li_url']
+        settings_form.support_email.data = settings_doc['support_email']
 
     if request.method == 'POST':
         if current_user.has_role('Admin'):

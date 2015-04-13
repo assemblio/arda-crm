@@ -1,6 +1,7 @@
 from flask_wtf import Form
 from wtforms import TextField
 
+
 class SettingsForm(Form):
 
     site_title = TextField("Site Title")
@@ -10,3 +11,4 @@ class SettingsForm(Form):
     fb_url = TextField("Facebook")
     tw_url = TextField("Twitter")
     li_url = TextField("LinkedIn")
+    support_email = TextField('Supporting E-mail')

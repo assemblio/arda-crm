@@ -28,7 +28,7 @@ def customers():
 
     try:
         customers_pagi = Customers.objects.all()
-        pagination = customers_pagi.paginate(page=page, per_page=100)
+        pagination = customers_pagi.paginate(page=page, per_page=50)
 
     except DoesNotExist:
 
