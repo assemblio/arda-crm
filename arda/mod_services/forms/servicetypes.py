@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import StringField, SelectField, TextAreaField
+from wtforms import StringField, SelectField, TextAreaField, TextField
 from arda import mongo
 from flask.ext.security import current_user
 from checkboxwidgets import MultiCheckboxField
@@ -7,6 +7,7 @@ from checkboxwidgets import MultiCheckboxField
 
 class ServiceTypes(Form):
     """Service Types Form"""
+
     description = TextAreaField("Description")
     service_fee = StringField("Service Fee")
     service_date = StringField("Schedule")

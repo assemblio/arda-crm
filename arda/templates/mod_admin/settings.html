@@ -1,422 +1,456 @@
 {% extends "layout.html" %}
 {% block body %}
 <script type="text/javascript">
-	$(document).ready(function(){
-
-  $('.passform').formValidation({
-      framework: 'bootstrap',
-      icon: {
-          valid: 'glyphicon glyphicon-ok',
-          invalid: 'glyphicon glyphicon-remove',
-          validating: 'glyphicon glyphicon-refresh'
-      },
-      fields: {
-          oldPassword: {
-              validators: {
-                  notEmpty: {
-                      message: "Password field can't be empty!"
-                  }
-              }
-          },
-          newPassword: {
-              err: '#passwordMessage',
-              validators: {
-                  notEmpty: {
-                      message: "Password field can't be empty!"
-                  }
-              }
-          },
-          passwordConfirm: {
-              err: '.passMessage',
-              validators: {
-                  notEmpty: {
-                      message:  "Password field can't be empty!"
-                  },
-                  identical: {
-                  field: 'newPassword',
-                  message: "Password doesn't match!"
-                  }
-              }
-          }
-      }
-  });
-});
+   $(document).ready(function(){
+   
+    $('.passform').formValidation({
+        framework: 'bootstrap',
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            oldPassword: {
+                validators: {
+                    notEmpty: {
+                        message: "Password field can't be empty!"
+                    }
+                }
+            },
+            newPassword: {
+                err: '#passwordMessage',
+                validators: {
+                    notEmpty: {
+                        message: "Password field can't be empty!"
+                    }
+                }
+            },
+            passwordConfirm: {
+                err: '.passMessage',
+                validators: {
+                    notEmpty: {
+                        message:  "Password field can't be empty!"
+                    },
+                    identical: {
+                    field: 'newPassword',
+                    message: "Password doesn't match!"
+                    }
+                }
+            }
+        }
+    });
+   });
 </script>
 <section>
-
-	<div role="tabpanel" style="padding-left:5%;padding-right">
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs" role="tablist">
-			{% if current_user.has_role('Admin') %}
-			<li role="presentation" class="active">
-				<a href="#main" aria-controls="main" role="tab" data-toggle="tab">Main</a>
-			</li>
-			<li role="presentation">
-				<a href="#servicesType" aria-controls="servicesType" role="tab" data-toggle="tab">Service Managment</a>
-			</li>
-			<li role="presentation">
-				<a href="#contactViaType" aria-controls="contactViaType" role="tab" data-toggle="tab">Contact Via</a>
-			</li>
-			{% else %}
-			<li role="account">
-				<a href="#portfolio" aria-controls="portfolio" role="tab" data-toggle="tab">Account Settings</a>
-			</li>
-			{% endif %}
-			
-		</ul>
-
-		<!-- Tab panes -->
-		<div class="tab-content">
-			{% if current_user.has_role('Admin') %}
-			<div role="tabpanel" class="tab-pane active" id="main">
-				<br>
-				<div class="container" align="center">
-					<form method="post" action="{{url_for('admin.settings')}}" class="form-horizontal">
-						<div class="form-group">
-				            {{ form.site_title.label(class_="control-label col-xs-3") }}
-				            <div class="col-xs-6">
-				                {{ form.site_title(class_="form-control") }}
-				             </div>
-				        </div>
-				        <div class="form-group">
-				            {{ form.site_tagline.label(class_="control-label col-xs-3") }}
-				            <div class="col-xs-6">
-				                {{ form.site_tagline(class_="form-control") }}
-				            </div>
-				        </div>
-				        <div class="form-group">
-				            {{ form.site_navbar_title.label(class_="control-label col-xs-3") }}
-				            <div class="col-xs-6">
-				                {{ form.site_navbar_title(class_="form-control") }}
-				            </div>
-				        </div>
-				        <div class="form-group">
-				            {{ form.web_url.label(class_="control-label col-xs-3") }}
-				            <div class="col-xs-6">
-				                {{ form.web_url(class_="form-control") }}
-				             </div>
-				        </div>
-				        <div class="form-group">
-				            {{ form.fb_url.label(class_="control-label col-xs-3") }}
-				            <div class="col-xs-6">
-				                {{ form.fb_url(class_="form-control") }}
-				             </div>
-				        </div>
-				        <div class="form-group">
-				            {{ form.tw_url.label(class_="control-label col-xs-3") }}
-				            <div class="col-xs-6">
-				                {{ form.tw_url(class_="form-control") }}
-				             </div>
-				        </div>
-				        <div class="form-group">
-				            {{ form.li_url.label(class_="control-label col-xs-3") }}
-				            <div class="col-xs-6">
-				                {{ form.li_url(class_="form-control") }}
-				             </div>
-				        </div>
-						 <div class="form-group">
-				            {{ form.support_email.label(class_="control-label col-xs-3") }}
-				            <div class="col-xs-6">
-				                {{ form.support_email(class_="form-control") }}
-				             </div>
-				        </div>
-				        <div align="center">
-				        	<button type="submit" class="btn btn-info">Save</button>
-				        </div>
-					</form>
-				</div>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="portfolio">
-				<br>
-				<div class="container">
-					{% if portfolio != None and portfolio|length > 0 %}
-					<div class="panel">
-						<!-- Default panel contents -->
-						<div class="panel-body">
-						  	<!-- Table -->
-						  	<table class="table table-striped">
-							    <thead>
-							      <tr>
-							        <th></th>
-							        <th>Title</th>
-							        <th>Subtitle</th>
-							        <th>Description</th>
-							        <th></th>
-							      </tr>
-							    </thead>
-							    <tbody>
-							      {% for item in portfolio %}
-							      <tr>
-							      	<td><img width="250" src="{{ item['image_url'] }}"/></td>
-							        <td>{{ item['title'] }}</td>
-							        <td>{{ item['subtitle'] }}</td>
-							        <td>{{ item['description'] }}</td>
-							        <td>
-							          <table>
-							            <tr>
-							              <td>
-							                <form method="get">
-							                  <button type="submit" class="btn btn-default btn-sm btn-default">
-							                    <span class="glyphicon glyphicon-edit"></span>
-							                  </button>&nbsp;
-							                </form>
-							              </td>
-							              <td>
-							                <form method="get" action="{{ url_for('admin.settings_portfolio_delete', item_id='') }}{{ item['id'] }}">
-							                  <button type="submit" class="btn btn-default btn-sm btn-danger">
-							                    <span class="glyphicon glyphicon-remove"></span>
-							                  </button>&nbsp;
-							                </form>
-							              </td>
-							            </tr>
-							          </table>
-							        </td>
-							      </tr>
-							      {% endfor %}
-							    </tbody>
-						  	</table>
-						</div>
-					</div>
-
-				    {% endif %}
-
-				    <div align="right">
-						<a href="#portfolioModal" class="portfolio-link btn btn-info" data-toggle="modal">
-							Add Item
-						</a>
-				    </div>		    
-				</div>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="servicesType">
-				<br>
-				<div class="container">
-					<div class="form-group">
-						<div class="form-group">
-							<p align="center">If you want to add Service Provided Types fill the fields below:</p>
-							<form class="form-horizontal" method="post" action="{{url_for('admin.add_service_type', type_id=type_id)}}">
-								{% if current_user.region == "All" %}
-								<div class="col-xs-2">
-								<select id="region" name='region' class="form-control">
-							        <option value="West">West</option>
-							        <option value="South">South</option>
-							        <option value="North">North</option>
-							        <option value="East">East</option>
-							        <option value="Center">Center</option>
-							    </select>
-								</div>
-								{% endif %}
-							    <div class="col-xs-1">
-							        <label for="serviceType" class="control-label pull-right">Service Type:</label>
-							    </div>
-							    <div class="col-xs-3">
-							        <input id="serviceType" name="serviceType" class="form-control" type="text">
-							    </div>
-							    <div class="col-xs-1">
-							        <label for="serviceDescription" class="control-label pull-right">Description:</label>
-							    </div>
-							    <div class="col-xs-3">
-							        <input type="textarea" id="serviceDescription" name="serviceDescription" class="form-control">
-							    </div>
-							    <div class="form-group col-xs-2">
-						            <button type="submit" id="addType" class="col-xs-offset-1 btn btn-info">Add Type</button>							        
-							    </div>
-							</form>
-						</div>
-					</div>
-					<br><br></br>
-					{% if service_type|length > 0%}
-			      	<div class="panel panel-info ">
-				        <!-- Default panel contents -->
-				        <div class="table-responsive">
-				          <!-- Table -->
-				          <table class="table table-striped">
-				            <thead>
-				              <tr class="success">
-				                <th>Service Type</th>
-				                <th>Description</th>
-				                <th>Operation</th>
-				              </tr>
-				            </thead>
-				            {% for result in service_type %}
-				            <tbody id="user-list">			              
-				              <tr align="center">
-				                <td>{{result['serviceType']}}</td>
-				                <td>{{result['description']}}</td>			                
-				                <td>
-				                  <form action="{{url_for('admin.delete_service_type', type_id=result['serviceId'])}}" method="get">
-	      								<button type="submit" class="btn btn-default btn-sm">
-	      									<span class="glyphicon glyphicon-remove"></span>
-	      								</button>
-	      							</form>
-				                </td>
-				              </tr>
-				            </tbody>
-				           {% endfor %}
-				          </table>
-			        	</div>
-			      </div>
-			      {% endif %}			  
-				</div>
-			</div>
-			<div role="tabpanel" class="tab-pane" id="contactViaType">
-				<br>
-				<div class="container">
-					<div class="form-group">
-						<div class="form-group">
-							<p align="center">Manage types of contacting manners</p>
-							<form class="form-horizontal" method="post" action="{{url_for('admin.add_contact_type', type_id=type_id)}}">
-								{% if current_user.region == "All" %}
-								<div class="col-xs-2">
-								<select id="region" name='region' class="form-control">
-							        <option value="West">West</option>
-							        <option value="South">South</option>
-							        <option value="North">North</option>
-							        <option value="East">East</option>
-							        <option value="Center">Center</option>
-							    </select>
-								</div>
-								{% endif %}
-							    <div class="col-xs-1">
-							        <label for="contactVia" class="control-label pull-right">Contacted Via:</label>
-							    </div>
-							    <div class="col-xs-3">
-							        <input id="contactVia" name="contactVia" class="form-control" type="text">
-							    </div>
-							    <div class="col-xs-1">
-							        <label for="contactDescription" class="control-label pull-right">Description:</label>
-							    </div>
-							    <div class="col-xs-3">
-							        <input id="contactDescription" name="contactDescription" class="form-control" type="text">
-							    </div>
-							    <div class="form-group col-xs-2">
-						            <button type="submit" id="addContactType" class="col-xs-offset-1 btn btn-info">Add Type</button>							        
-							    </div>
-							</form>
-						</div>
-					</div>
-					<br><br></br>
-					{% if contact_via_types|length > 0 %}
-			      	<div class="panel panel-info ">
-				        <!-- Default panel contents -->
-				        <div class="table-responsive">
-				          <!-- Table -->
-				          <table class="table table-striped">
-				            <thead>
-				              <tr class="success">
-				                <th>Contacting Manners</th>
-				                <th>Description</th>
-				                <th>Operation</th>
-				              </tr>
-				            </thead>
-				            {% for contact in contact_via_types %}
-				            <tbody id="user-list">			              
-				              <tr align="center">
-				                <td>{{contact['contactType']}}</td>
-				                <td>{{contact['description']}}</td>		                
-				                <td>
-				                  <form action="{{url_for('admin.delete_contact_type', type_id=contact['contactId'])}}" method="get">
-	      								<button type="submit" class="btn btn-default btn-sm">
-	      									<span class="glyphicon glyphicon-remove"></span>
-	      								</button>
-	      							</form>
-				                </td>
-				              </tr>
-				            </tbody>
-				           {% endfor %}
-				          </table>
-			        	</div>
-			      </div>
-			      {% endif %}			  
-				</div>
-			</div>
-			{% else %}
-				<div role="tabpanel" class="tab-pane active" id="portofolio">
-				<br>
-				<div class="container" align="center">
-					 <form id="passwordForm" method="post" action="{{url_for('admin.change_password')}}" class="form-horizontal passform">
-	                <input type="hidden" name="action" id="action" value="password">
-	                <div class="form-group  col-xs-8">
-	                    <label for="oldPassword" class="col-xs-4 control-label">Current Password</label>
-	                      <div class="col-xs-7">
-	                    <input type="password" class="form-control col-xs-5" id="oldPassword" name="oldPassword">
-	                    </div>
-	                </div>
-	                <div class="form-group col-xs-8">
-	                    <label for="newPassword" class="col-xs-4 control-label">New Password</label>
-	                      <div class="col-xs-7">
-	                    <input type="password" class="form-control col-xs-5" id="newPassword" name="newPassword">
-	                    <span class="help-block" id="passwordMessage" />
-	                    
-	                    </div>
-	                </div>
-	                <div class="form-group  col-xs-8">
-	                 <label for="passwordConfirm" class="col-xs-4 control-label">Confirm Password</label>
-	                  <div class="col-xs-7">
-	                   <input type="password" class="form-control col-xs-5" id="passwordConfirm" name="passwordConfirm">
-	                   <span class="help-block passMessage" />
-	                  </div>
-	                </div>
-					<br>
-	                <br>
-                	</br>
-                    <div class="form-group col-xs-12" >
-    				    <button type="submit"  id="submitForm" class="col-xs-offset-1 btn btn-info">Submit</button>
-                    </div>
-                </form>
-				</div>
-			</div>
-			{% endif %}
-		</div>
-	</div>
+   <div role="tabpanel" style="padding-left:5%;padding-right">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+         {% if current_user.has_role('Admin') %}
+         <li role="presentation" class="active">
+            <a href="#main" aria-controls="main" role="tab" data-toggle="tab">Main</a>
+         </li>
+         <li role="presentation">
+            <a href="#servicesType" aria-controls="servicesType" role="tab" data-toggle="tab">Service Managment</a>
+         </li>
+         <li role="presentation">
+            <a href="#contactViaType" aria-controls="contactViaType" role="tab" data-toggle="tab">Contact Via</a>
+         </li>
+         {% else %}
+         <li role="account">
+            <a href="#portfolio" aria-controls="portfolio" role="tab" data-toggle="tab">Account Settings</a>
+         </li>
+         {% endif %}
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+         {% if current_user.has_role('Admin') %}
+         <div role="tabpanel" class="tab-pane active" id="main">
+            <br>
+            <div class="container" align="center">
+               <form method="post" action="{{url_for('admin.settings')}}" class="form-horizontal">
+                  <div class="form-group">
+                     {{ form.site_title.label(class_="control-label col-xs-3") }}
+                     <div class="col-xs-6">
+                        {{ form.site_title(class_="form-control") }}
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     {{ form.site_tagline.label(class_="control-label col-xs-3") }}
+                     <div class="col-xs-6">
+                        {{ form.site_tagline(class_="form-control") }}
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     {{ form.site_navbar_title.label(class_="control-label col-xs-3") }}
+                     <div class="col-xs-6">
+                        {{ form.site_navbar_title(class_="form-control") }}
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     {{ form.web_url.label(class_="control-label col-xs-3") }}
+                     <div class="col-xs-6">
+                        {{ form.web_url(class_="form-control") }}
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     {{ form.fb_url.label(class_="control-label col-xs-3") }}
+                     <div class="col-xs-6">
+                        {{ form.fb_url(class_="form-control") }}
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     {{ form.tw_url.label(class_="control-label col-xs-3") }}
+                     <div class="col-xs-6">
+                        {{ form.tw_url(class_="form-control") }}
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     {{ form.li_url.label(class_="control-label col-xs-3") }}
+                     <div class="col-xs-6">
+                        {{ form.li_url(class_="form-control") }}
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     {{ form.support_email.label(class_="control-label col-xs-3") }}
+                     <div class="col-xs-6">
+                        {{ form.support_email(class_="form-control") }}
+                     </div>
+                  </div>
+                  <div align="center">
+                     <button type="submit" class="btn btn-info">Save</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+         <div role="tabpanel" class="tab-pane" id="portfolio">
+            <br>
+            <div class="container">
+               {% if portfolio != None and portfolio|length > 0 %}
+               <div class="panel">
+                  <!-- Default panel contents -->
+                  <div class="panel-body">
+                     <!-- Table -->
+                     <table class="table table-striped">
+                        <thead>
+                           <tr>
+                              <th></th>
+                              <th>Title</th>
+                              <th>Subtitle</th>
+                              <th>Description</th>
+                              <th></th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for item in portfolio %}
+                           <tr>
+                              <td><img width="250" src="{{ item['image_url'] }}"/></td>
+                              <td>{{ item['title'] }}</td>
+                              <td>{{ item['subtitle'] }}</td>
+                              <td>{{ item['description'] }}</td>
+                              <td>
+                                 <table>
+                                    <tr>
+                                       <td>
+                                          <form method="get">
+                                             <button type="submit" class="btn btn-default btn-sm btn-default">
+                                             <span class="glyphicon glyphicon-edit"></span>
+                                             </button>&nbsp;
+                                          </form>
+                                       </td>
+                                       <td>
+                                          <form method="get" action="{{ url_for('admin.settings_portfolio_delete', item_id='') }}{{ item['id'] }}">
+                                             <button type="submit" class="btn btn-default btn-sm btn-danger">
+                                             <span class="glyphicon glyphicon-remove"></span>
+                                             </button>&nbsp;
+                                          </form>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </td>
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+               {% endif %}
+               <div align="right">
+                  <a href="#portfolioModal" class="portfolio-link btn btn-info" data-toggle="modal">
+                  Add Item
+                  </a>
+               </div>
+            </div>
+         </div>
+         <div role="tabpanel" class="tab-pane" id="servicesType">
+            <br>
+            <div class="container">
+               <div class="form-group">
+                  <div class="form-group">
+                     <p align="center">If you want to add Service Provided Types fill the fields below:</p>
+                     <form class="form-horizontal" method="post" action="{{url_for('admin.add_service_type', type_id=type_id)}}">
+                        {% if current_user.region == "All" %}
+                        <div class="col-xs-2">
+                           <select id="region" name='region' class="form-control">
+                              <option value="West">West</option>
+                              <option value="South">South</option>
+                              <option value="North">North</option>
+                              <option value="East">East</option>
+                              <option value="Center">Center</option>
+                           </select>
+                        </div>
+                        {% endif %}
+                        <div class="col-xs-1">
+                           <label for="serviceType" class="control-label pull-right">Service Type:</label>
+                        </div>
+                        <div class="col-xs-3">
+                           <input id="serviceType" name="serviceType" class="form-control" type="text">
+                        </div>
+                        <div class="col-xs-1">
+                           <label for="serviceDescription" class="control-label pull-right">Description:</label>
+                        </div>
+                        <div class="col-xs-3">
+                           <input type="textarea" id="serviceDescription" name="serviceDescription" class="form-control">
+                        </div>
+                        <div class="form-group col-xs-2">
+                           <button type="submit" id="addType" class="col-xs-offset-1 btn btn-info">Add Type</button>                           
+                        </div>
+                     </form>
+                  </div>
+               </div>
+               <br><br></br>
+               {% if service_type|length > 0%}
+               <div class="panel panel-info ">
+                  <!-- Default panel contents -->
+                  <div class="table-responsive">
+                     <!-- Table -->
+                     <table class="table table-striped">
+                        <thead>
+                           <tr class="success">
+                              <th>Service Type</th>
+                              <th>Description</th>
+                              <th>Operation</th>
+                           </tr>
+                        </thead>
+                        {% for result in service_type %}
+                        <tbody id="user-list">
+                           <tr align="center">
+                              <td>{{result['serviceType']}}</td>
+                              <td>{{result['description']}}</td>
+                              <td>
+                                 <form action="{{url_for('admin.delete_service_type', type_id=result['serviceId'])}}" method="get">
+                                    <button type="submit" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                 </form>
+                              </td>
+                           </tr>
+                        </tbody>
+                        {% endfor %}
+                     </table>
+                  </div>
+               </div>
+               {% endif %}         
+            </div>
+         </div>
+         <div role="tabpanel" class="tab-pane" id="contactViaType">
+            <br>
+            <div class="container" align="center">
+               <div class="form-group">
+                  <p align="center">Manage types of contacting manners</p>
+                  <form class="form-horizontal" method="post" action="{{url_for('admin.add_contact_type', type_id=type_id)}}">
+                     {% if current_user.region == "All" %}
+                     <div class="col-xs-2">
+                        <select id="region" name='region' class="form-control">
+                           <option value="West">West</option>
+                           <option value="South">South</option>
+                           <option value="North">North</option>
+                           <option value="East">East</option>
+                           <option value="Center">Center</option>
+                        </select>
+                     </div>
+                     {% endif %}
+                     <div class="col-xs-1">
+                        <label for="contactVia" class="control-label pull-right">Contacted Via:</label>
+                     </div>
+                     <div class="col-xs-3">
+                        <input id="contactVia" name="contactVia" class="form-control" type="text">
+                     </div>
+                     <div class="col-xs-1">
+                        <label for="contactDescription" class="control-label pull-right">Description:</label>
+                     </div>
+                     <div class="col-xs-3">
+                        <input id="contactDescription" name="contactDescription" class="form-control" type="text">
+                     </div>
+                     <div class="form-group col-xs-2">
+                        <button type="submit" id="addContactType" class="col-xs-offset-1 btn btn-info">Add Type</button>                           
+                     </div>
+                  </form>
+               </div>
+               <br><br></br>
+               {% if contact_via_types|length > 0 %}
+               <div class="panel panel-info" align="center">
+                  <!-- Default panel contents -->
+                  <div class="table-responsive">
+                     <!-- Table -->
+                     <table class="table table-striped"  align="center">
+                        <thead  align="center">
+                           <tr class="success" align="center">
+                              <th>Contacting Manners</th>
+                              <th>Description</th>
+                              <th>Operation</th>
+                           </tr>
+                        </thead>
+                        {% for contact in contact_via_types %}
+                        <tbody id="user-list">
+                           <tr align="center">
+                              <td>{{contact['contactType']}}</td>
+                              <td>{{contact['description']}}</td>
+                              <td>
+                                 <table aligin='center'>
+                                    <tr aligin='center'>
+                                       <td>
+                                          <form action="{{url_for('admin.delete_contact_type', type_id=contact['contactId'])}}" method="get">
+                                             <button type="submit" class="btn btn-default btn-sm">
+                                             <span class="glyphicon glyphicon-remove"></span>
+                                             </button>
+                                          </form>
+                                       </td>
+                                       <td>
+                                          <a class="btn btn-default btn-sm" id="updateit" name="update_cv" data-class="studentclass" data-toggle="modal" href="#update_contact_manner"  title="Edit"><i class="glyphicon glyphicon-edit"></i></a> 
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </td>
+                           </tr>
+                        </tbody>
+                        {% endfor %}
+                     </table>
+                  </div>
+               </div>
+               {% endif %}         
+            </div>
+         </div>
+         {% else %}
+         <div role="tabpanel" class="tab-pane active" id="portofolio">
+            <br>
+            <div class="container" align="center">
+               <form id="passwordForm" method="post" action="{{url_for('admin.change_password')}}" class="form-horizontal passform">
+                  <input type="hidden" name="action" id="action" value="password">
+                  <div class="form-group  col-xs-8">
+                     <label for="oldPassword" class="col-xs-4 control-label">Current Password</label>
+                     <div class="col-xs-7">
+                        <input type="password" class="form-control col-xs-5" id="oldPassword" name="oldPassword">
+                     </div>
+                  </div>
+                  <div class="form-group col-xs-8">
+                     <label for="newPassword" class="col-xs-4 control-label">New Password</label>
+                     <div class="col-xs-7">
+                        <input type="password" class="form-control col-xs-5" id="newPassword" name="newPassword">
+                        <span class="help-block" id="passwordMessage" />
+                     </div>
+                  </div>
+                  <div class="form-group  col-xs-8">
+                     <label for="passwordConfirm" class="col-xs-4 control-label">Confirm Password</label>
+                     <div class="col-xs-7">
+                        <input type="password" class="form-control col-xs-5" id="passwordConfirm" name="passwordConfirm">
+                        <span class="help-block passMessage" />
+                     </div>
+                  </div>
+                  <br>
+                  <br>
+                  </br>
+                  <div class="form-group col-xs-12" >
+                     <button type="submit"  id="submitForm" class="col-xs-offset-1 btn btn-info">Submit</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+         {% endif %}
+      </div>
+   </div>
 </section>
 <div class="portfolio-modal modal fade" id="portfolioModal" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-content">
-	    <div class="close-modal" data-dismiss="modal">
-	        <div class="lr">
-	            <div class="rl">
-	            </div>
-	        </div>
-	    </div>
-	    <div class="container">
-	        <div class="row">
-	            <div class="col-xs-10">
-	                <div class="modal-body">
-	                    <!-- Project Details Go Here -->
-	                    <h2>Portfolio Item</h2>
-	                    <form method="post" action="{{ url_for('admin.settings_portfolio_update') }}" class="form-horizontal">
-							<div class="form-group">
-					            {{ pf_form.title.label(class_="control-label col-xs-3") }}
-					            <div class="col-xs-7">
-					                {{ pf_form.title(class_="form-control") }}
-					             </div>
-					        </div>
-					        <div class="form-group">
-					            {{ pf_form.subtitle.label(class_="control-label col-xs-3") }}
-					            <div class="col-xs-7">
-					                {{ pf_form.subtitle(class_="form-control") }}
-					             </div>
-					        </div>
-					        <div class="form-group">
-					            {{ pf_form.image_url.label(class_="control-label col-xs-3") }}
-					            <div class="col-xs-7">
-					                {{ pf_form.image_url(class_="form-control") }}
-					             </div>
-					        </div>
-					        <div class="form-group">
-					            {{ pf_form.description.label(class_="control-label col-xs-3") }}
-					            <div class="col-xs-7">
-					                {{ pf_form.description(class_="form-control", rows=8) }}
-					             </div>
-					        </div>
-					        <div class="form-group">
-					        	<button type="submit" class="btn btn-info">Add</button>
-					        </div>
-					    </form>
-	                    
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	</div>
+   <div class="modal-content">
+      <div class="close-modal" data-dismiss="modal">
+         <div class="lr">
+            <div class="rl">
+            </div>
+         </div>
+      </div>
+      <div class="container">
+         <div class="row">
+            <div class="col-xs-10">
+               <div class="modal-body">
+                  <!-- Project Details Go Here -->
+                  <h2>Portfolio Item</h2>
+                  <form method="post" action="{{ url_for('admin.settings_portfolio_update') }}" class="form-horizontal">
+                     <div class="form-group">
+                        {{ pf_form.title.label(class_="control-label col-xs-3") }}
+                        <div class="col-xs-7">
+                           {{ pf_form.title(class_="form-control") }}
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        {{ pf_form.subtitle.label(class_="control-label col-xs-3") }}
+                        <div class="col-xs-7">
+                           {{ pf_form.subtitle(class_="form-control") }}
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        {{ pf_form.image_url.label(class_="control-label col-xs-3") }}
+                        <div class="col-xs-7">
+                           {{ pf_form.image_url(class_="form-control") }}
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        {{ pf_form.description.label(class_="control-label col-xs-3") }}
+                        <div class="col-xs-7">
+                           {{ pf_form.description(class_="form-control", rows=8) }}
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <button type="submit" class="btn btn-info">Add</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
+
+<!-- modal update fields -->
+<div class="modal modal-wide fade" id="update_contact_manner">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Edit Contacting Manners</h4>
+            </div>
+            <form class="form-horizontal" action="#" method="POST">
+               <div class="modal-body" id="update_modal">
+                   {{form.region_options.label(class="col-xs-6")}}
+                   <div class=" col-xs-6">
+                     {{form.region_options(class="form-control")}}
+                   </div><br>
+                   {{form.contactVia.label(class="col-xs-6")}}
+                   <div class="col-xs-6">
+                     {{form.contactVia(class="form-control")}}
+                   </div><br>
+                   {{form.contactDescription.label(class="col-xs-6")}}
+                   <div class="col-xs-6">
+                     {{form.contactDescription(class="form-control")}}
+                   </div><br>                
+                <br></br><br>
+               </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info" >Edit</i></button>
+                </div>
+            </form>
+        </div> 
+    </div>
+</div>
+
 {% endblock %}

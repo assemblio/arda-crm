@@ -155,7 +155,7 @@
       <div class="panel panel-info">
          <!-- Default panel contents -->
          <div class="table-responsive">
-            <table class="table table-striped table-condensed table-result">
+            <table  id="service-table" class="table table-striped table-condensed table-result">
                <thead >
                   <tr class="info">
                      <th>Customer</th>
@@ -303,7 +303,7 @@
             </div>
             <br>
             <div>
-               <a download="Services.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'services', 'Services');">Export Current View</a>
+               <a download="Services.xls" class="btn btn-sm btn-success" href="#" onclick="return ExcellentExport.excel(this, 'service-table', 'Services');">Export Current View</a>
                <a download="All Services.xls" href="{{url_for('services.export_services')}}" style="margin-right:2px;" class="btn btn-sm btn-success">Export All</a>
             </div>
             <br>

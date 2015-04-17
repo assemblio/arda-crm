@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import TextField
+from wtforms import TextField, TextAreaField, SelectField
 
 
 class SettingsForm(Form):
@@ -12,3 +12,13 @@ class SettingsForm(Form):
     tw_url = TextField("Twitter")
     li_url = TextField("LinkedIn")
     support_email = TextField('Supporting E-mail')
+
+    region_opt = ['All', 'Center', 'East', 'West', 'North', 'South']
+    region_options = SelectField(
+        'Add to Region',
+        choices=[
+            (region, region) for region in region_opt[1:]
+        ]
+    )
+    contactVia = TextField('Contacted Via')
+    contactDescription = TextAreaField("Description")

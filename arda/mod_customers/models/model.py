@@ -87,6 +87,7 @@ class Customer_Type(db.EmbeddedDocument):
     infrastructure_available = db.StringField()
     description = db.StringField()
     description_investor = db.StringField()
+    investment_incentives = db.StringField()
 
 
 class Customers(db.Document):
