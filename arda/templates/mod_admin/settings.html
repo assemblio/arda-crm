@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
 <script type="text/javascript">
-   $(document).ready(function(){
+$(document).ready(function(){
    
-    $('.passform').formValidation({
+   $('.passform').formValidation({
         framework: 'bootstrap',
         icon: {
             valid: 'glyphicon glyphicon-ok',
@@ -39,8 +39,32 @@
                 }
             }
         }
-    });
    });
+   $('.updateit').click(function(){      
+      check = $(this).attr('id');
+      var tr_id = "tr." + check;
+
+      var row_data = [];    
+      $('td', tr_id).each(function(){
+           row_data.push($(this).text());              
+      });
+      $('#contactId').val(check);
+      $('#cont-region').val(row_data[0]);
+      $('#contact_via').val(row_data[1]);
+      $('#contact_description').val(row_data[2]);         
+      row_data.pop();
+   });
+   //clear modal form data on close button click
+   $('[data-dismiss=modal]').on('click', function (e) {
+    var $t = $(this),
+        target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
+    
+     $(target)
+       .find("input,textarea,select")
+          .val('')
+          .end();
+   });
+});
 </script>
 <section>
    <div role="tabpanel" style="padding-left:5%;padding-right">
@@ -54,7 +78,7 @@
             <a href="#servicesType" aria-controls="servicesType" role="tab" data-toggle="tab">Service Managment</a>
          </li>
          <li role="presentation">
-            <a href="#contactViaType" aria-controls="contactViaType" role="tab" data-toggle="tab">Contact Via</a>
+            <a href="#contactViaType" aria-controls="contactViaType" role="tab" data-toggle="tab">Contacting Manners</a>
          </li>
          {% else %}
          <li role="account">
@@ -280,7 +304,7 @@
                         <label for="contactDescription" class="control-label pull-right">Description:</label>
                      </div>
                      <div class="col-xs-3">
-                        <input id="contactDescription" name="contactDescription" class="form-control" type="text">
+                        <input id="contactDescription" name="contactDescription" class="form-control" type="textarea">
                      </div>
                      <div class="form-group col-xs-2">
                         <button type="submit" id="addContactType" class="col-xs-offset-1 btn btn-info">Add Type</button>                           
@@ -293,21 +317,23 @@
                   <!-- Default panel contents -->
                   <div class="table-responsive">
                      <!-- Table -->
-                     <table class="table table-striped"  align="center">
+                     <table id="tableContact" class="table table-striped"  align="center">
                         <thead  align="center">
                            <tr class="success" align="center">
+                              <th style="display:none;">Region</th>
                               <th>Contacting Manners</th>
                               <th>Description</th>
                               <th>Operation</th>
                            </tr>
-                        </thead>
-                        {% for contact in contact_via_types %}
+                        </thead>                        
                         <tbody id="user-list">
-                           <tr align="center">
-                              <td>{{contact['contactType']}}</td>
-                              <td>{{contact['description']}}</td>
-                              <td>
-                                 <table aligin='center'>
+                           {% for contact in contact_via_types %}
+                           <tr align="center" class="{{contact['contactId']}}">
+                              <td style="display:none;">{{contact['region']}}</td>
+                              <td id="contactType">{{contact['contactType']}}</td>
+                              <td id="description">{{contact['description']}}</td>
+                              <td aligin='center'>
+                                 <table >
                                     <tr aligin='center'>
                                        <td>
                                           <form action="{{url_for('admin.delete_contact_type', type_id=contact['contactId'])}}" method="get">
@@ -317,14 +343,14 @@
                                           </form>
                                        </td>
                                        <td>
-                                          <a class="btn btn-default btn-sm" id="updateit" name="update_cv" data-class="studentclass" data-toggle="modal" href="#update_contact_manner"  title="Edit"><i class="glyphicon glyphicon-edit"></i></a> 
+                                          <a class="updateit btn btn-default btn-sm" id="{{contact['contactId']}}" data-toggle="modal" data-target="#update_contact_manner" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
                                        </td>
                                     </tr>
                                  </table>
                               </td>
                            </tr>
-                        </tbody>
                         {% endfor %}
+                     </tbody>
                      </table>
                   </div>
                </div>
@@ -428,24 +454,26 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Edit Contacting Manners</h4>
             </div>
-            <form class="form-horizontal" action="#" method="POST">
-               <div class="modal-body" id="update_modal">
-                   {{form.region_options.label(class="col-xs-6")}}
-                   <div class=" col-xs-6">
-                     {{form.region_options(class="form-control")}}
-                   </div><br>
-                   {{form.contactVia.label(class="col-xs-6")}}
+            <form class="form-horizontal" action="{{url_for('admin.edit_contact_type')}}" method="POST">
+               <div class="form-group-sm" id="update_modal">
+                  <input type="hidden" id='cont-region' name="cont-region" value=""/>
+                  <input type="hidden" id='contactId' name="contactId" value=""/>
+                  <div class="col-xs-6">
+                   {{form.contact_via.label()}}
+                  </div>
                    <div class="col-xs-6">
-                     {{form.contactVia(class="form-control")}}
+                     {{form.contact_via(class="form-control")}}
                    </div><br>
-                   {{form.contactDescription.label(class="col-xs-6")}}
                    <div class="col-xs-6">
-                     {{form.contactDescription(class="form-control")}}
+                   {{form.contact_description.label()}}
+                  </div>
+                   <div class="col-xs-6">
+                     {{form.contact_description(class="form-control")}}
                    </div><br>                
                 <br></br><br>
                </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="edit-button btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-info" >Edit</i></button>
                 </div>
             </form>

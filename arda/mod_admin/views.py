@@ -343,7 +343,6 @@ def add_service_type(type_id):
 @mod_admin.route('/add/contact-via/type/<type_id>', methods=['POST'])
 @login_required
 def add_contact_type(type_id):
-
     contact_type = request.form['contactVia']
     description = request.form['contactDescription']
 
@@ -367,6 +366,39 @@ def add_contact_type(type_id):
         {
             '$push': {
                 'contactVia': new_type
+            }
+        }
+    )
+    return redirect(url_for('admin.settings'))
+
+
+@mod_admin.route('/edit/contact-via/type', methods=['POST'])
+@login_required
+def edit_contact_type():
+
+    contact_type = request.form['contact_via']
+    description = request.form['contact_description']
+    region = request.form['cont-region']
+    contact_id = request.form['contactId']
+
+    new_type = {
+        "type": {
+            "name": contact_type,
+            "slug": slugify(contact_type)
+        },
+        'region': region,
+        'contactId': ObjectId(contact_id),
+        "description": description
+    }
+
+    mongo.db.servicetypes.update(
+        {
+            "_id": ObjectId("5509cb3b484d3f17a2409cea"),
+            'contactVia.contactId': ObjectId(contact_id)
+        },
+        {
+            '$set': {
+                'contactVia.$': new_type
             }
         }
     )
@@ -410,6 +442,7 @@ def retrieve_all_service_types(query):
             "$group": {
                 "_id": {
                     '_id': '$_id',
+                    "region": "$serviceTypes.region",
                     "serviceId": "$serviceTypes.serviceId",
                     "serviceType": "$serviceTypes.type.name",
                     "description": "$serviceTypes.description"
@@ -420,6 +453,7 @@ def retrieve_all_service_types(query):
             "$project": {
                 "_id": 0,
                 "_id":"$_id._id",
+                "region": "$_id.region",
                 "serviceId": "$_id.serviceId",
                 "serviceType": "$_id.serviceType",
                 "description": "$_id.description",
@@ -437,6 +471,7 @@ def retrieve_all_contact_types(query):
             "$group": {
                 "_id": {
                     '_id': '$_id',
+                    "region": "$contactVia.region",
                     "contactId": "$contactVia.contactId",
                     "contactType": "$contactVia.type.name",
                     "description": "$contactVia.description"
@@ -448,6 +483,7 @@ def retrieve_all_contact_types(query):
                 "_id": 0,
                 "_id":"$_id._id",
                 "contactId": "$_id.contactId",
+                "region": "$_id.region",
                 "contactType": "$_id.contactType",
                 "description": "$_id.description",
             }
