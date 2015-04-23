@@ -77,11 +77,10 @@
      });
    
      //open delete dialog 
-      $('.deleteit').click(function (event) {
+      $('.deleteit').on('click', function (event) {
        var myVal = $(this).attr('id');
-       console.log(myVal);
         $('.btnDel').attr('action', function(i, value) {
-           return "{{url_for('services.delete_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', myVal);
+           return "{{url_for('services.delete_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', myVal)
         });
       });
      //Get result to populate service table
@@ -97,7 +96,13 @@
        });
      });
    });
-   
+//open delete dialog and delegate the event to a element which exists only after search result is shown on the table
+   $(document).on('click','.deleteit', function (event) {
+       var myVal = $(this).attr('id');
+        $('.btnDel').attr('action', function(i, value) {
+           return "{{url_for('services.delete_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', myVal)
+        });
+      });
 </script>
 <section>
    <div class="container" align="center">
