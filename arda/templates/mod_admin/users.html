@@ -41,6 +41,14 @@ $(document).ready(function(){
           }
       }
   });
+  //open delete dialog 
+  $('.deleteit').click(function (event) {
+   var myVal = $(this).attr('id');
+
+    $('#btnDel').attr('action', function(i, value) {
+       return "{{ url_for('admin.delete_user', user_id='itemID')}}".replace('itemID', myVal)
+    });    
+   });
 });
 </script>
 <section> 
@@ -92,13 +100,9 @@ $(document).ready(function(){
       							</button>
       						</form>
       					</td>
-      					<td>
-      						<form action="{{ url_for('admin.delete_user', user_id=result._id) }}" method="get">
-      							<button type="submit" class="btn btn-default btn-sm">
-      								<span class="glyphicon glyphicon-remove"></span>
-      							</button>
-      						</form>
-      					</td>
+                <td style="padding-bottom: 22%">
+                  <a class="deleteit btn btn-danger btn-sm" id="{{result['_id']}}" data-toggle="modal" data-target="#delete_dialog" title="Delete Customer"><i class="glyphicon glyphicon-remove"></i></a>   
+               </td>
 		          </tr>
 		        </table>
 		      </td>
@@ -158,5 +162,35 @@ $(document).ready(function(){
           </div>
       </div>
   </div>
+</div>
+<!-- modal fail-safe -->
+<div id="delete_dialog" class="modal">
+   <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+            <h4>
+               Confirm!
+            </h4>
+        </div>
+        <div class="modal-body" align="center">
+             <p><i class="glyphicon glyphicon-warning-sign"></i> This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+            <div class="col-xs-4 pull-right">
+               <div class="col-xs-6">
+                  <form action="" id="btnDel" method="get">
+                   <button type="submit" style="width: 100%;" class="btn btn-danger">
+                   Yes
+                   </button>
+               </form>
+               </div>               
+               <div class="col-xs-6">
+                  <a href="#" data-dismiss="modal" style="width: 100%;" class="btn btn-default" aria-hidden="true">No</a>
+               </div>
+            </div>
+        </div>
+      </div>
+    </div>
 </div>
 {% endblock %}

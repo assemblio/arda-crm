@@ -340,6 +340,39 @@ def add_service_type(type_id):
     return redirect(url_for('admin.settings'))
 
 
+@mod_admin.route('/edit/service/type', methods=['POST'])
+@login_required
+def edit_service_type():
+
+    edit_service_type = request.form['edit_service_type']
+    description = request.form['edit_service_description']
+    region = request.form['service-region']
+    service_id = request.form['serviceId']
+
+    new_type = {
+        "type": {
+            "name": edit_service_type,
+            "slug": slugify(edit_service_type)
+        },
+        'region': region,
+        'serviceId': ObjectId(service_id),
+        "description": description
+    }
+
+    mongo.db.servicetypes.update(
+        {
+            "_id": ObjectId("5509cb3b484d3f17a2409cea"),
+            'serviceTypes.serviceId': ObjectId(service_id)
+        },
+        {
+            '$set': {
+                'serviceTypes.$': new_type
+            }
+        }
+    )
+    return redirect(url_for('admin.settings'))
+
+
 @mod_admin.route('/add/contact-via/type/<type_id>', methods=['POST'])
 @login_required
 def add_contact_type(type_id):

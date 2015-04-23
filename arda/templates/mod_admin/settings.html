@@ -40,6 +40,22 @@ $(document).ready(function(){
             }
         }
    });
+   //open delete dialog for contacting manners/service types
+   $('.deleteit').click(function (event) {
+   var myVal = $(this).attr('id');
+   var checkMe = $(this).attr('title');
+
+   if (checkMe == "Delete Service"){
+      $('#btnDel').attr('action', function(i, value) {
+         return "{{url_for('admin.delete_service_type', type_id='itemID')}}".replace('itemID', myVal)
+      });
+   }
+   else{
+      $('#btnDel').attr('action', function(i, value) {
+         return "{{url_for('admin.delete_contact_type', type_id='itemID')}}".replace('itemID', myVal)
+      });
+   }     
+   });
    $('.updateit').click(function(){      
       check = $(this).attr('id');
       var tr_id = "tr." + check;
@@ -51,14 +67,20 @@ $(document).ready(function(){
       $('#contactId').val(check);
       $('#cont-region').val(row_data[0]);
       $('#contact_via').val(row_data[1]);
-      $('#contact_description').val(row_data[2]);         
+      $('#contact_description').val(row_data[2]);
+      $('#service-region').val(row_data[0]);
+      $('#edit_service_type').val(row_data[1]);
+      $('#edit_service_description').val(row_data[2]);
+      $('#serviceId').val(check);
+
+
+      console.log(row_data);     
       row_data.pop();
    });
    //clear modal form data on close button click
    $('[data-dismiss=modal]').on('click', function (e) {
     var $t = $(this),
-        target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
-    
+        target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];    
      $(target)
        .find("input,textarea,select")
           .val('')
@@ -66,8 +88,19 @@ $(document).ready(function(){
    });
 });
 </script>
+<style type="text/css">
+   .table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.table td {
+    word-wrap: break-word;         /* All browsers since IE 5.5+ */
+    overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+}
+</style>
 <section>
-   <div role="tabpanel" style="padding-left:5%;padding-right">
+   <div role="tabpanel" style="padding-left:2%;padding-right:2%">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
          {% if current_user.has_role('Admin') %}
@@ -211,7 +244,7 @@ $(document).ready(function(){
             <div class="container">
                <div class="form-group">
                   <div class="form-group">
-                     <p align="center">If you want to add Service Provided Types fill the fields below:</p>
+                     <p align="center">Manage types of Provided Services</p>
                      <form class="form-horizontal" method="post" action="{{url_for('admin.add_service_type', type_id=type_id)}}">
                         {% if current_user.region == "All" %}
                         <div class="col-xs-2">
@@ -234,7 +267,7 @@ $(document).ready(function(){
                            <label for="serviceDescription" class="control-label pull-right">Description:</label>
                         </div>
                         <div class="col-xs-3">
-                           <input type="textarea" id="serviceDescription" name="serviceDescription" class="form-control">
+                           <textarea id="serviceDescription" name="serviceDescription" cols="26"></textarea>
                         </div>
                         <div class="form-group col-xs-2">
                            <button type="submit" id="addType" class="col-xs-offset-1 btn btn-info">Add Type</button>                           
@@ -251,26 +284,37 @@ $(document).ready(function(){
                      <table class="table table-striped">
                         <thead>
                            <tr class="success">
+                              <th style="display:none;">Region</th>
                               <th>Service Type</th>
                               <th>Description</th>
                               <th>Operation</th>
                            </tr>
                         </thead>
-                        {% for result in service_type %}
                         <tbody id="user-list">
-                           <tr align="center">
+                        {% for result in service_type %}
+                        
+                           <tr align="center" class="{{result['serviceId']}}">
+                           <td style="display:none">{{result['region']}}</td>
                               <td>{{result['serviceType']}}</td>
                               <td>{{result['description']}}</td>
                               <td>
-                                 <form action="{{url_for('admin.delete_service_type', type_id=result['serviceId'])}}" method="get">
-                                    <button type="submit" class="btn btn-default btn-sm">
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                    </button>
-                                 </form>
+                              <table align='center'>
+                                    <tr align='center'>
+                                       <td>
+                                          <a class="deleteit btn btn-danger btn-sm" id="{{result['serviceId']}}" data-toggle="modal" data-target="#delete_dialog" title="Delete Service"><i class="glyphicon glyphicon-remove"></i></a>
+                                          
+                                       </td>
+                                       <td>
+                                          <a class="updateit btn btn-default btn-sm" id="{{result['serviceId']}}" data-toggle="modal" data-target="#update_service_type" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
+                                       </td>
+                                    </tr>
+                                 </table>
+                                 
                               </td>
                            </tr>
-                        </tbody>
+                        
                         {% endfor %}
+                        </tbody>
                      </table>
                   </div>
                </div>
@@ -304,10 +348,10 @@ $(document).ready(function(){
                         <label for="contactDescription" class="control-label pull-right">Description:</label>
                      </div>
                      <div class="col-xs-3">
-                        <input id="contactDescription" name="contactDescription" class="form-control" type="textarea">
+                        <textarea id="contactDescription" name="contactDescription" cols="26"></textarea>
                      </div>
                      <div class="form-group col-xs-2">
-                        <button type="submit" id="addContactType" class="col-xs-offset-1 btn btn-info">Add Type</button>                           
+                        <button type="submit" id="addContactType" class="col-xs-offset-1 btn btn-info pull-left">Add Type</button>                           
                      </div>
                   </form>
                </div>
@@ -332,15 +376,11 @@ $(document).ready(function(){
                               <td style="display:none;">{{contact['region']}}</td>
                               <td id="contactType">{{contact['contactType']}}</td>
                               <td id="description">{{contact['description']}}</td>
-                              <td aligin='center'>
-                                 <table >
-                                    <tr aligin='center'>
+                              <td align='center'>
+                                 <table align='center'>
+                                    <tr align='center'>
                                        <td>
-                                          <form action="{{url_for('admin.delete_contact_type', type_id=contact['contactId'])}}" method="get">
-                                             <button type="submit" class="btn btn-default btn-sm">
-                                             <span class="glyphicon glyphicon-remove"></span>
-                                             </button>
-                                          </form>
+                                          <a class="deleteit btn btn-danger btn-sm" id="{{contact['contactId']}}" data-toggle="modal" data-target="#delete_dialog" title="Delete Contacting Manner"><i class="glyphicon glyphicon-remove"></i></a>   
                                        </td>
                                        <td>
                                           <a class="updateit btn btn-default btn-sm" id="{{contact['contactId']}}" data-toggle="modal" data-target="#update_contact_manner" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
@@ -480,5 +520,69 @@ $(document).ready(function(){
         </div> 
     </div>
 </div>
+<!-- modal update service fields -->
+<div class="modal modal-wide fade" id="update_service_type">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Edit Service Types</h4>
+            </div>
+            <form class="form-horizontal" action="{{url_for('admin.edit_service_type')}}" method="POST">
+               <div class="form-group-sm" id="update_modal">
+                  <input type="hidden" id='service-region' name="service-region" value=""/>
+                  <input type="hidden" id='serviceId' name="serviceId" value=""/>
+                  <div class="col-xs-6">
 
+                   {{form.edit_service_type.label()}}
+                  </div>
+                   <div class="col-xs-6">
+                     {{form.edit_service_type(class="form-control")}}
+                   </div><br>
+                   <div class="col-xs-6">
+                   {{form.edit_service_description.label()}}
+                  </div>
+                   <div class="col-xs-6">
+                     {{form.edit_service_description(class="form-control")}}
+                   </div><br>                
+                <br></br><br>
+               </div>
+                <div class="modal-footer">
+                    <button type="button" class="edit-button btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info" >Edit</i></button>
+                </div>
+            </form>
+        </div> 
+    </div>
+</div>
+<!-- modal fail-safe -->
+<div id="delete_dialog" class="modal">
+   <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+            <h4>
+               Confirm!
+            </h4>
+        </div>
+        <div class="modal-body" align="center">
+             <p><i class="glyphicon glyphicon-warning-sign"></i> This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+            <div class="col-xs-4 pull-right">
+               <div class="col-xs-6">
+                  <form action="" id="btnDel" method="get">
+                   <button type="submit" style="width: 100%;" class="btn btn-danger">
+                   Yes
+                   </button>
+               </form>
+               </div>               
+               <div class="col-xs-6">
+                  <a href="#" data-dismiss="modal" style="width: 100%;" class="btn btn-default" aria-hidden="true">No</a>
+               </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}

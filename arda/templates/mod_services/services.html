@@ -7,7 +7,18 @@
     padding: 25px 0;
     text-align: center;
 }
-
+.table {
+  table-layout: fixed;
+  width: 100%;
+}
+.table td {
+  word-wrap: break-word;         /* All browsers since IE 5.5+ */
+  overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+}
+.btndiv{
+  padding-top: 0px !important;
+  margin-top: -13px;
+}
 </style>
 <script type="text/javascript">
    function rebuildServiceTable(result){
@@ -20,7 +31,7 @@
      var serviceId = result[index]['serviceId'];
      var company = result[index]['company']['slug'];
      var customer_id = result[index]['_id'];
-   
+      var trio = company + '/' + customer_id['$oid'] + '/' + serviceId['$oid'];
      var url_action_delete = "{{url_for('services.delete_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', company+"/"+customer_id['$oid']+"/"+serviceId['$oid']);
    
      var url_action_edit = "{{url_for('services.edit_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', company+"/"+customer_id['$oid']+"/"+serviceId['$oid']);
@@ -45,13 +56,10 @@
                              "</button>&nbsp;"+
                            "</form>"+
                      "</td>"+
-                     "<td>"+
-                       "<form method='get' action='"+url_action_delete+"'>"+
-                             "<button type='submit' data-toggle='tooltip' data-placement='bottom' title='Delete Service' class='btn btn-default btn-sm btn-danger'>"+
-                               "<span class='glyphicon glyphicon-remove'></span>"+
-                             "</button>&nbsp;"+
-                           "</form>"+
-                     "</td>"+
+                     "<td style='padding-bottom: 20%'>"+
+                        "<a class='deleteit btn btn-danger btn-sm' id='"+trio+"' data-toggle='modal' data-target='#delete_dialog_all_services' title='Delete Service'><i class='glyphicon glyphicon-remove'></i>"+
+                        "</a>"+   
+                    "</td>"+ 
                    "</tr>"+
                  "</table>"+
                "</td>"+
@@ -68,7 +76,14 @@
            format: 'dd/mm/yyyy',
      });
    
-     
+     //open delete dialog 
+      $('.deleteit').click(function (event) {
+       var myVal = $(this).attr('id');
+       console.log(myVal);
+        $('.btnDel').attr('action', function(i, value) {
+           return "{{url_for('services.delete_service',company_name='companyName', customer_id='customerID', service_id='serviceID')}}".replace('companyName/customerID/serviceID', myVal);
+        });
+      });
      //Get result to populate service table
      $('#searchService').click(function(){
        $('#pagination').css("display", "none");
@@ -195,13 +210,9 @@
                                     </button>&nbsp;
                                  </form>
                               </td>
-                              <td>
-                                 <form method="get" action="{{url_for('services.delete_service',company_name=service['company']['slug'], customer_id=service['customer']['_id'], service_id=service['service']['serviceId'])}}">
-                                    <button type="submit" class="btn btn-default btn-sm btn-danger">
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                    </button>&nbsp;
-                                 </form>
-                              </td>
+                              <td style="padding-bottom: 20%">
+                                  <a class="deleteit btn btn-danger btn-sm" id="{{service['company']['slug']~'/'~service['customer']['_id']~'/'~service['service']['serviceId']}}" data-toggle="modal" data-target="#delete_dialog" title="Delete Service"><i class="glyphicon glyphicon-remove"></i></a>   
+                              </td> 
                            </tr>
                         </table>
                      </td>
@@ -235,13 +246,9 @@
                                     </button>&nbsp;
                                  </form>
                               </td>
-                              <td >
-                                 <form method="get" action="{{url_for('services.delete_service',company_name=service['company']['slug'], customer_id=service['customer']['_id'], service_id=service['service']['serviceId'])}}">
-                                    <button type="submit" class="btn btn-default btn-sm btn-danger">
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                    </button>&nbsp;
-                                 </form>
-                              </td>
+                              <td style="padding-bottom: 20%">
+                                  <a class="deleteit btn btn-danger btn-sm" id="{{service['company']['slug']~'/'~service['customer']['_id']~'/'~service['service']['serviceId']}}" data-toggle="modal" data-target="#delete_dialog" title="Delete Service"><i class="glyphicon glyphicon-remove"></i></a>   
+                              </td>                              
                            </tr>
                         </table>
                      </td>
@@ -275,13 +282,9 @@
                                     </button>&nbsp;
                                  </form>
                               </td>
-                              <td >
-                                 <form method="get" action="{{url_for('services.delete_service',company_name=service['company']['slug'], customer_id=service['customer']['_id'], service_id=service['service']['serviceId'])}}">
-                                    <button type="submit" data-toggle='tooltip' data-placement='bottom' title='Delete Service' class="btn btn-default btn-sm btn-danger">
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                    </button>&nbsp;
-                                 </form>
-                              </td>
+                              <td style="padding-bottom: 20%">
+                                  <a class="deleteit btn btn-danger btn-sm" id="{{service['company']['slug']~'/'~service['customer']['_id']~'/'~service['service']['serviceId']}}" data-toggle="modal" data-target="#delete_dialog_all_services" title="Delete Service"><i class="glyphicon glyphicon-remove"></i></a>   
+                              </td> 
                            </tr>
                         </table>
                      </td>
@@ -312,5 +315,65 @@
       </div>
    </div>
 </section>
+<!-- modal fail-safe -->
+<div id="delete_dialog" class="modal">
+   <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+            <h4>
+               Confirm!
+            </h4>
+        </div>
+        <div class="modal-body" align="center">
+             <p><i class="glyphicon glyphicon-warning-sign"></i> This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+            <div class="pull-right">
+               <div class="btndiv col-xs-6">
+                  <form action="" class="btnDel" method="get">
+                   <button type="submit" class="btn btn-danger">
+                   Yes
+                   </button>
+               </form>
+               </div>               
+               <div class="col-xs-6">
+                  <a href="#" data-dismiss="modal" class="btn btn-default" aria-hidden="true">No</a>
+               </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- modal fail-safe -->
+<div id="delete_dialog_all_services" class="modal">
+   <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <a href="#" data-dismiss="modal" aria-hidden="true" class="close">×</a>
+            <h4>
+               Confirm!
+            </h4>
+        </div>
+        <div class="modal-body" align="center">
+             <p><i class="glyphicon glyphicon-warning-sign"></i> This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+            <div class="pull-right">
+               <div class="col-xs-6">
+                  <form action="" class="btnDel" method="get">
+                   <button type="submit" class="btn btn-danger">
+                   Yes
+                   </button>
+               </form>
+               </div>               
+               <div class="col-xs-6">
+                  <a href="#" data-dismiss="modal" class="btn btn-default" aria-hidden="true">No</a>
+               </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}
 

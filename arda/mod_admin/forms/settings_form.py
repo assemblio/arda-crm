@@ -16,3 +16,5 @@ class SettingsForm(Form):
     region_options = TextField('Add to Region')
     contact_via = TextField('Contacted Via')
     contact_description = TextAreaField("Description")
+    edit_service_type = TextField('Service Type')
+    edit_service_description = TextAreaField('Description')
