@@ -104,3 +104,6 @@ class Customers(db.Document):
     provided_services = db.ListField()
     municipality_region = db.StringField()
     customer_address = db.StringField()
+    future_demand = db.StringField()
+    follow_up = db.StringField()
+    category_of_request = db.StringField()

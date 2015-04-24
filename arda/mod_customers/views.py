@@ -11,6 +11,7 @@ from flask.ext.security import login_required, current_user
 from arda.mod_services.forms.servicetypes import ServiceTypes
 from arda.mod_customers.models.model import Customers
 from flask.ext.mongoengine import DoesNotExist
+from datetime import datetime
 
 
 mod_customers = Blueprint('customers', __name__, url_prefix='/customers')
@@ -89,6 +90,11 @@ def edit_customer(customer_id):
 
         if customer_doc['region'] == 'North':
             form.municipality_region_north.data = customer_doc['municipality_region']
+
+        if customer_doc['future_demand']:
+            form.future_demand.data = customer_doc['future_demand']['future_demand']
+            form.follow_up.data = datetime.strftime(customer_doc['future_demand']['follow_up'], "%d/%m/%Y")
+            form.category_of_request.data = customer_doc['future_demand']['category_of_request']
 
         form.company_name.data = customer_doc['company']['name']
         form.first_name.data = customer_doc['first_name']['value']
@@ -246,13 +252,19 @@ def build_save_costumers_document():
         'website': costumer['website'],
         'provided_services': []
     }
-
+    #if future demand field is defined create the following subdoc
+    if costumer['future_demand']:
+        json_obj['future_demand'] = {
+            'future_demand': costumer['future_demand'],
+            'follow_up': datetime.strptime(costumer['follow_up'], "%d/%m/%Y"),
+            'category_of_request': costumer['category_of_request']
+        }
     if current_user['region'] != "All":
         json_obj['region'] = current_user['region']
     else:
         json_obj['region'] = costumer['region']
 
-    #municipality based on region
+
     #municipality based on region
     if costumer['municipality_region_north'] and costumer['region'] == "North":
         json_obj['municipality_region'] = costumer['municipality_region_north']
@@ -375,6 +387,13 @@ def edit_costumers_document(customer_id):
         'email': costumer['email'],
         'website': costumer['website'],
     }
+    #if future demand field is defined create the following subdoc
+    if costumer['future_demand']:
+        json_obj['future_demand'] = {
+            'future_demand': costumer['future_demand'],
+            'follow_up': datetime.strptime(costumer['follow_up'], "%d/%m/%Y"),
+            'category_of_request': costumer['category_of_request']
+        }
 
     if current_user['region'] != "All":
         json_obj['region'] = current_user['region']

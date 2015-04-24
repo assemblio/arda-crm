@@ -1,141 +1,171 @@
 {% extends "layout.html" %}
 {% block body %}
 <script type="text/javascript">
-    $(document).ready(function(){
-        var region = $('#region').val();            
-        if(region == "East"){
-            $('#region-east').css('display', "block");
-            $('#region-west').css('display', "none");
-            $('#region-south').css('display', "none");
-            $('#region-north').css('display', "none");
-            $('#region-central').css('display', "none");
-        } else if (region == "West"){
-            $('#region-east').css('display', "none");
-            $('#region-west').css('display', "block");
-            $('#region-south').css('display', "none");
-            $('#region-north').css('display', "none");
-            $('#region-central').css('display', "none");
-        } else if (region == "South") {
-            $('#region-east').css('display', "none");
-            $('#region-west').css('display', "none");
-            $('#region-south').css('display', "block");
-            $('#region-north').css('display', "none");
-            $('#region-central').css('display', "none");
-        } else if (region == "Center") {
-            $('#region-east').css('display', "none");
-            $('#region-west').css('display', "none");
-            $('#region-south').css('display', "none");
-            $('#region-north').css('display', "none");
-            $('#region-central').css('display', "block");
-        } else if (region == "North") {
-            $('#region-east').css('display', "none");
-            $('#region-west').css('display', "none");
-            $('#region-south').css('display', "none");
-            $('#region-north').css('display', "block");
-            $('#region-central').css('display', "none");
-        } 
+$(document).ready(function(){
 
-        $('#region').change(function(){
-            var region = $('#region').val();
-            
-            if(region == "East"){
-                $('#region-east').css('display', "block");
-                $('#region-west').css('display', "none");
-                $('#region-south').css('display', "none");
-                $('#region-north').css('display', "none");
-                $('#region-central').css('display', "none");
-            } else if (region == "West"){
-                $('#region-east').css('display', "none");
-                $('#region-west').css('display', "block");
-                $('#region-south').css('display', "none");
-                $('#region-north').css('display', "none");
-                $('#region-central').css('display', "none");
-            } else if (region == "South") {
-                $('#region-east').css('display', "none");
-                $('#region-west').css('display', "none");
-                $('#region-south').css('display', "block");
-                $('#region-north').css('display', "none");
-                $('#region-central').css('display', "none");
-            } else if (region == "Center") {
-                $('#region-east').css('display', "none");
-                $('#region-west').css('display', "none");
-                $('#region-south').css('display', "none");
-                $('#region-north').css('display', "none");
-                $('#region-central').css('display', "block");
-            } else if (region == "North") {
-                $('#region-east').css('display', "none");
-                $('#region-west').css('display', "none");
-                $('#region-south').css('display', "none");
-                $('#region-north').css('display', "block");
-                $('#region-central').css('display', "none");
-            } 
-        });
+  //checkbox on change to show fields
+   if ($('#future_demand').prop('checked')) {
+      $('.future-demand').css('display', "block");            
+   } 
+   else {
+      $('.future-demand').css('display', "none");
+      $('#follow_up').val("");
+      $('#category_of_request').val("");
+   }
+   $('#future_demand').change(function(){
+      if ($('#future_demand').prop('checked')) {
+         $('.future-demand').css('display', "block");            
+      } 
+      else {
+         $('.future-demand').css('display', "none");
+         $('#follow_up').val("");
+         $('#category_of_request').val("");
+      }
+   });
 
-        var target_group_type1 = $('#customer_type').val();
-        if (target_group_type1 == "Business/Entrepreneur"){
-                $('#Entrepreneur-targetGroup').css("display", "block");
-                $('#NGO-targetGroup').css("display", "none");
-                $('#investorTargetGroup').css("display", "none");
-                $('#municipalityTargetGroup').css("display", "none");
-        } else if (target_group_type1 == "Non-Governmental Organisation") {
-            $('#NGO-targetGroup').css("display", "block");
-            $('#Entrepreneur-targetGroup').css("display", "none");
-            $('#investorTargetGroup').css("display", "none");
-            $('#municipalityTargetGroup').css("display", "none");
-        }else if (target_group_type1 == "Investor") {
-                $('#NGO-targetGroup').css("display", "none");
-                $('#Entrepreneur-targetGroup').css("display", "none");
-                $('#investorTargetGroup').css("display", "block");
-                $('#municipalityTargetGroup').css("display", "none");
-        }else {
-            $('#NGO-targetGroup').css("display", "none");
-            $('#investorTargetGroup').css("display", "none");
-            $('#Entrepreneur-targetGroup').css("display", "none");
-            $('#municipalityTargetGroup').css("display", "block");
-        }
+  var region = $('#region').val();            
+  if(region == "East"){
+      $('#region-east').css('display', "block");
+      $('#region-west').css('display', "none");
+      $('#region-south').css('display', "none");
+      $('#region-north').css('display', "none");
+      $('#region-central').css('display', "none");
+  } else if (region == "West"){
+      $('#region-east').css('display', "none");
+      $('#region-west').css('display', "block");
+      $('#region-south').css('display', "none");
+      $('#region-north').css('display', "none");
+      $('#region-central').css('display', "none");
+  } else if (region == "South") {
+      $('#region-east').css('display', "none");
+      $('#region-west').css('display', "none");
+      $('#region-south').css('display', "block");
+      $('#region-north').css('display', "none");
+      $('#region-central').css('display', "none");
+  } else if (region == "Center") {
+      $('#region-east').css('display', "none");
+      $('#region-west').css('display', "none");
+      $('#region-south').css('display', "none");
+      $('#region-north').css('display', "none");
+      $('#region-central').css('display', "block");
+  } else if (region == "North") {
+      $('#region-east').css('display', "none");
+      $('#region-west').css('display', "none");
+      $('#region-south').css('display', "none");
+      $('#region-north').css('display', "block");
+      $('#region-central').css('display', "none");
+  } 
 
-        $('#customer_type').change(function(){
-            var target_group_type = $('#customer_type').val();
-            if (target_group_type == "Business/Entrepreneur"){
-                $('#Entrepreneur-targetGroup').css("display", "block");
-                $('#NGO-targetGroup').css("display", "none");
-                $('#investorTargetGroup').css("display", "none");
-                $('#municipalityTargetGroup').css("display", "none");
-            } else if(target_group_type == "Non-Governmental Organisation") {
-                $('#NGO-targetGroup').css("display", "block");
-                $('#Entrepreneur-targetGroup').css("display", "none");
-                $('#investorTargetGroup').css("display", "none");
-                $('#municipalityTargetGroup').css("display", "none");
-            }else if(target_group_type == "Investor") {
-                $('#NGO-targetGroup').css("display", "none");
-                $('#Entrepreneur-targetGroup').css("display", "none");
-                $('#municipalityTargetGroup').css("display", "none");
-                $('#investorTargetGroup').css("display", "block");
-            }
-            else {
-                $('#municipalityTargetGroup').css("display", "block");
-                $('#NGO-targetGroup').css("display", "none");
-                $('#Entrepreneur-targetGroup').css("display", "none");
-                $('#investorTargetGroup').css("display", "none");
+  $('#region').change(function(){
+      var region = $('#region').val();
+      
+      if(region == "East"){
+          $('#region-east').css('display', "block");
+          $('#region-west').css('display', "none");
+          $('#region-south').css('display', "none");
+          $('#region-north').css('display', "none");
+          $('#region-central').css('display', "none");
+      } else if (region == "West"){
+          $('#region-east').css('display', "none");
+          $('#region-west').css('display', "block");
+          $('#region-south').css('display', "none");
+          $('#region-north').css('display', "none");
+          $('#region-central').css('display', "none");
+      } else if (region == "South") {
+          $('#region-east').css('display', "none");
+          $('#region-west').css('display', "none");
+          $('#region-south').css('display', "block");
+          $('#region-north').css('display', "none");
+          $('#region-central').css('display', "none");
+      } else if (region == "Center") {
+          $('#region-east').css('display', "none");
+          $('#region-west').css('display', "none");
+          $('#region-south').css('display', "none");
+          $('#region-north').css('display', "none");
+          $('#region-central').css('display', "block");
+      } else if (region == "North") {
+          $('#region-east').css('display', "none");
+          $('#region-west').css('display', "none");
+          $('#region-south').css('display', "none");
+          $('#region-north').css('display', "block");
+          $('#region-central').css('display', "none");
+      } 
+  });
 
-            }
-        });
-        $(".checkeme").children().each(function() {
+  var target_group_type1 = $('#customer_type').val();
+  if (target_group_type1 == "Business/Entrepreneur"){
+          $('#Entrepreneur-targetGroup').css("display", "block");
+          $('#NGO-targetGroup').css("display", "none");
+          $('#investorTargetGroup').css("display", "none");
+          $('#municipalityTargetGroup').css("display", "none");
+  } else if (target_group_type1 == "Non-Governmental Organisation") {
+      $('#NGO-targetGroup').css("display", "block");
+      $('#Entrepreneur-targetGroup').css("display", "none");
+      $('#investorTargetGroup').css("display", "none");
+      $('#municipalityTargetGroup').css("display", "none");
+  }else if (target_group_type1 == "Investor") {
+          $('#NGO-targetGroup').css("display", "none");
+          $('#Entrepreneur-targetGroup').css("display", "none");
+          $('#investorTargetGroup').css("display", "block");
+          $('#municipalityTargetGroup').css("display", "none");
+  }else {
+      $('#NGO-targetGroup').css("display", "none");
+      $('#investorTargetGroup').css("display", "none");
+      $('#Entrepreneur-targetGroup').css("display", "none");
+      $('#municipalityTargetGroup').css("display", "block");
+  }
 
-            var attr = $(this).children().first().attr('checked');
-            if (typeof attr !== typeof undefined && attr !== false) {
-                $(this).addClass("active");
-                
-            }
-        });
-    })
+  $('#customer_type').change(function(){
+      var target_group_type = $('#customer_type').val();
+      if (target_group_type == "Business/Entrepreneur"){
+          $('#Entrepreneur-targetGroup').css("display", "block");
+          $('#NGO-targetGroup').css("display", "none");
+          $('#investorTargetGroup').css("display", "none");
+          $('#municipalityTargetGroup').css("display", "none");
+      } else if(target_group_type == "Non-Governmental Organisation") {
+          $('#NGO-targetGroup').css("display", "block");
+          $('#Entrepreneur-targetGroup').css("display", "none");
+          $('#investorTargetGroup').css("display", "none");
+          $('#municipalityTargetGroup').css("display", "none");
+      }else if(target_group_type == "Investor") {
+          $('#NGO-targetGroup').css("display", "none");
+          $('#Entrepreneur-targetGroup').css("display", "none");
+          $('#municipalityTargetGroup').css("display", "none");
+          $('#investorTargetGroup').css("display", "block");
+      }
+      else {
+          $('#municipalityTargetGroup').css("display", "block");
+          $('#NGO-targetGroup').css("display", "none");
+          $('#Entrepreneur-targetGroup').css("display", "none");
+          $('#investorTargetGroup').css("display", "none");
+
+      }
+  });
+  $(".checkeme").children().each(function() {
+
+      var attr = $(this).children().first().attr('checked');
+      if (typeof attr !== typeof undefined && attr !== false) {
+          $(this).addClass("active");
+          
+      }
+  });
+  //date picker for follow up field
+   $('.followUp-date-picker').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'dd/mm/yyyy',
+   });
+   ('.followUp-date-picker').on('change.dp show.dp', function(e) {
+        $('.customerForm').bootstrapValidator('revalidateField', 'follow_up');
+    });
+});
 </script>
 <section>
 <div class="container " align="center">
     <h4>{{text}}</h4>
     <br>
     </br>
-    <form class="form-horizontal" action="{{action}}" method="post">
+    <form class="form-horizontal customerForm" action="{{action}}" method="post">
         <div class="form-group col-xs-6">
             <div class="form-group form-group-sm">
                 <div class="col-xs-6">{{form.company_name.label(class="pull-right")}}</div>
@@ -399,7 +429,7 @@
         <br>
         <div class="col-xs-12" align="center" id="investorTargetGroup" style="display:none">
             <div class="form-group form-group-lg">
-                <label class="control-label" style="font-size: 18px;">Target Group: Investor ( Foreing and Diaspora) </label>
+                <label class="control-label" style="font-size: 18px;">Target Group: Investor</label>
                 <hr>
             </div><br>
             <div class="form-group col-xs-6">
@@ -454,7 +484,7 @@
         <br>
         <div class="col-xs-12" align="center" id="municipalityTargetGroup" style="display:none">
             <div class="form-group form-group-lg">
-                <label class="control-label" style="font-size: 18px;">Target Group: Municipality</label>
+                <label class="control-label" style="font-size: 18px;">Target Group: Public Institution</label>
                 <hr>
             </div><br>
             <div class="form-group col-xs-6">
@@ -491,6 +521,26 @@
                 <div class="form-group form-group-sm">
                     <div class="col-xs-6">{{form.description.label(class="pull-right")}}</div>
                     <div class="col-xs-6">{{form.description(class="form-control", rows=8)}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12" align="center">
+            <div class="form-group">                 
+                 <div class="col-xs-6">{{form.future_demand(class="pull-right")}}</div>
+                 <div class="col-xs-6">{{form.future_demand.label(class="pull-left")}}</div>
+             </div> 
+        </div>
+        <div class="future-demand col-xs-12" align="center" style="display:none">
+            <div class="form-group col-xs-6">
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.follow_up.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.follow_up(class="followUp-date-picker form-control pull-left")}}</div>
+                </div>                
+            </div>
+            <div class="form-group col-xs-6">                
+                <div class="form-group form-group-sm">
+                    <div class="col-xs-6">{{form.category_of_request.label(class="pull-right")}}</div>
+                    <div class="col-xs-6">{{form.category_of_request(class="form-control pull-left")}}</div>
                 </div>
             </div>
         </div>
