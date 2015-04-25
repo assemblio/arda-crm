@@ -91,7 +91,7 @@ def edit_customer(customer_id):
         if customer_doc['region'] == 'North':
             form.municipality_region_north.data = customer_doc['municipality_region']
 
-        if customer_doc['future_demand']:
+        if 'future_demand' in customer_doc:
             form.future_demand.data = customer_doc['future_demand']['future_demand']
             form.follow_up.data = datetime.strftime(customer_doc['future_demand']['follow_up'], "%d/%m/%Y")
             form.category_of_request.data = customer_doc['future_demand']['category_of_request']
@@ -615,7 +615,7 @@ def create_filtered_customer_report(response):
     worksheet.write('Y1', 'Industry of Interest', bold)
     worksheet.write('Z1', 'Investor Size', bold)
     worksheet.write('AA1', 'Country', bold)
-    worksheet.write('AB1', 'Municipality Name', bold)
+    worksheet.write('AB1', 'Public Instituation Name', bold)
     worksheet.write('AC1', 'Investment Incentives', bold)
     worksheet.write('AD1', 'Offering', bold)
     worksheet.write('AE1', 'Department', bold)

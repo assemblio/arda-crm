@@ -118,7 +118,6 @@ def search():
     match = {
         "$match": match_field
     }
-
     group = {
         "$group": {
             "_id": {
@@ -163,7 +162,6 @@ def search():
     pipeline = [match, group, project]
 
     json_obj = mongo.db.customers.aggregate(pipeline)
-
     resp = Response(
         response=json_util.dumps(json_obj['result']),
         mimetype='application/json'

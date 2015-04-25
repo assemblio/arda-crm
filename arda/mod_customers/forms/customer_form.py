@@ -56,7 +56,7 @@ class CustomerForm(Form):
             ('Business/Entrepreneur', 'Business/Entrepreneur'),
             ('Non-Governmental Organisation', 'Non-Governmental Organisation'),
             ('Investor', 'Investor'),
-            ('Municipality', 'Municipality')
+            ('Public Instituation', 'Public Instituation')
         ]
     )
     customer_industry = [
@@ -146,7 +146,7 @@ class CustomerForm(Form):
         'Department of Agriculture'
     ]
     #Target Group: Municipality
-    municipality_name = TextField("Municipality Name")
+    municipality_name = TextField("Public Instituation Name")
     department = SelectField("Department", choices=[(x, x) for x in department_choices])
     offering = TextField("Offering")
     industries = TextField("Industries")
@@ -186,7 +186,7 @@ class CustomerForm(Form):
         'Anguilla','Antarctica','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia',
         'Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium',
         'Belize','Benin','Bermuda','Bhutan','Bolivia','Bonaire, Sint Eustatius and Saba','Bosnia and Herzegovina',
-        'Botswana','Bouvet Island', 'Brazil','British Indian Ocean Territory', 'Brunei Darussalam', 
+        'Botswana', 'Bouvet Island', 'Brazil', 'British Indian Ocean Territory', 'Brunei Darussalam',
         'Bulgaria','Burkina Faso','Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde',
         'Cayman Islands', 'Chad', 'Chile', 'China', 'Christmas Island', 'Cocos (Keeling) Islands',
         'Colombia', 'Comoros', 'Congo', 'Congo, the Democratic Republic of the Congo', 'Cook Islands',
