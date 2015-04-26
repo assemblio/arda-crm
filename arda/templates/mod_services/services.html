@@ -185,6 +185,7 @@
                      <th>Contacted Via</th>
                      <th>Service Date</th>
                      <th>Service Fee</th>
+                     <th>Unit</th>
                      <th>Service Description</th>
                      <th>Operations</th>
                   </tr>
@@ -204,6 +205,7 @@
                      {% set date_service = (day, month, year)|join("/") %}
                      <td>{{date_service}}</td>
                      <td>{{service['service']['fee']}}</td>
+                     <td>{{service['service']['unit']}}</td>
                      <td>{{service['service']['description']}}</td>
                      <td>
                         <table align="center">
@@ -240,6 +242,7 @@
                      {% set date_service = (day, month, year)|join("/") %}
                      <td>{{date_service}}</td>
                      <td>{{service['service']['fee']}}</td>
+                     <td>{{service['service']['unit']}}</td>
                      <td>{{service['service']['description']}}</td>
                      <td>
                         <table align="center">
@@ -276,6 +279,7 @@
                      {% set date_service = (day, month, year)|join("/") %}
                      <td>{{date_service}}</td>
                      <td>{{service['service']['fee']}}</td>
+                     <td>{{service['service']['unit']}}</td>
                      <td>{{service['service']['description']}}</td>
                      <td>
                         <table align="center">

@@ -277,6 +277,7 @@ def get_services_for_given_company(query):
                         "type": "$provided_services.provided_service.value",
                         "description": "$provided_services.description",
                         "fee": "$provided_services.service_fee",
+                        "unit": "$provided_services.unit_param",
                         "date": "$provided_services.service_date"
                     }
                 }
@@ -301,6 +302,7 @@ def get_services_for_given_company(query):
                     "type": "$_id.service.type",
                     "description": "$_id.service.description",
                     "fee": "$_id.service.fee",
+                    "unit": "$_id.service.unit",
                     "date": "$_id.service.date"
                 }
             }
@@ -342,7 +344,8 @@ def retrieve_all_services(region):
                     "type": "$provided_services.provided_service.value",
                     "description": "$provided_services.description",
                     "fee": "$provided_services.service_fee",
-                    "date": "$provided_services.service_date"
+                    "date": "$provided_services.service_date",
+                    "unit": "$provided_services.unit_param"
                 }
             }
         }
@@ -367,13 +370,15 @@ def retrieve_all_services(region):
                 "type": "$_id.service.type",
                 "description": "$_id.service.description",
                 "fee": "$_id.service.fee",
-                "date": "$_id.service.date"
+                "date": "$_id.service.date",
+                "unit": "$_id.service.unit"
             }
         }
     }
 
     pipeline = [unwind, match, group, project]
     json_obj = mongo.db.customers.aggregate(pipeline)
+    print json_obj
     return json_obj['result']
 
 
