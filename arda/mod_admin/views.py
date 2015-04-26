@@ -185,7 +185,10 @@ def settings():
         #retireve types in order to manage in settings page
         if current_user.region != 'All':
             query = {
-                'serviceTypes.region': current_user.region
+                "$or": [
+                    {'serviceTypes.region': current_user.region},
+                    {'serviceTypes.region': "All"}
+                ]
             }
             query_contact = {
                 'contactVia.region': current_user.region
@@ -221,7 +224,10 @@ def settings():
 
             if current_user.region != 'All':
                 query = {
-                    'serviceTypes.region': current_user.region
+                    "$or": [
+                        {'serviceTypes.region': current_user.region},
+                        {'serviceTypes.region': "All"}
+                    ]
                 }
                 query_contact = {
                     'contactVia.region': current_user.region
@@ -320,7 +326,8 @@ def add_service_type(type_id):
             "name": service_type,
             "slug": slugify(service_type)
         },
-        "description": service_description
+        "description": service_description,
+        "quantity": request.form['quantity'],
     }
 
     if current_user.region != 'All':
@@ -348,6 +355,7 @@ def edit_service_type():
     description = request.form['edit_service_description']
     region = request.form['service-region']
     service_id = request.form['serviceId']
+    quantity = request.form['quantityParam']
 
     new_type = {
         "type": {
@@ -356,7 +364,8 @@ def edit_service_type():
         },
         'region': region,
         'serviceId': ObjectId(service_id),
-        "description": description
+        "description": description,
+        'quantity': quantity
     }
 
     mongo.db.servicetypes.update(
@@ -478,7 +487,8 @@ def retrieve_all_service_types(query):
                     "region": "$serviceTypes.region",
                     "serviceId": "$serviceTypes.serviceId",
                     "serviceType": "$serviceTypes.type.name",
-                    "description": "$serviceTypes.description"
+                    "description": "$serviceTypes.description",
+                    'quantity': '$serviceTypes.quantity'
                 }
             }
         },
@@ -490,6 +500,7 @@ def retrieve_all_service_types(query):
                 "serviceId": "$_id.serviceId",
                 "serviceType": "$_id.serviceType",
                 "description": "$_id.description",
+                "quantity": "$_id.quantity",
             }
         }
     ])

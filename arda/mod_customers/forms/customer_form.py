@@ -38,6 +38,7 @@ class CustomerForm(Form):
     follow_up = TextField('Date to Follow-up')
     future_demand = BooleanField('Future Demand')
     category_of_request = TextField('Category of Request')
+
     #personal info
     company_name = TextField("Customer")
     first_name = TextField("First Name")
@@ -131,7 +132,14 @@ class CustomerForm(Form):
     investor_size = TextField("Size")
     foundation_year_investor = TextField("Foundation Year")
     description_investor = TextAreaField("Business Description")
-
+    investor_type = SelectField(
+        'Investor Type',
+        choices=[
+            ('Domestic', 'Domestic'),
+            ('Diaspora', 'Diaspora'),
+            ('Foreign', 'Foreign')
+        ]
+    )
     department_choices = [
         'Department of Finance',
         'Department for Economic Development',

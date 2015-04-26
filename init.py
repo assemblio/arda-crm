@@ -66,7 +66,8 @@ def create_initial_service():
                 },
                 'region': 'West',
                 'serviceId': ObjectId(),
-                "description": "Phone Call Service"
+                "description": "Phone Call Service",
+                'quantity':''
             },
             {
                 "type": {
@@ -75,7 +76,8 @@ def create_initial_service():
                 },
                 'region': 'West',
                 'serviceId': ObjectId(),
-                "description": "E-mail Service"
+                "description": "E-mail Service",
+                'quantity': ''
             },
             {
                 "type": {
@@ -84,7 +86,8 @@ def create_initial_service():
                 },
                 'region': 'West',
                 'serviceId': ObjectId(),
-                "description": "Face-to-Face Service"
+                "description": "Face-to-Face Service",
+                'quantity': ''
             }
         ],
         contactVia=[

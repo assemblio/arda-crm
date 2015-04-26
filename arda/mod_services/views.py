@@ -26,7 +26,10 @@ def services():
     form = ServiceTypes()
     if current_user.region != 'All':
             query = {
-                'serviceTypes.region': current_user.region
+                "$or": [
+                    {'serviceTypes.region': current_user.region},
+                    {'serviceTypes.region': "All"}
+                ]
             }
     else:
             query = {}
@@ -117,6 +120,7 @@ def add_service(company_name, customer_id):
             'service_date': datetime.datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
             'description': service_form.description.data,
             'contactVia': service_form.contact_via.data,
+            'unit_param': service_form.unit_param.data,
             'service_fee': float(service_form.service_fee.data)
         }
 
@@ -156,6 +160,7 @@ def edit_service(company_name, customer_id, service_id):
                             "type": "$provided_services.provided_service.value",
                             "description": "$provided_services.description",
                             "fee": "$provided_services.service_fee",
+                            "unit": "$provided_services.unit_param",
                             "date": "$provided_services.service_date"
                         }
                     }
@@ -169,6 +174,7 @@ def edit_service(company_name, customer_id, service_id):
                     "type": "$_id.service.type",
                     "description": "$_id.service.description",
                     "fee": "$_id.service.fee",
+                    "unit": "$_id.service.unit",
                     "date": "$_id.service.date"
                 }
             }
@@ -178,6 +184,7 @@ def edit_service(company_name, customer_id, service_id):
         form.service_fee.data = service_doc['result'][0]['fee']
         form.service_date.data = datetime.datetime.strftime(service_doc['result'][0]['date'], '%d/%m/%Y')
         form.contact_via.data = service_doc['result'][0]['contactVia']
+        form.unit_param.data = service_doc['result'][0]['unit']
         text = "Edit Service"
         action = url_for('services.edit_service', company_name=company_name, customer_id=customer_id, service_id=service_id)
         return render_template(
@@ -208,6 +215,7 @@ def edit_service(company_name, customer_id, service_id):
                         'service_date': datetime.datetime.strptime(service_form.service_date.data, "%d/%m/%Y"),
                         'description': service_form.description.data,
                         'contactVia': service_form.contact_via.data,
+                        'unit_param': service_form.unit_param.data,
                         'service_fee': float(service_form.service_fee.data)
                     }
                 }

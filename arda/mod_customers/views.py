@@ -148,6 +148,8 @@ def edit_customer(customer_id):
             form.investor_size.data = customer_doc['customer_type']['investor_size']
             form.foundation_year_investor.data = customer_doc['customer_type']['foundation_year_investor']
             form.description_investor.data = customer_doc['customer_type']['description_investor']
+            form.investor_type.data = customer_doc['customer_type']['investor_type']
+
         else:
             form.customer_type.data = customer_doc['customer_type']['target_group']
             form.municipality_name.data = customer_doc['customer_type']['municipality_name']
@@ -323,7 +325,8 @@ def build_save_costumers_document():
             'industry_of_interest': costumer['industry_of_interest'],
             'investor_size': costumer['investor_size'],
             'foundation_year_investor': costumer['foundation_year_investor'],
-            'description_investor': costumer['description_investor']
+            'description_investor': costumer['description_investor'],
+            'investor_type': costumer['investor_type'],
         }
     else:
         json_obj['customer_type'] = {
@@ -457,7 +460,8 @@ def edit_costumers_document(customer_id):
             'industry_of_interest': costumer['industry_of_interest'],
             'investor_size': costumer['investor_size'],
             'foundation_year_investor': costumer['foundation_year_investor'],
-            'description_investor': costumer['description_investor']
+            'description_investor': costumer['description_investor'],
+            'investor_type': costumer['investor_type'],
         }
     else:
         json_obj['customer_type'] = {

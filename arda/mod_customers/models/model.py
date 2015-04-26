@@ -88,6 +88,10 @@ class Customer_Type(db.EmbeddedDocument):
     description = db.StringField()
     description_investor = db.StringField()
     investment_incentives = db.StringField()
+    investor_type = db.StringField()
+    investor_business_number = db.StringField()
+    investor_vat = db.StringField()
+    investor_fiscal_number = db.StringField()
 
 
 class Customers(db.Document):

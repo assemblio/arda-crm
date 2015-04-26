@@ -68,6 +68,7 @@ $(document).ready(function(){
       $('#cont-region').val(row_data[0]);
       $('#contact_via').val(row_data[1]);
       $('#contact_description').val(row_data[2]);
+      $('#quantityParam').val(row_data[3]);
       $('#service-region').val(row_data[0]);
       $('#edit_service_type').val(row_data[1]);
       $('#edit_service_description').val(row_data[2]);
@@ -249,6 +250,7 @@ $(document).ready(function(){
                         {% if current_user.region == "All" %}
                         <div class="col-xs-2">
                            <select id="region" name='region' class="form-control">
+                              <option value="All">All</option>
                               <option value="West">West</option>
                               <option value="South">South</option>
                               <option value="North">North</option>
@@ -260,7 +262,7 @@ $(document).ready(function(){
                         <div class="col-xs-1">
                            <label for="serviceType" class="control-label pull-right">Service Type:</label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-2">
                            <input id="serviceType" name="serviceType" class="form-control" type="text">
                         </div>
                         <div class="col-xs-1">
@@ -269,7 +271,14 @@ $(document).ready(function(){
                         <div class="col-xs-3">
                            <textarea id="serviceDescription" name="serviceDescription" cols="26"></textarea>
                         </div>
-                        <div class="form-group col-xs-2">
+                        <div class="col-xs-2" style="display:none">
+                           <select id="quantity" name='quantity' class="form-control">
+                              <option value="Head Count">Head Count</option>
+                              <option value="QTY">QTY</option>
+                              <option value="Monetary Value">Monetary Value</option>
+                           </select>
+                        </div>
+                        <div class="form-group col-xs-1">
                            <button type="submit" id="addType" class="col-xs-offset-1 btn btn-info">Add Type</button>                           
                         </div>
                      </form>
@@ -287,6 +296,7 @@ $(document).ready(function(){
                               <th style="display:none;">Region</th>
                               <th>Service Type</th>
                               <th>Description</th>
+                              <th style="display:none">Unit</th>
                               <th>Operation</th>
                            </tr>
                         </thead>
@@ -297,6 +307,7 @@ $(document).ready(function(){
                            <td style="display:none">{{result['region']}}</td>
                               <td>{{result['serviceType']}}</td>
                               <td>{{result['description']}}</td>
+                              <td style="display:none">{{result['quantity']}}</td>
                               <td>
                               <table align='center'>
                                     <tr align='center'>
@@ -348,7 +359,7 @@ $(document).ready(function(){
                         <label for="contactDescription" class="control-label pull-right">Description:</label>
                      </div>
                      <div class="col-xs-3">
-                        <textarea id="contactDescription" name="contactDescription" cols="26"></textarea>
+                        <textarea id="contactDescription" name="contactDescription" cols="23"></textarea>
                      </div>
                      <div class="form-group col-xs-2">
                         <button type="submit" id="addContactType" class="col-xs-offset-1 btn btn-info pull-left">Add Type</button>                           
@@ -493,21 +504,21 @@ $(document).ready(function(){
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Edit Contacting Manners</h4>
-            </div>
+            </div><br>
             <form class="form-horizontal" action="{{url_for('admin.edit_contact_type')}}" method="POST">
-               <div class="form-group-sm" id="update_modal">
+               <div class="form-group form-group-sm" id="update_modal">
                   <input type="hidden" id='cont-region' name="cont-region" value=""/>
                   <input type="hidden" id='contactId' name="contactId" value=""/>
-                  <div class="col-xs-6">
-                   {{form.contact_via.label()}}
+                  <div class="form-group col-xs-6">
+                   {{form.contact_via.label(class="col-xs-offset-4")}}
                   </div>
-                   <div class="col-xs-6">
+                   <div class="form-group col-xs-6">
                      {{form.contact_via(class="form-control")}}
                    </div><br>
-                   <div class="col-xs-6">
-                   {{form.contact_description.label()}}
+                   <div class="form-group col-xs-6">
+                   {{form.contact_description.label(class="col-xs-offset-4")}}
                   </div>
-                   <div class="col-xs-6">
+                   <div class="form-group col-xs-6">
                      {{form.contact_description(class="form-control")}}
                    </div><br>                
                 <br></br><br>
@@ -527,22 +538,31 @@ $(document).ready(function(){
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Edit Service Types</h4>
-            </div>
+            </div><br>
             <form class="form-horizontal" action="{{url_for('admin.edit_service_type')}}" method="POST">
-               <div class="form-group-sm" id="update_modal">
+               <div class="form-group form-group-sm" align="center" id="update_modal">
                   <input type="hidden" id='service-region' name="service-region" value=""/>
                   <input type="hidden" id='serviceId' name="serviceId" value=""/>
-                  <div class="col-xs-6">
-
+                  <div class="col-xs-6"style="display:none">
+                     Pick a Parameter
+                  </div>
+                  <div class="form-group col-xs-6" style="display:none">
+                     <select id="quantityParam" name='quantityParam' class="form-control">
+                        <option value="Head Count">Head Count</option>
+                        <option value="QTY">QTY</option>
+                        <option value="Monetary Value">Monetary Value</option>
+                     </select>
+                  </div>
+                  <div class="form-group col-xs-6">
                    {{form.edit_service_type.label()}}
                   </div>
-                   <div class="col-xs-6">
+                   <div class="form-group col-xs-6">
                      {{form.edit_service_type(class="form-control")}}
                    </div><br>
-                   <div class="col-xs-6">
+                   <div class="form-group col-xs-6">
                    {{form.edit_service_description.label()}}
                   </div>
-                   <div class="col-xs-6">
+                   <div class="form-group col-xs-6">
                      {{form.edit_service_description(class="form-control")}}
                    </div><br>                
                 <br></br><br>

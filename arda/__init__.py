@@ -52,7 +52,9 @@ def create_app():
     from arda.mod_admin.views import mod_admin
     from arda.mod_api.views import mod_api
     from arda.mod_analytics.views import mod_analytics
+    from arda.mod_future_demand.views import mod_future_demand
 
+    app.register_blueprint(mod_future_demand)
     app.register_blueprint(mod_analytics)
     app.register_blueprint(mod_auth)
     app.register_blueprint(mod_home_page)
