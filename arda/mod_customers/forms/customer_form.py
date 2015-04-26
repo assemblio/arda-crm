@@ -156,11 +156,19 @@ class CustomerForm(Form):
     #Target Group: Municipality
     municipality_name = TextField("Public Instituation Name")
     department = SelectField("Department", choices=[(x, x) for x in department_choices])
-    offering = TextField("Offering")
+    offering = SelectField(
+        "Type of Institution",
+        choices=[
+            ('Municipality', 'Municipality'),
+            ('Ministires', 'Ministires'),
+            ('Governmental Agencies', 'Governmental Agencies'),
+            ('Other', 'Other')
+        ]
+    )
     industries = TextField("Industries")
     modules = TextField("Modules")
     infrastructure_available = TextField("Infrastructure Available")
-    investment_incentives = TextField("Investment Incentives")
+    investment_incentives = TextField("Sector of Operation")
     description = TextAreaField("Description")
 
     #if the Target Group is NGO
