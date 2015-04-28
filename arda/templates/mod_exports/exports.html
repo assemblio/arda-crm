@@ -2,23 +2,37 @@
 {% block body %}
 <script type="text/javascript">
 	$(document).ready(function(){
+		$('.service-date-picker').datepicker({
+           autoclose: true,
+           todayHighlight: true,
+           format: 'dd/mm/yyyy',
+     	});
 		$('#download-filtered-services').click(function(){
-			var year = $('#year').val();
-			var month = $('#month-select').val();
 			var service_type = $('#provided_service').val();
+		     var contactVia = $('#contact_via').val();
+		     var from_date = $('#from').val();
+		     var to_date = $('#to').val();
+
 			var dateTime = new Date();
-			var url = "{{url_for('services.export_filtered_services')}}" + "?year=" + year + "&month=" + month + "&serviceType=" + service_type;
+			var url = "{{url_for('services.export_filtered_services')}}"+ "?serviceType="+service_type+ "&contactVia="+ contactVia +"&from="+from_date+"&to="+to_date;
 			var downloadAttr = "All Filtered Services (As of '" + dateTime + "').xls";
 			$('#download-filtered-services').prop('href', url);
 			$('#download-filtered-services').prop('download', downloadAttr);
 		});
 
 		$('#download-filtered-customers').click(function(){
-			var customer = $('#customer').val();
-			var target_group = $('#target-group-select').val();
-			var region = $('#region-select').val();
+		   var customer_type = $('#customer-type-select').val();
+	       var size = $('#search_size_category').val();
+	       var region = $('#region').val();
+	       var north = $('#search_municipality_region_north').val();
+	       var center = $('#search_municipality_region_central').val();
+	       var south = $('#search_municipality_region_south').val();
+	       var west = $('#search_municipality_region_west').val();
+	       var east = $('#search_municipality_region_east').val();
+	       var company = $('#company').val();
 			var dateTime = new Date();
-			var url = "{{url_for('customers.export_filtered_customers')}}" + "?customer=" + customer + "&target_group=" + target_group + "&region=" + region;
+			var url = "{{url_for('customers.export_filtered_customers')}}"+ "?company=" + company + "&customer_type=" + customer_type + "&size=" + size + "&region=" + region + "&north=" + north + "&center=" + center + "&south=" + south + "&west=" + west + "&east=" + east;
+
 			var downloadAttr = "All Filtered Customers (As of '" + dateTime + "').xls";
 			$('#download-filtered-customers').prop('href', url);
 			$('#download-filtered-customers').prop('download', downloadAttr);
@@ -34,84 +48,222 @@
 	        viewMode: "years", 
 	        minViewMode: "years"
         });
+        //show select filed based on selection
+     var target_group_type = $('#customer-type-select').val();
+      if (target_group_type == "Business/Entrepreneur"){
+        $('#size_category').css('display', "block");
+      }
+      else{
+        $('#size_category').css('display', "none");
+      };
+     $('#customer-type-select').change(function(){
+            var target_group_type = $('#customer-type-select').val();
+            if (target_group_type == "Business/Entrepreneur"){
+              $('#size_category').css('display', "block");
+            }
+            else{
+              $('#size_category').css('display', "none");
+            };
+      });
+     //show/hide municipalities based on selected region
+      var region = $('#region').val();
+          
+          if(region == "East"){
+              $('#search_municipality_east').css('display', "block");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "West"){
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "block");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "South") {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "block");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "North") {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "block");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "Center") {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_central').css('display', "block");
+              $('#search_municipality_north').css('display', "none");
+          }
+          else {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+      $('#region').change(function(){
+          var region = $('#region').val();
+          
+          if(region == "East"){
+              $('#search_municipality_east').css('display', "block");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "West"){
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "block");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "South") {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "block");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "North") {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "block");
+              $('#search_municipality_central').css('display', "none");
+          }
+          else if (region == "Center") {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_central').css('display', "block");
+              $('#search_municipality_north').css('display', "none");
+          }
+          else {
+              $('#search_municipality_east').css('display', "none");
+              $('#search_municipality_west').css('display', "none");
+              $('#search_municipality_south').css('display', "none");
+              $('#search_municipality_north').css('display', "none");
+              $('#search_municipality_central').css('display', "none");
+          }
+      });
 	});
 </script>
 <section id="portfolio">
 	<div class="container" align="center">
 		<div class="row">
 			<div class="col-lg-12 text-center">
-				<p><strong>Reports</strong></p>
+				<p><strong>In this section you can generate Reports based on parameters below</strong></p>
         		<hr style="width:600px;" class="style-eight style-eight-later">
-				<h3 class="section-subheading text-muted">Services Reports</h3>
+				<h3 class="section-subheading text-muted">Parameters for Services Reports</h3>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
-	      <form class="form-horizontal">
-	        <div class="col-xs-3">
-	        	<input id="year" type="text" class="form-control date-picker-year" placeholder="Year"></input>
-	        </div>
-	        <div class="col-xs-4">
-	        	<select id="month-select" class="form-control" data-toggle='tooltip' data-placement='bottom' title='Month'>
-		          <option value="All">All</option>
-		          <option value="1">January</option>
-		          <option value="2">February</option>
-		          <option value="3">March</option>
-		          <option value="4">April</option>
-		          <option value="5">May</option>
-		          <option value="6">June</option>
-		          <option value="7">July</option>
-		          <option value="8">August</option>
-		          <option value="9">September</option>
-		          <option value="10">October</option>
-		          <option value="11">November</option>
-		          <option value="12">December</option>
-		        </select>
-	        </div>
-	        <div class="col-xs-4">
-                {{form.provided_service(class="form-control")}}
-	        </div>
-	        <div class="col-xs-1">
+         <form class="form-horizontal">
+            <div class="col-xs-offset-1 col-xs-3">
+               {{ form.provided_service(class='form-control') }}
+            </div>
+            <div class="col-xs-2">
+               {{ form.contact_via(class='form-control') }}
+            </div>
+            <div class="col-xs-2">
+               <input type="text" class="form-control service-date-picker" id='from' name='from' placeholder="from date">
+            </div>
+            <div class="col-xs-2">
+               <input type="text" class="form-control service-date-picker" id='to' name='to' placeholder="to date">
+            </div>
+            <div class="col-xs-1">
 	        	<a id="download-filtered-services" style="margin-right:2px;" class="btn btn-sm btn-success">Export</a>
 	        </div>
-	      </form>
-    	</div>
+         </form>
+      </div>
     	<br><br>
     	<br><br>
     	<hr style="width:600px;" class="style-eight style-eight-later">
     	<div class="form-group form-group-sm">
-		  <h3 class="section-subheading text-muted">Customer Reports</h3>
-	      <form class="form-horizontal">
-	        <div class="col-xs-3">
-	        	<input id="customer" type="text" class="form-control" placeholder="Customer"></input>
-	        </div>
-	        <div class="col-xs-4">
-	        	<select id="target-group-select" class="form-control" data-toggle='tooltip' data-placement='bottom' title='Target-group'>
-		          <option value="All">All</option>
-		          <option value="Business/Entrepreneur">Business/Entrepreneur</option>
-		          <option value="Non-Governmental Organisation">Non-Governmental Organisation</option>
-		          <option value="Investor">Investor</option>
-		          <option value="Public Instituation">Public Instituation</option>
-		        </select>
-	        </div>
-	        <div class="col-xs-4">
-                <select id="region-select" class="form-control" data-toggle='tooltip' data-placement='bottom' title='Region'>
-		          {% if current_user.region == "All" %}
-			       <option value="All">All Regions</option>
-			       <option value="West">West</option>
-			       <option value="South">South</option>
-			       <option value="North">North</option>
-			       <option value="East">East</option>
-			       <option value="Center">Center</option>
-			      {% else %}
-			      <option value="{{current_user['region']}}">{{current_user['region']}}</option>
-			      {% endif %}
-		        </select>
-	        </div>
-	        <div class="col-xs-1">
-	        	<a id="download-filtered-customers" style="margin-right:2px;" class="btn btn-sm btn-success">Export</a>
-	        </div>
-	      </form>
-    	</div>
-	</div>
+		  <h3 class="section-subheading text-muted">Parameters for Customer Reports</h3>
+		</div>
+		  <div class="form-group form-group-sm pull-right">
+	         <form class="form-horizontal">
+	            <div class="col-xs-2">
+	               <input type="text" class="form-control" id='company' name='company' placeholder="Customer">
+	            </div>
+	            <div class="col-xs-2">
+	               <select id="customer-type-select" class="form-control">
+	                  <option value="All">All</option>
+	                  <option value="Business/Entrepreneur"  selected="selected">Business/Entrepreneur</option>
+	                  <option value="Non-Governmental Organisation">Non-Governmental Organisation</option>
+	                  <option value="Investor">Investor</option>
+	                  <option value="Public Instituation">Public Instituation</option>
+	               </select>
+	            </div>
+	            <div class="col-xs-2" id='size_category' style="display:none;">
+	              {{customer_form.search_size_category(class="form-control")}}
+	            </div>
+	            {% if current_user.region == "Center" %}
+	              <div class="col-xs-2">
+	                {{customer_form.search_municipality_region_central(class="form-control")}}
+	              </div>
+	            {% elif current_user.region == "North" %}
+	              <div class="col-xs-2">
+	                {{customer_form.search_municipality_region_north(class="form-control")}}
+	              </div>
+	            {% elif current_user.region == "West" %}
+	              <div class="col-xs-2">
+	                {{customer_form.search_municipality_region_west(class="form-control")}}
+	              </div>
+	            {% elif current_user.region == "South" %}
+	                <div class="col-xs-2">
+	                  {{customer_form.search_municipality_region_south(class="form-control")}}
+	                </div>
+	            {% elif current_user.region == "East" %}
+	              <div class="col-xs-2">
+	                {{customer_form.search_municipality_region_east(class="form-control")}}
+	              </div>
+	            {% else %}
+	              <div class="col-xs-2">
+	               <select id="region" name="region" class="form-control">
+	                  <option value="All">All</option>
+	                  <option value="Center" selected="selected">Center</option>
+	                  <option value="North">North</option>
+	                  <option value="West">West</option>
+	                  <option value="South">South</option>
+	                  <option value="East">East</option>
+	               </select>
+	            </div>
+	              <div class="col-xs-2" id='search_municipality_north' style="display:none">
+	                {{customer_form.search_municipality_region_north(class="form-control")}}
+	              </div>           
+	              <div class="col-xs-2" id='search_municipality_central' style="display:none">
+	                {{customer_form.search_municipality_region_central(class="form-control")}}
+	              </div>
+	              <div class="col-xs-2" id='search_municipality_south' style="display:none">
+	                {{customer_form.search_municipality_region_south(class="form-control")}}
+	              </div>
+	              <div class="col-xs-2" id='search_municipality_west' style="display:none">
+	                {{customer_form.search_municipality_region_west(class="form-control")}}
+	              </div>
+	              <div class="col-xs-2" id='search_municipality_east' style="display:none">
+	                {{customer_form.search_municipality_region_east(class="form-control")}}
+	              </div>
+	            {% endif %}
+	         </div>
+	            <br> </br> <br>
+	         	<div class="col-xs-12" align="center">
+	        		<a id="download-filtered-customers" style="margin-right:2px;" class="btn btn-sm btn-success">Export</a>
+	        	</div>
+	         </form>
+      
+		</div>
+</div>
 </section>
 {% endblock %}

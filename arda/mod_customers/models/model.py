@@ -111,3 +111,4 @@ class Customers(db.Document):
     future_demand = db.StringField()
     follow_up = db.StringField()
     category_of_request = db.StringField()
+    current_situation = db.StringField()

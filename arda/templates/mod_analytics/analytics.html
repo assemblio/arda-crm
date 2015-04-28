@@ -96,9 +96,25 @@
 
         chart.draw(data, options);
     };
+    //distribution of incomes based on region
+    google.setOnLoadCallback(drawRegionChart);
+      function drawRegionChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Region', 'Generated Income'],
+          {% for result in region_result%}
+          ["{{result['region']}}", {{result['valueOfService']}}],
+          {% endfor %}
+        ]);
 
+        var options = {
+          title: 'Distribution of incomes based on region'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('regionPieChart'));
+
+        chart.draw(data, options);
+      }
     //draw line chart for each day of month
-
     function drawMonthLineChart(title, resultJson, containerDivId, isCurrency) {
       var day_array = [["Day"]];
 
@@ -235,6 +251,7 @@
       var customerLastName = $('#customer-last-name').val();
       var region = $('#region-select').val();
       var month = $('#month-select').val();
+      var quantity = $('#quantityParam').val();
        
       var date = new Date();
       var date_now =  date.getDate() + "-" + (date.getMonth() + 1) + "-" + (date.getYear() + 1900);
@@ -244,15 +261,15 @@
 
       if (chartTypeSelected == "pie-chart") {
         if(dateRadioSelected == "no-limit"){
-          url = "{{ url_for('api.search_service_analytics') }}" + "?region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+          url = "{{ url_for('api.search_service_analytics') }}" + "?region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&quantityParameter=" + quantity;
         } else if (dateRadioSelected == "last-seven") {
-          url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + last_seven_days + "&to=" + date_now + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+          url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + last_seven_days + "&to=" + date_now + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&quantityParameter=" + quantity;
         } else if (dateRadioSelected == "last-thirty") {
-          url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + last_thirty_days.toString() + "&to=" + date_now + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+          url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + last_thirty_days.toString() + "&to=" + date_now + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&quantityParameter=" + quantity;
         } else if (dateRadioSelected == "data-range"){
           var from_date = $('#fromDate').val();
           var to_date = $('#toDate').val();
-          url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+          url = "{{ url_for('api.search_service_analytics') }}" + "?from=" + from_date + "&to=" + to_date + "&region=" + region + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&quantityParameter=" + quantity;
         }
 
         $.get(url, function(result){
@@ -269,11 +286,11 @@
       } else {
         if(month == "All"){
           var year = $('#year').val();
-          var url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+          var url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&quantityParameter=" + quantity;
 
 
           if (year == ""){
-            url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=2015&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+            url = "{{ url_for('api.search_service_analytics_linechart') }}" + "?region=" + region + "&year=2015&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&quantityParameter=" + quantity;
           }
           
           $.get(url, function(resultJson){
@@ -293,10 +310,10 @@
           var url = "";
 
           if (year == ""){
-            url = "{{ url_for('api.services_month_linechart') }}" + "?region=" + region + "&month="+ month +"&year=2015&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+            url = "{{ url_for('api.services_month_linechart') }}" + "?region=" + region + "&month="+ month +"&year=2015&company=" + company + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&quantityParameter=" + quantity;
           }
           else {
-            url = "{{ url_for('api.services_month_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&month="+ month + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName;
+            url = "{{ url_for('api.services_month_linechart') }}" + "?region=" + region + "&year=" + year + "&company=" + company + "&month="+ month + "&customerFname=" + customerFirstName + "&customerLname=" + customerLastName + "&quantityParameter=" + quantity;
           }
 
           $.get(url, function(resultJson){
@@ -461,7 +478,19 @@ function checkCheckBoxes(id){
           {% endfor %}
       </div>
     </li>
-
+    <li class="cbp-spmenu-vertical-item-parent" id="unit-types">
+      Unit Parameter
+    </li>
+    <li id="unit-types" class="cbp-spmenu-vertical-item-child" style="padding-right: 30px;padding-left: 30px;display: none;">
+      <div class="quantity">
+        <select id="quantityParam" name='quantityParam'>
+          <option value="All">All</option>
+          <option value="Head Count">Head Count</option>
+          <option value="QTY">QTY</option>
+          <option value="Monetary Value">Monetary Value</option>
+       </select>
+      </div>
+    </li>
     <li class="cbp-spmenu-vertical-item-parent" id="dates">
       Dates
     </li>
@@ -513,6 +542,7 @@ function checkCheckBoxes(id){
   </ul>
 </nav>
 <div id="container" align="center" style="padding-left:150px;padding-top:150px;">
+  <div id="regionPieChart" style="width: 750px; height: 400px;"></div>
   <div id="pieValueChart" style="width: 750px; height: 400px;"></div>
   <div id="pieCountChart" style="width: 750px; height: 400px;"></div>
   <div id="lineValueChart" style="display:none; width: 950px; height: 650px;"></div> 

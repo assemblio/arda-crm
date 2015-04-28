@@ -32,7 +32,7 @@ def services():
                 ]
             }
     else:
-            query = {}
+        query = {}
     service_type = retrieve_all_service_types(query)
     return render_template(
         'mod_services/services.html',
@@ -100,9 +100,20 @@ def add_service(company_name, customer_id):
         action = url_for('services.add_service', company_name=company_name, customer_id=customer_id)
         text = "Add Service"
         form = ServiceTypes()
+        if current_user.region != 'All':
+            query = {
+                "$or": [
+                    {'serviceTypes.region': current_user.region},
+                    {'serviceTypes.region': "All"}
+                ]
+            }
+        else:
+            query = {}
+        service_type = retrieve_service_types_on_create(query)
         return render_template(
             'mod_services/add_service.html',
             form=form,
+            service_type=service_type,
             company_name=company_name,
             customer_id=customer_id,
             text=text,
@@ -393,7 +404,8 @@ def retrieve_all_service_types(query):
                     'region': '$serviceTypes.region',
                     "serviceId": "$serviceTypes.serviceId",
                     "serviceType": "$serviceTypes.type.name",
-                    "description": "$serviceTypes.description"
+                    "description": "$serviceTypes.description",
+                    "quantity": "$serviceTypes.quantity"
                 }
             }
         },
@@ -405,11 +417,38 @@ def retrieve_all_service_types(query):
                 "serviceId": "$_id.serviceId",
                 "serviceType": "$_id.serviceType",
                 "description": "$_id.description",
+                "quantity": "$_id.quantity",
             }
         }
     ])
     return json_result['result']
 
+
+def retrieve_service_types_on_create(query):
+    json_result = mongo.db.servicetypes.aggregate([
+        {"$unwind": "$serviceTypes"},
+        {'$match': query},
+        {
+            "$group": {
+                "_id": {
+                    "serviceId": "$serviceTypes.serviceId",
+                    "serviceType": "$serviceTypes.type.name",
+                    "description": "$serviceTypes.description",
+                    "quantity": "$serviceTypes.quantity"
+                }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                'region': '$_id.region',
+                "serviceType": "$_id.serviceType",
+                "description": "$_id.description",
+                "quantity": "$_id.quantity",
+            }
+        }
+    ])
+    return json_result['result']
 
 def create_report_services():
     fn = '%s/All Services.xlsx' % current_app.config['EXCEL_DOC_DIR']
@@ -534,45 +573,27 @@ def create_filtered_report_services(response):
 @mod_services.route('/export-filtered-services', methods=['GET'])
 @login_required
 def export_filtered_services():
-    if(len(request.args) > 0):
-        year = request.args.get('year')
-        month = request.args.get('month')
+    if len(request.args) > 0:
         service_type = request.args.get('serviceType')
+        from_dt = request.args.get('from')
+        to_dt = request.args.get('to')
+        contactVia = request.args.get('contactVia')
 
     match_fields = {}
 
-    region = current_user.region
+    if contactVia:
+        match_fields['provided_services.contactVia'] = contactVia
 
-    if region != "All":
-        match_fields['region'] = region
-    if year:
-        start_date = "01-01-%s" % year
-        end_date = "31-12-%s" % year
-        match_fields["provided_services.service_date"] = {
-            '$gte': datetime.datetime.strptime(start_date, "%d-%m-%Y"),
-            '$lte': datetime.datetime.strptime(end_date, "%d-%m-%Y")
+    if service_type:
+        match_fields['provided_services.provided_service.slug'] = slugify(service_type)
+
+    if from_dt and to_dt:
+        match_fields['provided_services.service_date'] = {
+            '$gte': datetime.strptime(from_dt, "%d/%m/%Y"),
+            '$lte': datetime.strptime(to_dt, "%d/%m/%Y")
         }
 
-    if month:
-        if month != "All":
-            start_date = "01-%s-%s" % (month, year)
-            months_with_31 = [1, 3, 5, 7, 8, 10, 12]
-            if month == 2:
-                end_date = "28-%s-%s" % (month, year)
-            elif month in months_with_31:
-                end_date = "31-%s-%s" % (month, year)
-            else:
-                end_date = "30-%s-%s" % (month, year)
-
-            match_fields['provided_services.service_date'] = {
-                '$gte': datetime.datetime.strptime(start_date, "%d-%m-%Y"),
-                '$lte': datetime.datetime.strptime(end_date, "%d-%m-%Y")
-            }
-    if service_type:
-        match_fields["provided_services.provided_service.slug"] = slugify(service_type)
-
     match = {
-
         "$match": match_fields
     }
     unwind = {

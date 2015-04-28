@@ -10,7 +10,13 @@ mod_analytics = Blueprint('analytics', __name__, url_prefix='/analytics')
 def analytics():
     form = ServiceTypes()
     services_incomes = provided_services_incomes()
-    return render_template('mod_analytics/analytics.html', results=services_incomes, form=form)
+    region_based_incomes = retrieve_service_fee_for_all_regions()
+    return render_template(
+        'mod_analytics/analytics.html',
+        region_result=region_based_incomes,
+        results=services_incomes,
+        form=form
+    )
 
 
 def provided_services_incomes():
@@ -38,6 +44,33 @@ def provided_services_incomes():
                 "serviceType": "$_id.serviceType",
                 "valueOfService": "$sumOfService",
                 'countServices': '$countServices'
+            }
+        }
+    ])
+    return json_obj['result']
+
+
+def retrieve_service_fee_for_all_regions():
+
+    json_obj = mongo.db.customers.aggregate([
+        {
+            "$unwind": "$provided_services"
+        },
+        {
+            "$group": {
+                "_id": {
+                    "region": "$region"
+                },
+                'sumOfService': {
+                    "$sum": '$provided_services.service_fee'
+                }
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "region": "$_id.region",
+                "valueOfService": "$sumOfService"
             }
         }
     ])

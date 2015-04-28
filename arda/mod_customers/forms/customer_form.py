@@ -51,6 +51,7 @@ class CustomerForm(Form):
     email = TextField("E-mail")
     website = TextField("Website")
     customer_address = TextAreaField('Adderess')
+    current_situation = TextAreaField("Current Situation")
     customer_type = SelectField(
         "Customer Type",
         choices=[
@@ -127,7 +128,12 @@ class CustomerForm(Form):
     investor_vat = TextField("VAT Number")
     investor_fiscal_number = TextField("Fiscal Number")
     interest = TextField("Interest")
-    investor_industry = TextField("Industry")
+    investor_industry = SelectField(
+        "Industry",
+        choices=[
+            (x, x) for x in customer_industry
+        ]
+    )
     industry_of_interest = TextField("Industry of interest")
     investor_size = TextField("Size")
     foundation_year_investor = TextField("Foundation Year")
@@ -155,7 +161,7 @@ class CustomerForm(Form):
     ]
     #Target Group: Municipality
     municipality_name = TextField("Public Instituation Name")
-    department = SelectField("Department", choices=[(x, x) for x in department_choices])
+    department = TextAreaField("Department")
     offering = SelectField(
         "Type of Institution",
         choices=[

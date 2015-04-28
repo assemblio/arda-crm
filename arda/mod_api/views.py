@@ -258,6 +258,7 @@ def search_service():
 def search_service_analytics():
 
     if len(request.args) > 0:
+        unit_parameter = request.args.get('quantityParameter')
         region = request.args.get('region')
         from_dt = request.args.get('from')
         to_dt = request.args.get('to')
@@ -285,6 +286,9 @@ def search_service_analytics():
             '$gte': datetime.strptime(from_dt, "%d-%m-%Y"),
             '$lte': datetime.strptime(to_dt, "%d-%m-%Y")
         }
+    if unit_parameter:
+        if unit_parameter != "All":
+            match_fields['provided_services.unit_param'] = unit_parameter
 
     match = {
         "$match": match_fields
@@ -337,6 +341,7 @@ def search_service_analytics_linechart():
         l_name = request.args.get('customerLname')
         company = request.args.get('company')
         year = request.args.get('year')
+        unit_parameter = request.args.get('quantityParameter')
 
     match_fields = {}
 
@@ -352,6 +357,10 @@ def search_service_analytics_linechart():
 
     if l_name:
         match_fields['last_name.slug'] = slugify(l_name)
+
+    if unit_parameter:
+        if unit_parameter != "All":
+            match_fields['provided_services.unit_param'] = unit_parameter
 
     if year:
         start_date = "01-01-" + year

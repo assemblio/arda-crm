@@ -271,7 +271,7 @@ $(document).ready(function(){
                         <div class="col-xs-3">
                            <textarea id="serviceDescription" name="serviceDescription" cols="26"></textarea>
                         </div>
-                        <div class="col-xs-2" style="display:none">
+                        <div class="col-xs-2">
                            <select id="quantity" name='quantity' class="form-control">
                               <option value="Head Count">Head Count</option>
                               <option value="QTY">QTY</option>
@@ -296,7 +296,7 @@ $(document).ready(function(){
                               <th style="display:none;">Region</th>
                               <th>Service Type</th>
                               <th>Description</th>
-                              <th style="display:none">Unit</th>
+                              <th>Unit</th>
                               <th>Operation</th>
                            </tr>
                         </thead>
@@ -307,7 +307,7 @@ $(document).ready(function(){
                            <td style="display:none">{{result['region']}}</td>
                               <td>{{result['serviceType']}}</td>
                               <td>{{result['description']}}</td>
-                              <td style="display:none">{{result['quantity']}}</td>
+                              <td>{{result['quantity']}}</td>
                               <td>
                               <table align='center'>
                                     <tr align='center'>
@@ -543,11 +543,11 @@ $(document).ready(function(){
                <div class="form-group form-group-sm" align="center" id="update_modal">
                   <input type="hidden" id='service-region' name="service-region" value=""/>
                   <input type="hidden" id='serviceId' name="serviceId" value=""/>
-                  <div class="col-xs-6"style="display:none">
-                     Pick a Parameter
+                  <div class="col-xs-6">
+                     <strong>Change Parameter</strong>
                   </div>
-                  <div class="form-group col-xs-6" style="display:none">
-                     <select id="quantityParam" name='quantityParam' class="form-control">
+                  <div class="form-group col-xs-6">
+                     <select id="quantityParam" name='quantityParam' class="form-control" style="margin-left: -59px;">
                         <option value="Head Count">Head Count</option>
                         <option value="QTY">QTY</option>
                         <option value="Monetary Value">Monetary Value</option>

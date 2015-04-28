@@ -67,7 +67,7 @@ def create_initial_service():
                 'region': 'West',
                 'serviceId': ObjectId(),
                 "description": "Phone Call Service",
-                'quantity':''
+                'quantity': ''
             },
             {
                 "type": {

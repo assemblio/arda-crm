@@ -14,14 +14,7 @@ class ServiceTypes(Form):
     provided_service = SelectField("Provided Service")
     provided_services_check = MultiCheckboxField("Provided Service")
     contact_via = SelectField("Contacted via")
-    unit_param = SelectField(
-        'Unit',
-        choices=[
-            ('Head Count', 'Head Count'),
-            ('QTY', 'QTY'),
-            ('Monetary Value', 'Monetary Value')
-        ]
-    )
+    unit_param = TextField('Unit')
 
     def __init__(self, *args, **kwargs):
         # pre-populate provided service Selectfield from database

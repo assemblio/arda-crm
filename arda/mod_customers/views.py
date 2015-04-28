@@ -106,6 +106,7 @@ def edit_customer(customer_id):
         form.fax.data = customer_doc['phone']['fax']
         form.email.data = customer_doc['email']
         form.region.data = customer_doc['region']
+        form.current_situation.data = customer_doc['current_situation']
         form.customer_address.data = customer_doc['customer_address']
         form.website.data = customer_doc['website']
         # Let's check what target group we have in order to know what fields to fill
@@ -250,6 +251,7 @@ def build_save_costumers_document():
                 'ship_country': costumer['ship_country'],
             }
         },
+        'current_situation': costumer['current_situation'],
         'email': costumer['email'],
         'website': costumer['website'],
         'provided_services': []
@@ -387,6 +389,7 @@ def edit_costumers_document(customer_id):
                 'ship_country': costumer['ship_country'],
             }
         },
+        'current_situation': costumer['current_situation'],
         'email': costumer['email'],
         'website': costumer['website'],
     }
@@ -547,7 +550,8 @@ def export_customers():
 @login_required
 def reports():
     form = ServiceTypes()
-    return render_template("mod_exports/exports.html", form=form)
+    customer_form = CustomerForm()
+    return render_template("mod_exports/exports.html",customer_form=customer_form, form=form)
 
 
 def create_filtered_customer_report(response):
@@ -741,25 +745,51 @@ def create_filtered_customer_report(response):
 @login_required
 def export_filtered_customers():
     if(len(request.args) > 0):
-        customer = request.args.get('customer')
-        target_group = request.args.get('target_group')
+        north = request.args.get('north')
+        center = request.args.get('center')
+        south = request.args.get('south')
+        west = request.args.get('west')
+        east = request.args.get('east')
+        size = request.args.get('size')
         region = request.args.get('region')
+        company = request.args.get('company')
+        customer_type = request.args.get('customer_type')
 
-    query = {}
+    match_field = {}
 
-    if customer:
-        query["company.slug"] = slugify(customer)
+    if company:
+        match_field['company.slug'] = slugify(company)
 
-    if target_group:
-        if target_group != "All":
-            query["customer_type.target_group"] = target_group
+    if north:
+        if north != "All":
+            match_field['municipality_region'] = north
+
+    if center:
+        if center != "All":
+            match_field['municipality_region'] = center
+    if south:
+        if south != "All":
+            match_field['municipality_region'] = south
+    if west:
+        if west != "All":
+            match_field['municipality_region'] = west
+    if east:
+        if east != "All":
+            match_field['municipality_region'] = east
+    if size:
+        if size != "All":
+            match_field['customer_type.size_category'] = size
 
     if region:
         if region != "All":
-            query["region"] = region
+            match_field['region'] = region
 
-    print query
-    customers = mongo.db.customers.find(query)
+    if customer_type:
+        if customer_type != "All":
+            match_field['customer_type.target_group'] = customer_type
+
+    customers = mongo.db.customers.find(match_field)
+    print customers
     response = build_customers_cursor(customers)
 
     fn = create_filtered_customer_report(response)
