@@ -102,9 +102,10 @@ $(document).ready(function(){
        var south = $('#search_municipality_region_south').val();
        var west = $('#search_municipality_region_west').val();
        var east = $('#search_municipality_region_east').val();
+       var followUp = $('#followUp').val();
        var company = $('#company').val();
    
-       url = "{{ url_for('api.search') }}" + "?company=" + company + "&customer_type=" + customer_type + "&size=" + size + "&region=" + region + "&north=" + north + "&center=" + center + "&south=" + south + "&west=" + west + "&east=" + east;
+       url = "{{ url_for('api.search') }}" + "?company=" + company + "&customer_type=" + customer_type + "&size=" + size + "&region=" + region + "&north=" + north + "&center=" + center + "&south=" + south + "&west=" + west + "&east=" + east + "&followUp=" + followUp;
    
        $.get(url, function(result){
          rebuildTable(result);
@@ -250,7 +251,7 @@ $(document).ready(function(){
                   <option value="Public Instituation">Public Instituation</option>
                </select>
             </div>
-            <div class="col-xs-2" id='size_category' style="display:none;">
+            <div class="col-xs-1" id='size_category' style="display:none;">
               {{form.search_size_category(class="form-control")}}
             </div>
             {% if current_user.region == "Center" %}
@@ -300,8 +301,10 @@ $(document).ready(function(){
                 {{form.search_municipality_region_east(class="form-control")}}
               </div>
             {% endif %}
-            
             <div class="col-xs-2">
+               <input type="text" class="form-control service-date-picker" id='followUp' name='followUp' placeholder="follow up">
+            </div>
+            <div class="col-xs-1">
                <button type="button" class="btn btn-info" id="searchCustomer">Search</button>
             </div>
          </form>

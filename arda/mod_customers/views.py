@@ -263,6 +263,13 @@ def build_save_costumers_document():
             'follow_up': datetime.strptime(costumer['follow_up'], "%d/%m/%Y"),
             'category_of_request': costumer['category_of_request']
         }
+    else:
+        json_obj['future_demand'] = {
+            'future_demand': False,
+            'follow_up': datetime.strptime("01/01/2015", "%d/%m/%Y"),
+            'category_of_request': ""
+        }
+
     if current_user['region'] != "All":
         json_obj['region'] = current_user['region']
     else:

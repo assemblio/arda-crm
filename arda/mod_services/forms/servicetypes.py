@@ -11,6 +11,7 @@ class ServiceTypes(Form):
     description = TextAreaField("Description")
     service_fee = StringField("Service Fee")
     service_date = StringField("Schedule")
+    unit_amount = TextField('Unit Amount')
     provided_service = SelectField("Provided Service")
     provided_services_check = MultiCheckboxField("Provided Service")
     contact_via = SelectField("Contacted via")

@@ -81,11 +81,17 @@ def search():
         region = request.args.get('region')
         company = request.args.get('company')
         customer_type = request.args.get('customer_type')
+        follow_up = request.args.get('followUp')
 
     match_field = {}
 
     if company:
         match_field['company.slug'] = slugify(company)
+
+    if follow_up:
+        match_field['future_demand.follow_up'] = {
+            '$gte': datetime.strptime(follow_up, "%d/%m/%Y")
+        }
 
     if north:
         if north != "All":
@@ -217,7 +223,9 @@ def search_service():
                 'contactVia': '$provided_services.contactVia',
                 "description": "$provided_services.description",
                 "fee": "$provided_services.service_fee",
-                "date": "$provided_services.service_date"
+                "date": "$provided_services.service_date",
+                "unit_parameter": "$provided_services.unit_param",
+                "unit_amount": "$provided_services.unit_amount",
             }
         }
     }
@@ -238,6 +246,8 @@ def search_service():
             "description": "$_id.description",
             "fee": "$_id.fee",
             "date": "$_id.date",
+            "unit_parameter": "$_id.unit_parameter",
+            "unit_amount": "$_id.unit_amount",
         }
     }
 

@@ -132,6 +132,7 @@ def add_service(company_name, customer_id):
             'description': service_form.description.data,
             'contactVia': service_form.contact_via.data,
             'unit_param': service_form.unit_param.data,
+            'unit_amount': service_form.unit_amount.data,
             'service_fee': float(service_form.service_fee.data)
         }
 
@@ -172,6 +173,7 @@ def edit_service(company_name, customer_id, service_id):
                             "description": "$provided_services.description",
                             "fee": "$provided_services.service_fee",
                             "unit": "$provided_services.unit_param",
+                            "unit_amount": "$provided_services.unit_amount",
                             "date": "$provided_services.service_date"
                         }
                     }
@@ -186,6 +188,7 @@ def edit_service(company_name, customer_id, service_id):
                     "description": "$_id.service.description",
                     "fee": "$_id.service.fee",
                     "unit": "$_id.service.unit",
+                    "unit_amount": "$_id.service.unit_amount",
                     "date": "$_id.service.date"
                 }
             }
@@ -196,6 +199,18 @@ def edit_service(company_name, customer_id, service_id):
         form.service_date.data = datetime.datetime.strftime(service_doc['result'][0]['date'], '%d/%m/%Y')
         form.contact_via.data = service_doc['result'][0]['contactVia']
         form.unit_param.data = service_doc['result'][0]['unit']
+        form.unit_amount.data = service_doc['result'][0]['unit_amount']
+        #retrieve service types based on user region/permission
+        if current_user.region != 'All':
+            query = {
+                "$or": [
+                    {'serviceTypes.region': current_user.region},
+                    {'serviceTypes.region': "All"}
+                ]
+            }
+        else:
+            query = {}
+        service_type = retrieve_service_types_on_create(query)
         text = "Edit Service"
         action = url_for('services.edit_service', company_name=company_name, customer_id=customer_id, service_id=service_id)
         return render_template(
@@ -204,6 +219,7 @@ def edit_service(company_name, customer_id, service_id):
             company_name=company_name,
             customer_id=customer_id,
             text=text,
+            service_type=service_type,
             action=action
         )
 
@@ -227,6 +243,7 @@ def edit_service(company_name, customer_id, service_id):
                         'description': service_form.description.data,
                         'contactVia': service_form.contact_via.data,
                         'unit_param': service_form.unit_param.data,
+                        'unit_amount': service_form.unit_amount.data,
                         'service_fee': float(service_form.service_fee.data)
                     }
                 }
@@ -289,6 +306,7 @@ def get_services_for_given_company(query):
                         "description": "$provided_services.description",
                         "fee": "$provided_services.service_fee",
                         "unit": "$provided_services.unit_param",
+                        "unit_amount": "$provided_services.unit_amount",
                         "date": "$provided_services.service_date"
                     }
                 }
@@ -314,6 +332,7 @@ def get_services_for_given_company(query):
                     "description": "$_id.service.description",
                     "fee": "$_id.service.fee",
                     "unit": "$_id.service.unit",
+                    "unit_amount": "$_id.service.unit_amount",
                     "date": "$_id.service.date"
                 }
             }
@@ -356,6 +375,7 @@ def retrieve_all_services(region):
                     "description": "$provided_services.description",
                     "fee": "$provided_services.service_fee",
                     "date": "$provided_services.service_date",
+                    "unit_amount": "$provided_services.unit_amount",
                     "unit": "$provided_services.unit_param"
                 }
             }
@@ -382,6 +402,7 @@ def retrieve_all_services(region):
                 "description": "$_id.service.description",
                 "fee": "$_id.service.fee",
                 "date": "$_id.service.date",
+                "unit_amount": "$_id.service.unit_amount",
                 "unit": "$_id.service.unit"
             }
         }
@@ -466,6 +487,8 @@ def create_report_services():
     worksheet.set_column('F:F', 15)
     worksheet.set_column('G:G', 15)
     worksheet.set_column('H:H', 15)
+    worksheet.set_column('I:I', 15)
+    worksheet.set_column('J:J', 35)
 
     worksheet.write('A1', 'Company', bold)
     worksheet.write('B1', 'First Name', bold)
@@ -474,7 +497,9 @@ def create_report_services():
     worksheet.write('E1', 'Contacted Via', bold)
     worksheet.write('F1', 'Service Date', bold)
     worksheet.write('G1', 'Service Fee', bold)
-    worksheet.write('H1', 'Service Description', bold)
+    worksheet.write('H1', 'Unit', bold)
+    worksheet.write('I1', 'Unit Amount', bold)
+    worksheet.write('J1', 'Service Description', bold)
 
     region = current_user.region
     response = retrieve_all_services(region)
@@ -488,6 +513,8 @@ def create_report_services():
         contact_via = service['service']['contactVia']
         service_date = service['service']['date']
         service_fee = service['service']['fee']
+        service_unit = service['service']['unit']
+        service_unit_amount = service['service']['unit_amount']
         service_description = service['service']['description']
 
         worksheet.write(i, 0, company, center)
@@ -497,7 +524,9 @@ def create_report_services():
         worksheet.write(i, 4, contact_via, center)
         worksheet.write(i, 5, str(service_date))
         worksheet.write(i, 6, service_fee, center)
-        worksheet.write(i, 7, service_description, center)
+        worksheet.write(i, 7, service_unit, center)
+        worksheet.write(i, 8, service_unit_amount, center)
+        worksheet.write(i, 9, service_description, center)
         i = i + 1
 
     workbook.close()
@@ -511,13 +540,6 @@ def export_services():
     path = os.path.join(current_app.config['EXCEL_DOC_DIR'], fn)
     return send_file(path, mimetype='application/vnd.ms-excel')
 
-'''
-def get_timestamp():
-    ts = time.time()
-    timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-
-    return timestamp
-'''
 
 def create_filtered_report_services(response):
     fn = '%s/All Filtered Services.xlsx' % current_app.config['EXCEL_DOC_DIR']
@@ -535,6 +557,8 @@ def create_filtered_report_services(response):
     worksheet.set_column('F:F', 15)
     worksheet.set_column('G:G', 15)
     worksheet.set_column('H:H', 15)
+    worksheet.set_column('I:I', 15)
+    worksheet.set_column('J:J', 35)
 
     worksheet.write('A1', 'Company', bold)
     worksheet.write('B1', 'First Name', bold)
@@ -543,7 +567,9 @@ def create_filtered_report_services(response):
     worksheet.write('E1', 'Contacted Via', bold)
     worksheet.write('F1', 'Service Date', bold)
     worksheet.write('G1', 'Service Fee', bold)
-    worksheet.write('H1', 'Service Description', bold)
+    worksheet.write('H1', 'Unit', bold)
+    worksheet.write('I1', 'Unit Amount', bold)
+    worksheet.write('J1', 'Service Description', bold)
 
     i = 1
     for service in response:
@@ -554,6 +580,8 @@ def create_filtered_report_services(response):
         contact_via = service['service']['contactVia']
         service_date = service['service']['date']
         service_fee = service['service']['fee']
+        service_unit = service['service']['unit']
+        service_unit_amount = service['service']['unit_amount']
         service_description = service['service']['description']
 
         worksheet.write(i, 0, company, center)
@@ -563,7 +591,9 @@ def create_filtered_report_services(response):
         worksheet.write(i, 4, contact_via, center)
         worksheet.write(i, 5, str(service_date))
         worksheet.write(i, 6, service_fee, center)
-        worksheet.write(i, 7, service_description, center)
+        worksheet.write(i, 7, service_unit, center)
+        worksheet.write(i, 8, service_unit_amount, center)
+        worksheet.write(i, 9, service_description, center)
         i = i + 1
 
     workbook.close()
@@ -619,6 +649,8 @@ def export_filtered_services():
                     "type": "$provided_services.provided_service.value",
                     "description": "$provided_services.description",
                     "fee": "$provided_services.service_fee",
+                    "unit_amount": "$provided_services.unit_amount",
+                    "unit": "$provided_services.unit",
                     "date": "$provided_services.service_date"
                 }
             }
@@ -644,6 +676,8 @@ def export_filtered_services():
                 "type": "$_id.service.type",
                 "description": "$_id.service.description",
                 "fee": "$_id.service.fee",
+                "unit": "$_id.service.unit",
+                "unit_amount": "$_id.service.unit_amount",
                 "date": "$_id.service.date"
             }
         }

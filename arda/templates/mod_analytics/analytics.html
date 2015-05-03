@@ -277,6 +277,7 @@
             drawCountPieChart(result);
           });
 
+        $('#regionPieChart').css('display', "block");
         $('#pieValueChart').css('display', "block");
         $('#pieCountChart').css('display', "block");
         $('#lineValueChart').css('display', "none");
@@ -298,6 +299,7 @@
             drawYearLineChart("Number of all provided services based on service type", resultJson, "lineCountChart", false);
           });
 
+          $('#regionPieChart').css('display', "none");
           $('#pieValueChart').css('display', "none");
           $('#pieCountChart').css('display', "none");
           $('#lineValueChart').css('display', "block");
@@ -326,7 +328,7 @@
             drawMonthLineChart(titleLineValue, resultJson, "lineValueChartMonth", true);
             drawMonthLineChart(titleLineCount, resultJson, "lineCountChartMonth", false);
           });
-
+          $('#regionPieChart').css('display', "none");
           $('#pieValueChart').css('display', "none");
           $('#pieCountChart').css('display', "none");
           $('#lineValueChart').css('display', "none");
