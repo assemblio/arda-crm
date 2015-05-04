@@ -650,7 +650,7 @@ def export_filtered_services():
                     "description": "$provided_services.description",
                     "fee": "$provided_services.service_fee",
                     "unit_amount": "$provided_services.unit_amount",
-                    "unit": "$provided_services.unit",
+                    "unit": "$provided_services.unit_param",
                     "date": "$provided_services.service_date"
                 }
             }
