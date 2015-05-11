@@ -5,4 +5,5 @@ Flask-Bcrypt==0.5.2
 python-slugify==0.0.7
 flask-mongoengine
 flask-security
-xlsxwriter == 0.7.2
+xlsxwriter==0.7
+MarkupSafe==0.23
