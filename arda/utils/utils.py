@@ -22,4 +22,5 @@ class Utils(object):
             'fb_url': '',
             'tw_url': '',
             'li_url': '',
+            'support_email': ''
         }
