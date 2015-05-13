@@ -28,7 +28,7 @@ def customers():
     customers = mongo.db.customers.find({})
 
     try:
-        customers_pagi = Customers.objects.all()
+        customers_pagi = Customers.objects.all().order_by('-_id')
         pagination = customers_pagi.paginate(page=page, per_page=50)
 
     except DoesNotExist:
