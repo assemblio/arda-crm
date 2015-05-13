@@ -410,7 +410,7 @@ def retrieve_all_services(region):
 
     pipeline = [unwind, match, group, project]
     json_obj = mongo.db.customers.aggregate(pipeline)
-    print json_obj
+
     return json_obj['result']
 
 
@@ -687,7 +687,6 @@ def export_filtered_services():
     json_obj = mongo.db.customers.aggregate(pipeline)
     json_filtered = json_obj['result']
 
-    print json_filtered
     fn = create_filtered_report_services(json_filtered)
     path = os.path.join(current_app.config['EXCEL_DOC_DIR'], fn)
     return send_file(path, mimetype='application/vnd.ms-excel')

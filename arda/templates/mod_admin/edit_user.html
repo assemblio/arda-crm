@@ -29,6 +29,24 @@ $(document).ready(function(){
   $('.pass-user').on('change.dp show.dp', function(e) {
         $('.passform').bootstrapValidator('revalidateField', 'password');
     });
+
+  	if ($('#role-0').prop('checked')){
+  		$('.region-admin').css('display', 'none');
+  		$('.region-regular').css('display', 'block');
+  	}else{
+  		$('.region-admin').css('display', 'block');
+  		$('.region-regular').css('display', 'none');
+
+  	}
+  	$('.role').change(function(){
+  		if ($('#role-0').prop('checked')){
+	  		$('.region-admin').css('display', 'none');
+	  		$('.region-regular').css('display', 'block');
+	  	}else{
+	  		$('.region-admin').css('display', 'block');
+	  		$('.region-regular').css('display', 'none');
+	  	}
+  	});
 });
 
 </script>
@@ -48,10 +66,16 @@ $(document).ready(function(){
 	             </div>
 	        </div>
 	        {% if current_user.region == 'All' %}
-	        <div class="form-group">
+	        <div class="form-group region-admin">
 	            {{ form.region.label(class_="control-label col-xs-4") }}
 	            <div class="col-xs-3">
 	                {{ form.region(class_="form-control") }}
+	             </div>
+	        </div>
+	        <div class="form-group region-regular">
+	            {{ form.region_regular.label(class_="control-label col-xs-4") }}
+	             <div class="col-xs-3">
+	                {{ form.region_regular(class_="form-control") }}
 	             </div>
 	        </div>
 	        {% endif %}

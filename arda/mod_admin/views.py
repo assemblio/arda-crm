@@ -56,8 +56,13 @@ def create_user():
             user_form = UserForm(request.form)
             user_data = user_form.data
             if current_user.region == 'All':
+                if user_data['role'] == "Regular":
+                    region = user_data['region_regular']
+                    print region
+                else:
+                    region = user_data['region']
                 user = Users(
-                    region=user_data['region'],
+                    region=region,
                     last_name=user_data['last_name'],
                     first_name=user_data['first_name'],
                     email=user_data['email'],
@@ -99,7 +104,10 @@ def edit_user(user_id):
             user_form.last_name.data = user_doc['last_name']
             user_form.email.data = user_doc['email']
             user_form.role.data = user_doc['role']
-            user_form.region.data = user_doc['region']
+            if user_doc['role'] == 'Admin':
+                user_form.region.data = user_doc['region']
+            else:
+                user_form.region_regular.data = user_doc['region']
             user_form.password.data = user_doc['password']
 
             return render_template(
@@ -113,7 +121,10 @@ def edit_user(user_id):
     elif request.method == "POST":
         if current_user.has_role('Admin'):
             user_form = UserForm(request.form)
-            print user_form
+            if user_form.role.data == "Regular":
+                    region = user_form.region_regular.data
+            else:
+                region = user_form.region.data
             mongo.db.users.update(
                 {'_id': ObjectId(user_id)},
                 {
@@ -121,7 +132,7 @@ def edit_user(user_id):
                         'first_name': user_form.first_name.data,
                         'last_name': user_form.last_name.data,
                         'password': bcrypt.generate_password_hash(user_form.password.data, rounds=12),
-                        'region': user_form.region.data,
+                        'region': region,
                         'email': user_form.email.data,
                         'role': user_form.role.data
                     }
