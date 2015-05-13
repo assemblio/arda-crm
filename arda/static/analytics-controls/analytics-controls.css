@@ -51,11 +51,15 @@
 
 .cbp-spmenu-vertical {
   width: 240px;
-  height: 100%;
+  height: 98%;
   top: 0;
   z-index: 1000;
 }
-
+.cbp-spmenu-vertical ul {
+  position: static;
+  overflow-y: scroll;
+  height: 94%
+}
 .cbp-spmenu-vertical li {
   border-bottom: 1px solid #258ecd;
   padding: 0.5em;
@@ -65,7 +69,7 @@
 
 .cbp-spmenu-left {
   padding-top:50px; /* Matching response design rule of the bootstrap theme. */
-  left: -210px; /* Let the menu sneak in a bit when it is collapsed so that we can clikc on it to bring it back. */
+  left: -270px; /* Let the menu sneak in a bit when it is collapsed so that we can clikc on it to bring it back. */
   /*left: -240px;*/
 }
 

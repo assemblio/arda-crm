@@ -243,6 +243,7 @@ $(document).ready(function(){
          <div role="tabpanel" class="tab-pane" id="servicesType">
             <br>
             <div class="container">
+               <div class="row">
                <div class="form-group">
                   <div class="form-group">
                      <p align="center">Manage types of Provided Services</p>
@@ -284,7 +285,8 @@ $(document).ready(function(){
                      </form>
                   </div>
                </div>
-               <br><br></br>
+               </div>
+               <br></br>
                {% if service_type|length > 0%}
                <div class="panel panel-info ">
                   <!-- Default panel contents -->
@@ -335,6 +337,7 @@ $(document).ready(function(){
          <div role="tabpanel" class="tab-pane" id="contactViaType">
             <br>
             <div class="container" align="center">
+               <div class="row">
                <div class="form-group">
                   <p align="center">Manage types of contacting manners</p>
                   <form class="form-horizontal" method="post" action="{{url_for('admin.add_contact_type', type_id=type_id)}}">
@@ -366,7 +369,8 @@ $(document).ready(function(){
                      </div>
                   </form>
                </div>
-               <br><br></br>
+               </div>
+               <br></br>
                {% if contact_via_types|length > 0 %}
                <div class="panel panel-info" align="center">
                   <!-- Default panel contents -->

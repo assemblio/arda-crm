@@ -109,6 +109,7 @@
               $('#search_municipality_south').css('display', "none");
               $('#search_municipality_north').css('display', "none");
               $('#search_municipality_central').css('display', "none");
+              $('.cutomer-group').css('padding-left', '100px');
           }
       $('#region').change(function(){
           var region = $('#region').val();
@@ -154,6 +155,7 @@
               $('#search_municipality_south').css('display', "none");
               $('#search_municipality_north').css('display', "none");
               $('#search_municipality_central').css('display', "none");
+              $('.cutomer-group').css('padding-left', '100px');
           }
       });
 	});
@@ -192,12 +194,12 @@
     	<div class="form-group form-group-sm">
 		  <h3 class="section-subheading text-muted">Parameters for Customer Reports</h3>
 		</div>
-		  <div class="form-group form-group-sm pull-right">
+		  <div class="form-group form-group-sm cutomer-group">
 	         <form class="form-horizontal">
 	            <div class="col-xs-2">
 	               <input type="text" class="form-control" id='company' name='company' placeholder="Customer">
 	            </div>
-	            <div class="col-xs-2">
+	            <div class="col-xs-3">
 	               <select id="customer-type-select" class="form-control">
 	                  <option value="All">All</option>
 	                  <option value="Business/Entrepreneur"  selected="selected">Business/Entrepreneur</option>
@@ -256,11 +258,7 @@
 	                {{customer_form.search_municipality_region_east(class="form-control")}}
 	              </div>
 	            {% endif %}
-	         </div>
-	            <br> </br> <br>
-	         	<div class="col-xs-12" align="center">
-	        		<a id="download-filtered-customers" style="margin-right:2px;" class="btn btn-sm btn-success">Export</a>
-	        	</div>
+	        		<a id="download-filtered-customers" class="pull-left btn btn-sm btn-success">Export</a>
 	         </form>
       
 		</div>

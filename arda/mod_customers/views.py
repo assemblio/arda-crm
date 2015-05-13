@@ -796,7 +796,7 @@ def export_filtered_customers():
             match_field['customer_type.target_group'] = customer_type
 
     customers = mongo.db.customers.find(match_field)
-    print customers
+
     response = build_customers_cursor(customers)
 
     fn = create_filtered_customer_report(response)
