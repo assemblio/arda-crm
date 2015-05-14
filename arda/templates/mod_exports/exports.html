@@ -7,6 +7,35 @@
            todayHighlight: true,
            format: 'dd/mm/yyyy',
      	});
+
+    if($('#serviceType').prop('checked')){
+      $('#provided_service').prop("disabled", false);
+    }else{
+      $('#provided_service').prop("disabled", true);
+    }
+    $('#serviceType').change(function(){
+        if($('#serviceType').prop('checked')){
+          $('#provided_service').prop("disabled", false);
+        }
+        else{
+          $('#provided_service').prop("disabled", true);
+        }
+    });
+
+    if($('#cman').prop('checked')){
+      $('#contact_via').prop("disabled", false);
+    }else{
+      $('#contact_via').prop("disabled", true);
+    }
+    $('#cman').change(function(){
+        if($('#cman').prop('checked')){
+          $('#contact_via').prop("disabled", false);
+        }
+        else{
+          $('#contact_via').prop("disabled", true);
+        }
+    });
+
 		$('#download-filtered-services').click(function(){
 			var service_type = $('#provided_service').val();
 		     var contactVia = $('#contact_via').val();
@@ -14,7 +43,25 @@
 		     var to_date = $('#to').val();
 
 			var dateTime = new Date();
-			var url = "{{url_for('services.export_filtered_services')}}"+ "?serviceType="+service_type+ "&contactVia="+ contactVia +"&from="+from_date+"&to="+to_date;
+
+      if($('#serviceType').prop('checked') && !($('#cman').prop('checked'))){
+         var contactVia = "none";
+			   var url = "{{url_for('services.export_filtered_services')}}"+ "?serviceType="+service_type+ "&contactVia="+ contactVia +"&from="+from_date+"&to="+to_date;
+      }
+      else if($('#cman').prop('checked') && !($('#serviceType').prop('checked'))){
+        var service_type = "none";
+        var url = "{{url_for('services.export_filtered_services')}}"+ "?serviceType="+service_type+ "&contactVia="+ contactVia +"&from="+from_date+"&to="+to_date;
+      }
+      else if ($('#cman').prop('checked') && $('#serviceType').prop('checked')){
+        var url = "{{url_for('services.export_filtered_services')}}"+ "?serviceType="+service_type+ "&contactVia="+ contactVia +"&from="+from_date+"&to="+to_date;
+      }
+      else{
+        var service_type = "none";
+        var contactVia = "none";
+        var url = "{{url_for('services.export_filtered_services')}}"+ "?serviceType="+service_type+ "&contactVia="+ contactVia +"&from="+from_date+"&to="+to_date;
+      }
+
+
 			var downloadAttr = "All Filtered Services (As of '" + dateTime + "').xls";
 			$('#download-filtered-services').prop('href', url);
 			$('#download-filtered-services').prop('download', downloadAttr);
@@ -169,11 +216,17 @@
 				<h3 class="section-subheading text-muted">Parameters for Services Reports</h3>
 			</div>
 		</div>
-		<div class="form-group form-group-sm">
+		<div class="form-group form-group-sm" >
          <form class="form-horizontal">
-            <div class="col-xs-offset-1 col-xs-3">
-               {{ form.provided_service(class='form-control') }}
+            <div class="col-xs-1">
+             <input type="checkbox" name="serviceType" id="serviceType"/><strong> Pick a Service</strong>
             </div>
+            <div class="col-xs-2">
+               {{ form.provided_service(class='form-control', disabled="disabled") }}
+            </div>
+            <div class="col-xs-2">
+                 <input type="checkbox" name="cman" id="cman"/><strong> Pick a Contacting Manner</strong>
+              </div>
             <div class="col-xs-2">
                {{ form.contact_via(class='form-control') }}
             </div>

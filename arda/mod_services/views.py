@@ -408,7 +408,10 @@ def retrieve_all_services(region):
         }
     }
 
-    pipeline = [unwind, match, group, project]
+    sort = {
+        "$sort": {'service.serviceId': -1}
+    }
+    pipeline = [unwind, match, group, project, sort]
     json_obj = mongo.db.customers.aggregate(pipeline)
 
     return json_obj['result']
@@ -611,10 +614,10 @@ def export_filtered_services():
 
     match_fields = {}
 
-    if contactVia:
+    if contactVia and contactVia != "none":
         match_fields['provided_services.contactVia'] = contactVia
 
-    if service_type:
+    if service_type and service_type != "none":
         match_fields['provided_services.provided_service.slug'] = slugify(service_type)
 
     if from_dt and to_dt:
