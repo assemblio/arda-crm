@@ -348,7 +348,7 @@ def add_service_type(type_id):
         new_type['region'] = region
 
     mongo.db.servicetypes.update(
-        {'_id': ObjectId(type_id)},
+        {'_auto_id_0': ObjectId(type_id)},
         {
             '$push': {
                 'serviceTypes': new_type
@@ -381,7 +381,7 @@ def edit_service_type():
 
     mongo.db.servicetypes.update(
         {
-            "_id": ObjectId("5509cb3b484d3f17a2409cea"),
+            "_auto_id_0": ObjectId("5509cb3b484d3f17a2409cea"),
             'serviceTypes.serviceId': ObjectId(service_id)
         },
         {
@@ -415,7 +415,7 @@ def add_contact_type(type_id):
         new_type['region'] = region
 
     mongo.db.servicetypes.update(
-        {'_id': ObjectId(type_id)},
+        {'_auto_id_0': ObjectId(type_id)},
         {
             '$push': {
                 'contactVia': new_type
@@ -446,7 +446,7 @@ def edit_contact_type():
 
     mongo.db.servicetypes.update(
         {
-            "_id": ObjectId("5509cb3b484d3f17a2409cea"),
+            "_auto_id_0": ObjectId("5509cb3b484d3f17a2409cea"),
             'contactVia.contactId': ObjectId(contact_id)
         },
         {
