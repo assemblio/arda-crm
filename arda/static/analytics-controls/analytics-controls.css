@@ -1,0 +1,168 @@
+/* General styles for all menus */
+#showLeft{
+  padding-left:160px;
+}
+
+.cbp-spmenu-title{
+  cursor: w-resize;
+  background: #258ecd;
+}
+
+.showLeft-collapsed{
+  cursor: e-resize;
+}
+.cbp-spmenu {
+  background: #222;
+  position: fixed;
+}
+
+.cbp-spmenu h3 {
+  color: #afdefa;
+  font-size: 1.9em;
+  padding: 20px;
+  margin: 0;
+  font-weight: 300;
+  background: #0d77b6;
+}
+
+.cbp-spmenu ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.cbp-spmenu li {
+  display: block;
+  color: #fff;
+  font-size: 1.1em;
+  font-weight: 300;
+}
+
+.cbp-spmenu li:hover {
+  background: #258ecd;
+}
+/*
+.cbp-spmenu a:active {
+  background: #afdefa;
+  color: #47a3da;
+}*/
+
+/* Orientation-dependent styles for the content of the menu */
+
+.cbp-spmenu-vertical {
+  width: 240px;
+  height: 98%;
+  top: 0;
+  z-index: 1000;
+}
+.cbp-spmenu-vertical ul {
+  position: static;
+  overflow-y: scroll;
+  height: 94%
+}
+.cbp-spmenu-vertical li {
+  border-bottom: 1px solid #258ecd;
+  padding: 0.5em;
+}
+
+/* Vertical menu that slides from the left or right */
+
+.cbp-spmenu-left {
+  padding-top:50px; /* Matching response design rule of the bootstrap theme. */
+  left: -270px; /* Let the menu sneak in a bit when it is collapsed so that we can clikc on it to bring it back. */
+  /*left: -240px;*/
+}
+
+.cbp-spmenu-left.cbp-spmenu-open {
+  left: 0px;
+}
+
+/* Transitions */
+
+.cbp-spmenu{
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+/* Map container */
+.map-container{
+  padding-top:50px;
+}
+
+/* Push classes applied to the body */
+
+.cbp-spmenu-push {
+    overflow-x: hidden;
+    position: relative;
+    left: 0;
+}
+
+.cbp-spmenu-push-toright {
+    left: 240px;
+}
+
+.cbp-spmenu-push-toleft {
+    left: -240px;
+}
+
+#quantityParam {
+  color:#123;
+}
+/* Transitions */
+
+.cbp-spmenu,
+.cbp-spmenu-push {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+@media(min-width:768px) {
+  .cbp-spmenu-left{
+
+    /*left: -240px;*/
+    left: -210px; /* Let the menu sneak in a bit when it is collapsed so that we can clikc on it to bring it back. */
+    padding-top:70px;  /* Matching response design rule of the bootstrap theme. */
+  }
+
+  .cbp-spmenu-push-toleft {
+    left: -240px;
+  }
+
+  .cbp-spmenu-push-toright {
+      left: 190px;
+  }
+
+  /* Map container */
+  .map-container{
+    padding-top:70px;
+  }
+}
+
+
+
+/* Pretty Radio buttons */
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"] + label {
+    color: #f2f2f2;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+input[type="radio"] + label span {
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    margin: -1px 4px 0 0;
+    vertical-align: middle;
+    background: url(check_radio_sheet.png) -38px top no-repeat;
+    cursor: pointer;
+}
+
+input[type="radio"]:checked + label span {
+    background: url(check_radio_sheet.png) -57px top no-repeat;
+}
