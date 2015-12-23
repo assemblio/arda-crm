@@ -76,19 +76,19 @@ def edit_customer(customer_id):
     if request.method == "GET":
         customer_doc = mongo.db.customers.find_one({'_id': ObjectId(customer_id)})
 
-        if customer_doc['region'] == 'West':
+        if customer_doc['region'] == 'West' and 'municipality_region' in customer_doc:
             form.municipality_region_west.data = customer_doc['municipality_region']
 
-        if customer_doc['region'] == 'Center':
+        if customer_doc['region'] == 'Center' and 'municipality_region' in customer_doc:
             form.municipality_region_central.data = customer_doc['municipality_region']
 
-        if customer_doc['region'] == 'East':
+        if customer_doc['region'] == 'East' and 'municipality_region' in customer_doc:
             form.municipality_region_east.data = customer_doc['municipality_region']
 
-        if customer_doc['region'] == 'South':
+        if customer_doc['region'] == 'South' and 'municipality_region' in customer_doc:
             form.municipality_region_south.data = customer_doc['municipality_region']
 
-        if customer_doc['region'] == 'North':
+        if customer_doc['region'] == 'North' and 'municipality_region' in customer_doc:
             form.municipality_region_north.data = customer_doc['municipality_region']
 
         if 'future_demand' in customer_doc:
