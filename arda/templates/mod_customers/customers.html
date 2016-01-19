@@ -265,22 +265,37 @@ $(document).ready(function(){
               {{form.search_size_category(class="form-control")}}
             </div>
             {% if current_user.region == "Center" %}
+                <select id="region" name="region" style="display: none;" class="form-control">
+                  <option value="Center" selected="selected">Center</option>
+               </select>
               <div class="col-xs-2">
                 {{form.search_municipality_region_central(class="form-control")}}
               </div>
             {% elif current_user.region == "North" %}
+                <select id="region" name="region" style="display: none;" class="form-control">
+                  <option value="North" selected="selected">North</option>
+               </select>
               <div class="col-xs-2">
                 {{form.search_municipality_region_north(class="form-control")}}
               </div>
             {% elif current_user.region == "West" %}
+                <select id="region" name="region" style="display: none;" class="form-control">
+                  <option value="West" selected="selected">West</option>
+               </select>
               <div class="col-xs-2">
                 {{form.search_municipality_region_west(class="form-control")}}
               </div>
             {% elif current_user.region == "South" %}
+                <select id="region" name="region" style="display: none;" class="form-control">
+                  <option value="South" selected="selected">South</option>
+               </select>
                 <div class="col-xs-2">
                   {{form.search_municipality_region_south(class="form-control")}}
                 </div>
             {% elif current_user.region == "East" %}
+                <select id="region" name="region" style="display: none;" class="form-control">
+                  <option value="East" selected="selected">East</option>
+               </select>
               <div class="col-xs-2">
                 {{form.search_municipality_region_east(class="form-control")}}
               </div>

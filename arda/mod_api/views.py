@@ -94,23 +94,23 @@ def search():
         }
 
     if north:
-        if north != "All":
+        if north != "All" and north != "undefined":
             match_field['municipality_region'] = north
 
     if center:
-        if center != "All":
+        if center != "All" and north != "undefined":
             match_field['municipality_region'] = center
     if south:
-        if south != "All":
+        if south != "All" and north != "undefined":
             match_field['municipality_region'] = south
     if west:
-        if west != "All":
+        if west != "All" and north != "undefined":
             match_field['municipality_region'] = west
     if east:
-        if east != "All":
+        if east != "All" and north != "undefined":
             match_field['municipality_region'] = east
     if size:
-        if size != "All":
+        if size != "All" and north != "undefined":
             match_field['customer_type.size_category'] = size
 
     if region:
