@@ -410,23 +410,25 @@ def edit_costumers_document(customer_id):
 
     if current_user['region'] != "All":
         json_obj['region'] = current_user['region']
+        region_admin = current_user['region']
     else:
         json_obj['region'] = costumer['region']
+        region_admin = costumer['region']
 
     #municipality based on region
-    if costumer['municipality_region_north'] and costumer['region'] == "North":
+    if costumer['municipality_region_north'] and region_admin == "North":
         json_obj['municipality_region'] = costumer['municipality_region_north']
 
-    if costumer['municipality_region_central'] and costumer['region'] == "Center":
+    if costumer['municipality_region_central'] and region_admin == "Center":
         json_obj['municipality_region'] = costumer['municipality_region_central']
 
-    if costumer['municipality_region_south'] and costumer['region'] == "South":
+    if costumer['municipality_region_south'] and region_admin == "South":
         json_obj['municipality_region'] = costumer['municipality_region_south']
 
-    if costumer['municipality_region_west'] and costumer['region'] == "West":
+    if costumer['municipality_region_west'] and region_admin == "West":
         json_obj['municipality_region'] = costumer['municipality_region_west']
 
-    if costumer['municipality_region_east'] and costumer['region'] == "East":
+    if costumer['municipality_region_east'] and region_admin == "East":
         json_obj['municipality_region'] = costumer['municipality_region_east']
 
     if costumer['customer_type'] == "Business/Entrepreneur":

@@ -15,7 +15,7 @@ def home_page():
         session['settings'] = utils.get_default_settings()
     else:
         session['settings'] = settings_doc
-    if not current_user.is_authenticated():
+    if not current_user.is_authenticated:
         return render_template('index.html')
     else:
         return redirect(url_for('home_page.panel'))
