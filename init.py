@@ -40,8 +40,8 @@ def create_user(user_datastore, username, password):
             user = user_datastore.create_user(
                 email=username,
                 password=bcrypt.generate_password_hash(password, rounds=12),
-                first_name="Filan",
-                last_name="Fisteku",
+                first_name="Bobby",
+                last_name="Jean",
                 role="Admin",
                 region="All",
             )

@@ -61,8 +61,8 @@ def create_customer():
         )
 
     if request.method == "POST":
-        #call the function which builds than stores the json document
 
+        # call the function which builds than stores the json document
         build_save_costumers_document()
 
         return redirect(url_for('customers.customers'))
@@ -256,7 +256,8 @@ def build_save_costumers_document():
         'website': costumer['website'],
         'provided_services': []
     }
-    #if future demand field is defined create the following subdoc
+
+    # if future demand field is defined create the following subdoc
     if costumer['future_demand']:
         json_obj['future_demand'] = {
             'future_demand': costumer['future_demand'],
@@ -275,8 +276,7 @@ def build_save_costumers_document():
     else:
         json_obj['region'] = costumer['region']
 
-
-    #municipality based on region
+    # municipality based on region
     if costumer['municipality_region_north'] and costumer['region'] == "North":
         json_obj['municipality_region'] = costumer['municipality_region_north']
 
@@ -291,7 +291,6 @@ def build_save_costumers_document():
 
     if costumer['municipality_region_east'] and costumer['region'] == "East":
         json_obj['municipality_region'] = costumer['municipality_region_east']
-
 
     if costumer['customer_type'] == "Business/Entrepreneur":
         json_obj['customer_type'] = {

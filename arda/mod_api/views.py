@@ -93,24 +93,22 @@ def search():
             '$gte': datetime.strptime(follow_up, "%d/%m/%Y")
         }
 
-    if north:
-        if north != "All" and north != "undefined":
+    if north != "All" and north != "undefined":
             match_field['municipality_region'] = north
 
-    if center:
-        if center != "All" and north != "undefined":
+    if center != "All" and north != "undefined":
             match_field['municipality_region'] = center
-    if south:
-        if south != "All" and north != "undefined":
+
+    if south != "All" and north != "undefined":
             match_field['municipality_region'] = south
-    if west:
-        if west != "All" and north != "undefined":
+
+    if west != "All" and north != "undefined":
             match_field['municipality_region'] = west
-    if east:
-        if east != "All" and north != "undefined":
+
+    if east != "All" and north != "undefined":
             match_field['municipality_region'] = east
-    if size:
-        if size != "All" and north != "undefined":
+
+    if size != "All" and north != "undefined":
             match_field['customer_type.size_category'] = size
 
     if region:
