@@ -770,29 +770,29 @@ def export_filtered_customers():
     if company:
         match_field['company.slug'] = slugify(company)
 
-    if north:
-        if north != "All":
+    if north != "All" and north != "undefined":
             match_field['municipality_region'] = north
 
-    if center:
-        if center != "All":
+    if center != "All" and center != "undefined":
             match_field['municipality_region'] = center
-    if south:
-        if south != "All":
+
+    if south != "All" and south != "undefined":
             match_field['municipality_region'] = south
-    if west:
-        if west != "All":
+
+    if west != "All" and west != "undefined":
             match_field['municipality_region'] = west
-    if east:
-        if east != "All":
+
+    if east != "All" and east != "undefined":
             match_field['municipality_region'] = east
+
     if size:
         if size != "All":
             match_field['customer_type.size_category'] = size
 
-    if region:
-        if region != "All":
-            match_field['region'] = region
+    if current_user['region'] != "All":
+        match_field['region'] = current_user['region']
+    else:
+        match_field['region'] = current_user['region']
 
     if customer_type:
         if customer_type != "All":
