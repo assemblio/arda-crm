@@ -71,7 +71,8 @@ def date_fee_chart():
 @mod_api.route('/search/customers', methods=['GET'])
 @login_required
 def search():
-    if(len(request.args) > 0):
+
+    if len(request.args) > 0:
         north = request.args.get('north')
         center = request.args.get('center')
         south = request.args.get('south')
@@ -93,8 +94,7 @@ def search():
             '$gte': datetime.strptime(follow_up, "%d/%m/%Y")
         }
 
-    if north:
-        if north != "All" and north != "undefined":
+    if north != "All" and north != "undefined":
             match_field['municipality_region'] = north
 
     if center != "All" and center != "undefined":

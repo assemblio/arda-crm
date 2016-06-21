@@ -105,7 +105,7 @@ $(document).ready(function(){
        var followUp = $('#followUp').val();
        var company = $('#company').val();
    
-       url = "{{ url_for('api.search') }}" + "?company=" + company + "&customer_type=" + customer_type + "&size=" + size + "&region=" + region + "&north=" + north + "&center=" + center + "&south=" + south + "&west=" + west + "&east=" + east + "&followUp=" + followUp;
+       var url = "{{ url_for('api.search') }}" + "?company=" + company + "&customer_type=" + customer_type + "&size=" + size + "&region=" + region + "&north=" + north + "&center=" + center + "&south=" + south + "&west=" + west + "&east=" + east + "&followUp=" + followUp;
    
        $.get(url, function(result){
          rebuildTable(result);
